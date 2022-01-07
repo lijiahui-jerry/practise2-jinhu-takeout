@@ -1,29 +1,30 @@
 <template>
  <div id="app">
-  <Header></Header>
   <router-view></router-view>
-  <Footer></Footer>
+  <Footer v-show='$route.meta.showFooter'></Footer>
  </div>
 </template>
 
 <script>
 import Footer from "@/components/Footer"
-import Header from "@/components/Header"
 
 export default {
   name:'App',
-
-  components:{
-    Footer,
-    Header,
+  components:{Footer},
+  mounted(){
+    this.$store.dispatch("getCategory")
+    this.$store.dispatch('getLocation')
   },
 }
 </script>
 
 <style scoped lang="less">
-#app{
-  //width:100%;
-  //height:100%;
-  position:relative;
+*{
+  width:100vw;
+  height:100vw;
+}
+
+a{
+  text-decoration:none;
 }
 </style>

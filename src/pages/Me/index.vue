@@ -1,13 +1,343 @@
 <template>
-<div>me</div>
+ <div>
+  <section class="profile">
+   <!-- 个人页面头部 -->
+   <Header title="金狐外卖 "></Header>
+
+   <section class="profile-number">
+
+    <router-link to="/login" class="profile-link">
+
+     <div class="profile_image">
+      <i class="iconfont icon-direction-down"></i>
+     </div>
+
+     <div class="user-info">
+      <p class="user-info-top">登录/注册</p>
+      <p>
+       <span class="user-icon"><i class="iconfont icon-direction-down icon-direction-down"></i></span>
+       <span class="icon-mobile">暂无绑定手机号</span>
+      </p>
+     </div>
+
+     <span class="arrow">
+      <i class="iconfont icon-direction-down"></i>
+     </span>
+    </router-link>
+   </section>
+   <section class="profile_info_data border-1px">
+    <ul class="info_data_list">
+     <a href="javascript:" class="info_data_link">
+      <span class="info_data_top"><span>0.00</span>元</span>
+      <span class="info_data_bottom">我的余额</span>
+     </a>
+     <a href="javascript:" class="info_data_link">
+      <span class="info_data_top"><span>0</span>个</span>
+      <span class="info_data_bottom">我的优惠</span>
+     </a>
+     <a href="javascript:" class="info_data_link">
+      <span class="info_data_top"><span>0</span>分</span>
+      <span class="info_data_bottom">我的积分</span>
+     </a>
+    </ul>
+   </section>
+   <section class="profile_my_order border-1px">
+    <!-- 我的订单 -->
+    <a href='javascript:' class="my_order">
+     <span>
+      <i class="iconfont icon-direction-down"></i>
+     </span>
+     <div class="my_order_div">
+      <span>我的订单</span>
+      <span class="my_order_icon">
+       <i class="iconfont icon-direction-down"></i>
+      </span>
+     </div>
+    </a>
+    <!-- 积分商城 -->
+    <a href='javascript:' class="my_order">
+     <span>
+      <i class="iconfont icon-direction-down"></i>
+     </span>
+     <div class="my_order_div">
+      <span>积分商城</span>
+      <span class="my_order_icon">
+       <i class="iconfont icon-direction-down"></i>
+      </span>
+     </div>
+    </a>
+    <!-- 硅谷外卖会员卡 -->
+    <a href="javascript:" class="my_order">
+     <span>
+      <i class="iconfont icon-direction-down"></i>
+     </span>
+     <div class="my_order_div">
+      <span>硅谷外卖会员卡</span>
+      <span class="my_order_icon">
+       <i class="iconfont icon-direction-down"></i>
+      </span>
+     </div>
+    </a>
+   </section>
+   <section class="profile_my_order border-1px">
+    <!-- 服务中心 -->
+    <a href="javascript:" class="my_order">
+     <span>
+      <i class="iconfont icon-direction-down"></i>
+     </span>
+     <div class="my_order_div">
+      <span>服务中心</span>
+      <span class="my_order_icon">
+       <i class="iconfont icon-direction-down"></i>
+      </span>
+     </div>
+    </a>
+   </section>
+  </section>
+ </div>
 </template>
 
 <script>
+import Header from "@/components/Header"
+
 export default {
   name:"Me",
+  components:{Header},
 }
 </script>
 
-<style scoped>
+<style scoped lang="less">
+.profile{
+  width:100%;
 
+  .profile-number{
+    margin-top:45px;
+
+    .profile-link{
+      position:relative;
+      display:block;
+      background:#02A774;
+      padding:20px 10px;
+
+      &::after{
+        content:'';
+        display:block;
+        clear:both;
+      }
+
+      .profile_image{
+        float:left;
+        width:60px;
+        height:60px;
+        border-radius:50%;
+        overflow:hidden;
+        vertical-align:top;
+
+        .icon-direction-down{
+          background:#E4E4E4;
+          font-size:62px;
+        }
+      }
+
+      .user-info{
+        float:left;
+        margin-top:8px;
+        margin-left:15px;
+
+        p{
+          font-weight:700;
+          font-size:18px;
+          color:#FFFFFF;
+
+          &.user-info-top{
+            padding-bottom:8px;
+          }
+
+          .user-icon{
+            display:inline-block;
+            margin-left:-15px;
+            margin-right:5px;
+            width:20px;
+            height:20px;
+
+            .icon-mobile{
+              font-size:30px;
+              vertical-align:text-top;
+            }
+          }
+
+          .icon-direction-down{
+            font-size:14px;
+            color:#FFFFFF;
+          }
+        }
+      }
+
+      .arrow{
+        width:12px;
+        height:12px;
+        position:absolute;
+        right:15px;
+        top:40%;
+
+        .icon-direction-down{
+          color:#FFFFFF;
+          font-size:5px;
+        }
+      }
+    }
+  }
+
+  .profile_info_data{
+    position:relative;
+    width:100%;
+    background:#FFFFFF;
+    overflow:hidden;
+
+    &::before{
+      content:'';
+      position:absolute;
+      z-index:200;
+      left:0;
+      bottom:0;
+      width:100%;
+      height:1px;
+      background-color:#E4E4E4;
+      transform:scaleY(0.5);
+    }
+
+    .info_data_list{
+
+      &::after{
+        content:'';
+        display:block;
+        clear:both;
+      }
+
+      .info_data_link{
+        float:left;
+        width:33%;
+        text-align:center;
+        border-right:1px solid #F1F1F1;
+
+        .info_data_top{
+          display:block;
+          width:100%;
+          font-size:14px;
+          color:#333333;
+          padding:15px 5px 10px;
+
+          span{
+            display:inline-block;
+            font-size:30px;
+            color:#FF9900;
+            font-weight:700;
+            line-height:30px;
+          }
+        }
+
+        .info_data_bottom{
+          display:inline-block;
+          font-size:14px;
+          color:#666666;
+          font-weight:400;
+          padding-bottom:10px;
+        }
+
+        &:nth-of-type(2){
+          .info_data_top{
+            span{
+              color:#FF5F3E;
+            }
+          }
+        }
+
+        &:nth-of-type(3){
+          border:0;
+
+          .info_data_top{
+            span{
+              color:#6AC20B;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .profile_my_order{
+    position:relative;
+    margin-top:10px;
+    background:#FFFFFF;
+
+    &::before{
+      content:'';
+      position:absolute;
+      z-index:200;
+      left:0;
+      top:0;
+      width:100%;
+      height:1px;
+      background-color:#E4E4E4;
+    }
+
+    .my_order{
+      display:flex;
+      align-items:center;
+      padding-left:15px;
+
+      & > span{
+        display:flex;
+        align-items:center;
+        width:20px;
+        height:20px;
+
+        & > .iconfont{
+          margin-left:-10px;
+          font-size:30px;
+        }
+
+        .icon-direction-down{
+          color:#02A774;
+        }
+
+        .icon-direction-down{
+          color:#FF5F3E;
+        }
+
+        .icon-direction-down{
+          color:#FF9900;
+        }
+
+        .icon-direction-down{
+          color:#02A774;
+        }
+      }
+
+      .my_order_div{
+        width:100%;
+        border-bottom:1px solid #F1F1F1;
+        padding:18px 10px 18px 0;
+        font-size:16px;
+        color:#333333;
+        display:flex;
+        justify-content:space-between;
+
+        span{
+          display:block;
+        }
+
+        .my_order_icon{
+          width:10px;
+          height:10px;
+
+          .icon-direction-down{
+            color:#BBBBBB;
+            font-size:10px;
+          }
+        }
+      }
+    }
+  }
+}
 </style>

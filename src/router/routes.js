@@ -2,18 +2,27 @@ export default [
   {
     path:'/home',
     component:()=>import('@/pages/Home'),
+    meta:{showFooter:true},
   },
   {
     path:'/search',
     component:()=>import('@/pages/Search'),
-  },
-  {
-    path:'/me',
-    component:()=>import('@/pages/Me'),
+    meta:{showFooter:true},
   },
   {
     path:'/order',
     component:()=>import('@/pages/Order'),
+    meta:{showFooter:true},
+  },
+  {
+    path:'/me',
+    component:()=>import('@/pages/Me'),
+    meta:{showFooter:true},
+  },
+  {
+    path:'/login',
+    component:()=>import('@/pages/Login'),
+    meta:{showFooter:false},
   },
 
   //重定向

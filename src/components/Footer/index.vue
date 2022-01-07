@@ -1,36 +1,32 @@
 <template>
- <footer class="navbar border-1px">
-  <a class="navbar_item" @click="shiftPage('home')" :class="{active:pageFlag('home')}">
+ <!-- 底部栏 -->
+ <footer class="navbar">
+  <router-link class="navbar_item" to="/home" :class="{active:pageFlag('home')}">
    <i class="iconfont icon-direction-down"></i>
    <span>首页</span>
-  </a>
+  </router-link>
 
-  <a class="navbar_item" @click="shiftPage('search')" :class="{active:pageFlag('search')}">
+  <router-link class="navbar_item" to="/search" :class="{active:pageFlag('search')}">
    <i class="iconfont icon-direction-down"></i>
    <span>搜索</span>
-  </a>
+  </router-link>
 
-  <a class="navbar_item" @click="shiftPage('order')" :class="{active:pageFlag('order')}">
+  <router-link class="navbar_item" to="/order" :class="{active:pageFlag('order')}">
    <i class="iconfont icon-direction-down"></i>
    <span>订单</span>
-  </a>
+  </router-link>
 
-  <a class="navbar_item" @click="shiftPage('me')" :class="{active:pageFlag('me')}">
+  <router-link class="navbar_item" to="/me" :class="{active:pageFlag('me')}">
    <i class="iconfont icon-direction-down"></i>
    <span>我</span>
-  </a>
+  </router-link>
  </footer>
 </template>
 
 <script>
 export default {
   name:"Footer",
-
   methods:{
-    //页面切换
-    shiftPage(path){
-      this.$router.push(`/${path}`)
-    },
     //判断当前页，控制active样式
     pageFlag(path){
       return this.$route.path.indexOf(path)==1
@@ -40,17 +36,17 @@ export default {
 </script>
 
 <style scoped lang="less">
-//根据设备的dpr调整px，使1px细线在不同设备上的效果相同
+//根据设备的dpr调整px，使1px细线在不同dpr的设备上有相同效果
 //dpr为2时
 @media only screen and (-webkit-device-pixel-ratio:2){
-  .border-1px::before{
+  .navbar::before{
     transform:scaleY(0.5);
   }
 }
 
 //dpr为3时
 @media only screen and (-webkit-device-pixel-ratio:3){
-  .border-1px::before{
+  .navbar::before{
     transform:scaleY(0.3);
   }
 }
@@ -77,7 +73,6 @@ export default {
   &::before{
     content:'';
     position:absolute;
-    z-index:200;
     left:0;
     top:0;
     width:100%;
@@ -87,13 +82,12 @@ export default {
 
   .navbar_item{
     display:flex;
-    //使flex的元素平分所占的空间，默认为0时不平分
+    /*使flex的元素平分所占的空间，默认为0时不平分*/
     flex:1;
     flex-direction:column;
     align-items:center;
     margin:auto;
     color:#999999;
-    text-decoration:none;
 
     //当前页的标识
     &.active{
