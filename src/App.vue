@@ -11,10 +11,6 @@ import Footer from "@/components/Footer"
 export default {
   name:'App',
   components:{Footer},
-  mounted(){
-    this.$store.dispatch("getCategory")
-    this.$store.dispatch('getLocation')
-  },
 }
 </script>
 

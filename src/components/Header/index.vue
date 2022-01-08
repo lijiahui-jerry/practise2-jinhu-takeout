@@ -1,17 +1,26 @@
 <template>
- <!-- 头部模板 -->
+ <!-- 首页头部 -->
  <header>
-  <slot name="left"></slot>
-  <span class="title-wrapper"><span class="title-content">{{title}}</span></span>
-  <slot name="right"></slot>
+  <span class="header-left"><i class="iconfont icon-direction-down"></i></span>
+  <span class="title-wrapper">
+   <span class="title-content">{{school.name}}</span>
+  </span>
+  <router-link to="/login" class="header-right"><span class="c">登录</span></router-link>
  </header>
 </template>
 
 <script>
+import {mapState} from "vuex"
+
 export default {
   name:"Header",
-  props:{
-    title:String,
+  computed:{
+    ...mapState({
+      school:(state)=>state.home.school||{}
+    }),
+  },
+  mounted(){
+    this.$store.dispatch('getLocation')
   },
 }
 </script>
@@ -38,7 +47,33 @@ header{
     .title-content{
       font-size:20px;
       color:#FFFFFF;
-      display:block;
+    }
+  }
+
+  .header-left{
+    position:absolute;
+    left:15px;
+    top:50%;
+    transform:translateY(-50%);
+    width:10%;
+    height:50%;
+
+    .iconfont{
+      font-size:25px;
+      color:#FFFFFF;
+    }
+  }
+
+  .header-right{
+    font-size:14px;
+    color:#FFFFFF;
+    position:absolute;
+    right:15px;
+    top:50%;
+    transform:translateY(-50%);
+
+    .login{
+      color:#FFFFFF;
     }
   }
 }

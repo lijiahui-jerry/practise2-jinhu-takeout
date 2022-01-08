@@ -4,6 +4,8 @@ import VueLazyLoad from "vue-lazyload"
 import router from "@/router"
 import loading from '@/assets/loading.gif'
 import store from "@/store"
+import '@/mock/mockServe'
+import 'swiper/dist/css/swiper.min.css'
 
 Vue.config.productionTip=false
 

@@ -1,107 +1,15 @@
 <template>
- <!-- 导航 -->
- <nav class="msite_nav">
-  <div class="swiper-container">
+ <!-- 首页商家导航 -->
+ <nav class="nav">
+  <div class="swiper-container" ref="mySwiper">
    <div class="swiper-wrapper">
-    <div class="swiper-slide">
-     <a href="javascript:" class="link_to_food">
-      <div class="food_container">
-       <img src="./images/1.jpg">
+    <div class="swiper-slide" v-for="(navPages,index) in navigationArr" :key="index">
+     <div class="nav-link" v-for="(nav) in navPages" :key="nav.id">
+      <div class="img-container">
+       <img :src="nav.image" :alt="nav.description">
       </div>
-      <span>甜品饮品</span>
-     </a>
-     <a href="javascript:" class="link_to_food">
-      <div class="food_container">
-       <img src="./images/2.jpg">
-      </div>
-      <span>商超便利</span>
-     </a>
-     <a href="javascript:" class="link_to_food">
-      <div class="food_container">
-       <img src="./images/3.jpg">
-      </div>
-      <span>美食</span>
-     </a>
-     <a href="javascript:" class="link_to_food">
-      <div class="food_container">
-       <img src="./images/4.jpg">
-      </div>
-      <span>简餐</span>
-     </a>
-     <a href="javascript:" class="link_to_food">
-      <div class="food_container">
-       <img src="./images/5.jpg">
-      </div>
-      <span>新店特惠</span>
-     </a>
-     <a href="javascript:" class="link_to_food">
-      <div class="food_container">
-       <img src="./images/6.jpg">
-      </div>
-      <span>准时达</span>
-     </a>
-     <a href="javascript:" class="link_to_food">
-      <div class="food_container">
-       <img src="./images/7.jpg">
-      </div>
-      <span>预订早餐</span>
-     </a>
-     <a href="javascript:" class="link_to_food">
-      <div class="food_container">
-       <img src="./images/8.jpg">
-      </div>
-      <span>土豪推荐</span>
-     </a>
-    </div>
-    <div class="swiper-slide">
-     <a href="javascript:" class="link_to_food">
-      <div class="food_container">
-       <img src="./images/9.jpg">
-      </div>
-      <span>甜品饮品</span>
-     </a>
-     <a href="javascript:" class="link_to_food">
-      <div class="food_container">
-       <img src="./images/10.jpg">
-      </div>
-      <span>商超便利</span>
-     </a>
-     <a href="javascript:" class="link_to_food">
-      <div class="food_container">
-       <img src="./images/11.jpg">
-      </div>
-      <span>美食</span>
-     </a>
-     <a href="javascript:" class="link_to_food">
-      <div class="food_container">
-       <img src="./images/12.jpg">
-      </div>
-      <span>简餐</span>
-     </a>
-     <a href="javascript:" class="link_to_food">
-      <div class="food_container">
-       <img src="./images/13.jpg">
-      </div>
-      <span>新店特惠</span>
-     </a>
-     <a href="javascript:" class="link_to_food">
-      <div class="food_container">
-       <img src="./images/14.jpg">
-      </div>
-      <span>准时达</span>
-     </a>
-     <a href="javascript:" class="link_to_food">
-      <div class="food_container">
-       <img src="./images/1.jpg">
-      </div>
-      <span>预订早餐</span>
-     </a>
-     <a href="javascript:" class="link_to_food">
-      <div class="food_container">
-       <img src="./images/2.jpg">
-      </div>
-      <span>土豪推荐</span>
-     </a>
+      <span>{{nav.title}}</span>
+     </div>
     </div>
    </div>
    <!-- 分页器 -->
@@ -111,58 +19,78 @@
 </template>
 
 <script>
+import Swiper from "swiper"
+import {mapState} from "vuex"
+
 export default {
   name:"Navigation",
+  mounted(){
+    this.$store.dispatch("getNavigation")
+  },
+  computed:{
+    ...mapState({
+      navigation:state=>state.home.navigation || [],
+    }),
+    //根据返回的数据动态生成一维或多维数组，用于swiper动态分页，一页最多显示8个
+    navigationArr(){
+      const {navigation}=this
+      //用于存放小数组的大数组，它的维数相当于页数
+      const pageArr=[]
+      //用于存放具体数据的小数组，最大元素量为8，即每页最多显示8条数据
+      let dataArr=[]
+      navigation.forEach((n)=>{
+        //在小数组满且需要继续添加数据时进入
+        if(8===dataArr.length) dataArr=[]
+        //在首次循环或每次小数组满时进入
+        if(0===dataArr.length) pageArr.push(dataArr)
+        dataArr.push(n)
+      })
+      return pageArr
+    },
+  },
+  watch:{
+    navigation(){
+      this.$nextTick(()=>{
+        new Swiper(this.$refs.mySwiper,{
+          loop:true,
+          /* 大问题：此处使用ref会导致分页器更新混乱并出现划不动现象 */
+          /* 查阅文档知：refs不是响应式的，因此不能用在v-for等模板中。 */
+          pagination:{el:'.swiper-pagination'},
+        })
+      })
+    },
+  },
 }
 </script>
 
 <style scoped lang="less">
-.msite_nav{
+.nav{
   position:relative;
-  margin-top:45px;
-  height:200px;
+  margin-top:50px;
+  height:220px;
   background:#FFFFFF;
-
-  &::before{
-    content:'';
-    position:absolute;
-    z-index:200;
-    left:0;
-    bottom:0;
-    width:100%;
-    height:1px;
-    background-color:#E4E4E4;
-    transform:scaleY(0.5);
-  }
 
   .swiper-container{
     width:100%;
     height:100%;
 
     .swiper-wrapper{
-      width:100%;
-      height:100%;
-
       .swiper-slide{
         display:flex;
-        justify-content:center;
-        align-items:flex-start;
         flex-wrap:wrap;
 
-        .link_to_food{
+        .nav-link{
+          display:block;
           width:25%;
 
-          .food_container{
-            display:block;
+          .img-container{
             width:100%;
             text-align:center;
-            padding-bottom:10px;
-            font-size:0;
+            padding-bottom:5px;
 
             img{
-              display:inline-block;
-              width:50px;
-              height:50px;
+              width:60px;
+              height:60px;
             }
           }
 
@@ -170,17 +98,9 @@ export default {
             display:block;
             width:100%;
             text-align:center;
-            font-size:13px;
+            font-size:14px;
             color:#666666;
           }
-        }
-      }
-    }
-
-    .swiper-pagination{
-      & > span{
-        &.swiper-pagination-bullet-active{
-          background:#02A774;
         }
       }
     }

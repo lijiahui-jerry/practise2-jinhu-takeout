@@ -1,25 +1,26 @@
 import {reqNavigation,reqLocation} from "@/api"
+
 const state={
   navigation:[],
-  location:[],
+  school:{},
 }
 
 const mutations={
   GETNAVIGATION(state,navigation){
-    state.category=navigation
+    state.navigation=navigation
   },
-  GETLOCATION(state,location){
-    state.location=location
+  GETLOCATION(state,school){
+    state.school=school
   },
 }
 
 const actions={
-  //获取首页商家目录
-  async getCategory({commit}){
+  //获取首页商家导航
+  async getNavigation({commit}){
     let result=await reqNavigation()
     if(result.code==200) commit("GETNAVIGATION",result.data)
   },
-  //获取地址
+  //获取地址信息
   async getLocation({commit}){
     let result=await reqLocation()
     if(result.code==200) commit('GETLOCATION',result.data)
