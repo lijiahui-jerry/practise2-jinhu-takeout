@@ -116,7 +116,7 @@ export default {
     .profile-link{
       position:relative;
       display:block;
-      background:#02A774;
+      background:#684e94;
       padding:20px 10px;
 
       &::after{
@@ -298,19 +298,7 @@ export default {
         }
 
         .icon-direction-down{
-          color:#02A774;
-        }
-
-        .icon-direction-down{
-          color:#FF5F3E;
-        }
-
-        .icon-direction-down{
-          color:#FF9900;
-        }
-
-        .icon-direction-down{
-          color:#02A774;
+          color:#684e94;
         }
       }
 

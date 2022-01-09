@@ -1,188 +1,64 @@
 <template>
- <div class="msite_shop_list">
-  <div class="shop_header">
-   <i class="iconfont icon-direction-down"></i><span class="shop_header_title">附近商家</span>
+ <div class="shop-list">
+  <!-- 首页附近商家标题 -->
+  <div class="nearby">
+   <i class="iconfont icon-direction-down"></i><span class="header-title">附近商家</span>
   </div>
   <!-- 首页商家列表 -->
-  <div class="shop_container">
-   <ul class="shop_list">
-    <li class="shop_li border-1px">
+  <div class="items-container">
+   <ul>
+    <!-- 单个商家 -->
+    <li class="items" v-for="(shop) in shops" :key="shops.id">
      <a>
-      <div class="shop_left">
-       <img class="shop_img" src="./images/shop/1.jpg">
-      </div>
-      <div class="shop_right">
-       <section class="shop_detail_header">
-        <h4 class="shop_title ellipsis">锄禾日当午，汗滴禾下土</h4>
-        <ul class="shop_detail_ul">
-         <li class="supports">保</li>
-         <li class="supports">准</li>
-         <li class="supports">票</li>
+      <!-- 商家图片 -->
+      <div class="item-img"><img :src="shop.image"></div>
+      <!-- 商家详细信息第一行 -->
+      <div class="line1-container">
+       <!-- 是否推荐、商家名、提供的保障 -->
+       <div class="line1">
+        <!-- 推荐 -->
+        <h4 class="item-title-recommend" v-if="shop.isRecommend">{{shop.name}}</h4>
+        <!-- 不推荐 -->
+        <h4 class="item-title" v-else>{{shop.name}}</h4>
+        <!-- 提供的保障 -->
+        <ul class="supports-container">
+         <li class="supports" v-for="(support) in shop.supports" :key="support.id">{{support.iconName}}</li>
         </ul>
-       </section>
-       <section class="shop_rating_order">
-        <section class="shop_rating_order_left">
-         <div class="star star-24">
-          <span class="star-item on"></span>
-          <span class="star-item on"></span>
-          <span class="star-item on"></span>
-          <span class="star-item half"></span>
-          <span class="star-item off"></span>
-         </div>
-         <div class="rating_section">
-          3.6
-         </div>
-         <div class="order_section">
-          月售106单
-         </div>
-        </section>
-        <section class="shop_rating_order_right">
-         <span class="delivery_style delivery_right">硅谷专送</span>
-        </section>
-       </section>
-       <section class="shop_distance">
-        <p class="shop_delivery_msg">
-         <span>¥20起送</span>
+       </div>
+       <!-- 商家详细信息第二行 -->
+       <div class="line2-container">
+        <!-- 星数、评分、销量、人均 -->
+        <div class="line2">
+         <!-- 星数 -->
+         <Star :rating=shop.ratingScore size=24></Star>
+         <!-- 评分 -->
+         <div class="rating">{{shop.ratingScore}}</div>
+         <!-- 销量、人均 -->
+         <div class="recent-orders">月售&nbsp;{{shop.recentOrders}}&nbsp;单&nbsp;&nbsp;&nbsp;人均&nbsp;{{shop.averageConsumption}}&nbsp;元</div>
+        </div>
+        <!-- 商家详细信息第二行最右边 -->
+        <div class="line2-right">
+         <!-- 配送方式 -->
+         <span class="delivery" v-if="shop.delivery.type">{{shop.delivery.type}}</span>
+        </div>
+       </div>
+       <!-- 商家详细信息第三行 -->
+       <div class="line3-container">
+        <!-- 起送价、配送费 -->
+        <p class="line3">
+         <!-- 起送价 -->
+         <span>¥{{shop.minimumConsumption}}起送</span>
          <span class="segmentation">/</span>
-         <span>配送费约¥5</span>
+         <!-- 配送费 -->
+         <span v-if="0!=shop.delivery.fee">配送费约¥{{shop.delivery.fee}}</span>
+         <span v-else>免配送费</span>
         </p>
-       </section>
-      </div>
-     </a>
-    </li>
-    <li class="shop_li border-1px">
-     <a>
-      <div class="shop_left">
-       <img class="shop_img" src="./images/shop/2.jpg">
-      </div>
-      <div class="shop_right">
-       <section class="shop_detail_header">
-        <h4 class="shop_title ellipsis">锄禾日当午，汗滴禾下土</h4>
-        <ul class="shop_detail_ul">
-         <li class="supports">保</li>
-         <li class="supports">准</li>
-         <li class="supports">票</li>
-        </ul>
-       </section>
-       <section class="shop_rating_order">
-        <section class="shop_rating_order_left">
-         <div class="star star-24">
-          <span class="star-item on"></span>
-          <span class="star-item on"></span>
-          <span class="star-item on"></span>
-          <span class="star-item on"></span>
-          <span class="star-item off"></span>
-         </div>
-         <div class="rating_section">
-          4.1
-         </div>
-         <div class="order_section">
-          月售106单
-         </div>
-        </section>
-        <section class="shop_rating_order_right">
-         <span class="delivery_style delivery_right">硅谷专送</span>
-        </section>
-       </section>
-       <section class="shop_distance">
-        <p class="shop_delivery_msg">
-         <span>¥20起送</span>
-         <span class="segmentation">/</span>
-         <span>配送费约¥5</span>
-        </p>
-       </section>
-      </div>
-     </a>
-    </li>
-    <li class="shop_li border-1px">
-     <a>
-      <div class="shop_left">
-       <img class="shop_img" src="./images/shop/3.jpg">
-      </div>
-      <div class="shop_right">
-       <section class="shop_detail_header">
-        <h4 class="shop_title ellipsis">锄禾日当午，汗滴禾下土</h4>
-        <ul class="shop_detail_ul">
-         <li class="supports">保</li>
-         <li class="supports">准</li>
-         <li class="supports">票</li>
-        </ul>
-       </section>
-       <section class="shop_rating_order">
-        <section class="shop_rating_order_left">
-         <div class="star star-24">
-          <span class="star-item on"></span>
-          <span class="star-item on"></span>
-          <span class="star-item on"></span>
-          <span class="star-item off"></span>
-          <span class="star-item off"></span>
-         </div>
-         <div class="rating_section">
-          3.2
-         </div>
-         <div class="order_section">
-          月售106单
-         </div>
-        </section>
-        <section class="shop_rating_order_right">
-         <span class="delivery_style delivery_right">硅谷专送</span>
-        </section>
-       </section>
-       <section class="shop_distance">
-        <p class="shop_delivery_msg">
-         <span>¥20起送</span>
-         <span class="segmentation">/</span>
-         <span>配送费约¥5</span>
-        </p>
-       </section>
-      </div>
-     </a>
-    </li>
-    <li class="shop_li border-1px">
-     <a>
-      <div class="shop_left">
-       <img class="shop_img" src="./images/shop/4.jpg">
-      </div>
-      <div class="shop_right">
-       <section class="shop_detail_header">
-        <h4 class="shop_title ellipsis">锄禾日当午，汗滴禾下土</h4>
-        <ul class="shop_detail_ul">
-         <li class="supports">保</li>
-         <li class="supports">准</li>
-         <li class="supports">票</li>
-        </ul>
-       </section>
-       <section class="shop_rating_order">
-        <section class="shop_rating_order_left">
-         <div class="star star-24">
-          <span class="star-item on"></span>
-          <span class="star-item on"></span>
-          <span class="star-item on"></span>
-          <span class="star-item half"></span>
-          <span class="star-item off"></span>
-         </div>
-         <div class="rating_section">
-          3.6
-         </div>
-         <div class="order_section">
-          月售106单
-         </div>
-        </section>
-        <section class="shop_rating_order_right">
-         <span class="delivery_style delivery_right">硅谷专送</span>
-        </section>
-       </section>
-       <section class="shop_distance">
-        <p class="shop_delivery_msg">
-         <span>¥20起送</span>
-         <span class="segmentation">/</span>
-         <span>配送费约¥5</span>
-        </p>
-       </section>
+       </div>
       </div>
      </a>
     </li>
    </ul>
+   <div><span class="bottom">真的没有啦~</span></div>
   </div>
 
  </div>
@@ -190,51 +66,82 @@
 </template>
 
 <script>
+import {mapState} from "vuex"
+import Star from "@/components/Star"
+
 export default {
   name:"ShopList",
+  components:{Star},
+
+  computed:{
+    ...mapState({
+      shops:state=>state.home.shops || [],
+    }),
+  },
 }
 </script>
 
 <style scoped lang="less">
-.msite_shop_list{
+.shop-list{
   position:relative;
-  margin-top:10px;
   background:#FFFFFF;
 
+  //底部提示文字
+  .bottom{
+    text-align:center;
+    display:block;
+    width:100%;
+    font-size:12px;
+    color:#999999;
+  }
+
+  //1px细线
   &::before{
     content:'';
     position:absolute;
-    z-index:200;
     left:0;
     top:0;
     width:100%;
     height:1px;
     background-color:#E4E4E4;
+    @media screen{
+      @media (-webkit-device-pixel-ratio:2){
+        transform:scaleY(0.5);
+      }
+      @media (-webkit-device-pixel-ratio:3){
+        transform:scaleY(0.3);
+      }
+    }
   }
 
-  .shop_header{
+  //附近商家
+  .nearby{
     padding:10px 10px 0;
 
-    .shop_icon{
+    .iconfont{
       margin-left:5px;
       color:#999999;
     }
 
-    .shop_header_title{
+    .header-title{
       color:#999999;
       font-size:14px;
       line-height:20px;
     }
   }
 
-  .shop_container{
+  //所有商家的容器
+  .items-container{
+    //为底部导航栏留出足够空间，使所有商家可完全显示
     padding-bottom:50px;
 
-    .shop_list{
-      .shop_li{
+    & > ul{
+      //每个商家单独的容器
+      .items{
         position:relative;
         width:100%;
 
+        //1px细线
         &::before{
           content:'';
           position:absolute;
@@ -244,40 +151,50 @@ export default {
           width:100%;
           height:1px;
           background-color:#F1F1F1;
-          transform:scaleY(0.5);
+          @media screen{
+            @media (-webkit-device-pixel-ratio:2){
+              transform:scaleY(0.5);
+            }
+            @media (-webkit-device-pixel-ratio:3){
+              transform:scaleY(0.3);
+            }
+          }
         }
 
+        //使整个单独商家容器作为一个单独超链接
         & > a{
           display:block;
+          //改变盒模型默认状态，使内容部分扩大到最外层
           box-sizing:border-box;
-          padding:15px 8px;
+          padding:10px 15px;
           width:100%;
 
+          //因为没有定义height，所以需要解决高度塌陷问题，使盒子被内容撑开
           &::after{
             content:'';
             display:block;
             clear:both;
           }
 
-          .shop_left{
+          .item-img{
             float:left;
             box-sizing:border-box;
-            width:23%;
+            width:25%;
             height:75px;
             padding-right:10px;
 
-            .shop_img{
+            & > img{
               display:block;
               width:100%;
               height:100%;
             }
           }
 
-          .shop_right{
-            float:right;
-            width:77%;
+          .line1-container{
+            float:left;
+            width:75%;
 
-            .shop_detail_header{
+            .line1{
               width:100%;
 
               &::after{
@@ -286,46 +203,56 @@ export default {
                 clear:both;
               }
 
-              .shop_title{
+              //推荐的商家
+              .item-title-recommend{
                 float:left;
-                width:140px;
+                width:150px;
                 color:#333333;
                 font-size:16px;
-                line-height:16px;
-                font-weight:700;
+                line-height:1em;
+                font-weight:1000;
 
+                //推荐字样
                 &::before{
-                  content:'鍝佺墝';
+                  content:'推荐';
                   display:inline-block;
-                  font-size:11px;
-                  line-height:11px;
+                  font-size:12px;
+                  line-height:1em;
                   color:#333333;
                   background-color:#FFD930;
                   padding:2px 2px;
-                  border-radius:2px;
-                  margin-right:5px;
+                  border-radius:5px;
+                  margin-right:3px;
                 }
               }
 
-              .shop_detail_ul{
+              //普通的商家
+              .item-title{
+                float:left;
+                width:150px;
+                color:#333333;
+                font-size:16px;
+                line-height:1em;
+                font-weight:1000;
+              }
+
+              .supports-container{
                 float:right;
-                margin-top:3px;
 
                 .supports{
                   float:left;
-                  font-size:10px;
-                  color:#999999;
-                  border:1px solid #F1F1F1;
-                  padding:0 2px;
-                  border-radius:2px;
+                  font-size:12px;
+                  color:#684E94;
+                  border:1px solid #D5C0CF;
+                  padding:1px;
+                  border-radius:4px;
                 }
               }
             }
 
-            .shop_rating_order{
+            .line2-container{
               width:100%;
-              margin-top:18px;
-              margin-bottom:8px;
+              margin-top:10px;
 
               &::after{
                 content:'';
@@ -333,131 +260,37 @@ export default {
                 clear:both;
               }
 
-              .shop_rating_order_left{
+              .line2{
                 float:left;
-                color:#FF9A0D;
+                color:#594675;
 
-                .star{
+                //月销量与人均
+                .recent-orders{
+                  display:inline-block;
+                  margin-top:3px;
                   float:left;
-                  font-size:0px;
-
-                  .star-item{
-                    display:inline-block;
-                    background-repeat:no-repeat;
-                    width:15px;
-                    height:15px;
-                    background-position:center center;
-                    background-size:100% 100%;
-                  }
-
-                  &.star-48{
-                    .star-item{
-                      width:20px;
-                      height:20px;
-                      margin-right:22px;
-                      background-size:20px 20px;
-
-                      &:last-child{
-                        margin-right:0;
-                      }
-
-                      &.on{
-                        //background-image:url(@img48);
-
-                        @media screen{
-                          @media (-webkit-device-pixel-ratio:2){
-                            background-image:url("./images/stars/star48_on@2x.png");
-                          }
-                          @media (-webkit-device-pixel-ratio:3){
-                            background-image:url("./images/stars/star48_on@3x.png");
-                          }
-                        }
-                      }
-                    }
-                  }
-
-                  &.star-36{
-                    .star-item{
-                      &:last-child{
-                        margin-right:0;
-                      }
-
-                      &.on{
-                        //background-image:url(@img36);
-                        @media screen{
-                          @media (-webkit-device-pixel-ratio:2){
-                            background-image:url("./images/stars/star36_on@2x.png");
-                          }
-                          @media (-webkit-device-pixel-ratio:3){
-                            background-image:url("./images/stars/star36_on@3x.png");
-                          }
-                        }
-                      }
-
-                    }
-                  }
-
-                  &.star-24{
-                    .star-item{
-                      &:last-child{
-                        margin-right:0;
-                      }
-
-                      &.on{
-                        //background-image:url(@img24);
-                        @media screen{
-                          @media (-webkit-device-pixel-ratio:2){
-                            background-image:url("./images/stars/star24_half@2x.png");
-                          }
-                          @media (-webkit-device-pixel-ratio:3){
-                            background-image:url("./images/stars/star24_half@3x.png");
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-
-                .rating_section{
-                  width:100px;
-                }
-
-                .order_section{
-                  float:left;
-                  font-size:10px;
+                  font-size:12px;
                   color:#666666;
-                  transform:scale(0.8);
                 }
               }
 
-              .shop_rating_order_right{
+              //配送方式字样
+              .line2-right{
                 float:right;
-                font-size:0;
 
-                .delivery_style{
-                  transform-origin:35px 0;
-                  transform:scale(0.7);
+                .delivery{
                   display:inline-block;
+                  margin-top:10px;
                   font-size:12px;
                   padding:1px;
-                  border-radius:2px;
-                }
-
-                .delivery_left{
-                  color:#FFFFFF;
-                  margin-right:-10px;
-                  background-color:#02A774;
-                  border:1px solid #02A774;
-                }
-
-                .delivery_right{
-                  color:#02A774;
-                  border:1px solid #02A774;
+                  border-radius:4px;
+                  color:#684E94;
+                  border:1px solid #D5C0CF;
                 }
               }
             }
 
-            .shop_distance{
+            .line3-container{
               width:100%;
               font-size:12px;
 
@@ -467,15 +300,16 @@ export default {
                 clear:both;
               }
 
-              .shop_delivery_msg{
+              .line3{
                 float:left;
-                transform-origin:0;
-                transform:scale(0.9);
+                display:inline-block;
+                margin-top:3px;
                 color:#666666;
               }
 
+              //分割号
               .segmentation{
-                color:#CCCCCC;
+                color:#2D1C4D;
               }
             }
           }

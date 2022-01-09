@@ -73,7 +73,7 @@ export default {
       .login_logo{
         font-size:40px;
         font-weight:bold;
-        color:#02A774;
+        color:#684e94;
         text-align:center;
       }
 
@@ -91,9 +91,9 @@ export default {
           }
 
           &.on{
-            color:#02A774;
+            color:#684e94;
             font-weight:700;
-            border-bottom:2px solid #02A774;
+            border-bottom:2px solid #684e94;
           }
         }
       }
@@ -119,7 +119,7 @@ export default {
             font:400 14px Arial;
 
             &:focus{
-              border:1px solid #02A774;
+              border:1px solid #684e94;
             }
           }
 
@@ -174,7 +174,7 @@ export default {
               }
 
               &.on{
-                background:#02A774;
+                background:#684e94;
               }
 
               & > .switch_circle{
@@ -199,7 +199,7 @@ export default {
             line-height:20px;
 
             & > a{
-              color:#02A774;
+              color:#684e94;
             }
           }
         }
@@ -210,7 +210,7 @@ export default {
           height:42px;
           margin-top:30px;
           border-radius:4px;
-          background:#4CD96F;
+          background:#684e94;
           color:#FFFFFF;
           text-align:center;
           font-size:16px;

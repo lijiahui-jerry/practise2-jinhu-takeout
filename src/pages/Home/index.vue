@@ -14,6 +14,11 @@ import Navigation from "@/pages/Home/Navigation"
 export default {
   name:"Home",
   components:{Header,ShopList,Navigation},
+  mounted(){
+    this.$store.dispatch('getLocation')
+    this.$store.dispatch("getNavigation")
+    this.$store.dispatch("getShops")
+  },
 }
 </script>
 

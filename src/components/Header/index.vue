@@ -2,7 +2,7 @@
  <!-- 首页头部 -->
  <header>
   <span class="header-left"><i class="iconfont icon-direction-down"></i></span>
-  <span class="title-wrapper">
+  <span class="title-container">
    <span class="title-content">{{school.name}}</span>
   </span>
   <router-link to="/login" class="header-right"><span class="c">登录</span></router-link>
@@ -16,18 +16,15 @@ export default {
   name:"Header",
   computed:{
     ...mapState({
-      school:(state)=>state.home.school||{}
+      school:(state)=>state.home.school || {},
     }),
-  },
-  mounted(){
-    this.$store.dispatch('getLocation')
   },
 }
 </script>
 
 <style scoped lang="less">
 header{
-  background-color:#02A774;
+  background-color:#684E94;
   position:fixed;
   z-index:100;
   left:0;
@@ -35,7 +32,8 @@ header{
   width:100%;
   height:45px;
 
-  .title-wrapper{
+  //顶部中间的文字
+  .title-container{
     position:absolute;
     top:50%;
     left:50%;
@@ -50,6 +48,7 @@ header{
     }
   }
 
+  //左上角图标字体
   .header-left{
     position:absolute;
     left:15px;
@@ -64,6 +63,7 @@ header{
     }
   }
 
+  //右上角登录
   .header-right{
     font-size:14px;
     color:#FFFFFF;

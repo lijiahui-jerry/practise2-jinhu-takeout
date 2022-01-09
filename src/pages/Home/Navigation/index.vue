@@ -24,9 +24,6 @@ import {mapState} from "vuex"
 
 export default {
   name:"Navigation",
-  mounted(){
-    this.$store.dispatch("getNavigation")
-  },
   computed:{
     ...mapState({
       navigation:state=>state.home.navigation || [],
@@ -70,6 +67,7 @@ export default {
   height:220px;
   background:#FFFFFF;
 
+  //swiper插件
   .swiper-container{
     width:100%;
     height:100%;
@@ -77,8 +75,10 @@ export default {
     .swiper-wrapper{
       .swiper-slide{
         display:flex;
+        //允许flex布局换行
         flex-wrap:wrap;
 
+        //每个可点击跳转的导航
         .nav-link{
           display:block;
           width:25%;

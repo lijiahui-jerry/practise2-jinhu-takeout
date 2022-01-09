@@ -36,21 +36,6 @@ export default {
 </script>
 
 <style scoped lang="less">
-//根据设备的dpr调整px，使1px细线在不同dpr的设备上有相同效果
-//dpr为2时
-@media only screen and (-webkit-device-pixel-ratio:2){
-  .navbar::before{
-    transform:scaleY(0.5);
-  }
-}
-
-//dpr为3时
-@media only screen and (-webkit-device-pixel-ratio:3){
-  .navbar::before{
-    transform:scaleY(0.3);
-  }
-}
-
 .navbar{
   position:fixed;
   z-index:100;
@@ -78,6 +63,14 @@ export default {
     width:100%;
     height:1px;
     background-color:#E4E4E4;
+    @media screen{
+      @media (-webkit-device-pixel-ratio:2){
+        transform:scaleY(0.5);
+      }
+      @media (-webkit-device-pixel-ratio:3){
+        transform:scaleY(0.3);
+      }
+    }
   }
 
   .navbar_item{
@@ -91,7 +84,7 @@ export default {
 
     //当前页的标识
     &.active{
-      color:#02A774;
+      color:#9254de;
     }
 
     .iconfont{

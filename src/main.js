@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import App from './App.vue'
-import VueLazyLoad from "vue-lazyload"
+import VueLazyload from "vue-lazyload"
 import router from "@/router"
 import loading from '@/assets/loading.gif'
 import store from "@/store"
@@ -9,8 +9,7 @@ import 'swiper/dist/css/swiper.min.css'
 
 Vue.config.productionTip=false
 
-//图片懒加载
-Vue.use(VueLazyLoad,{loading})
+Vue.use(VueLazyload,{loading:loading})
 
 new Vue({
   render:h=>h(App),
