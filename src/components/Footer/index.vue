@@ -1,6 +1,6 @@
 <template>
  <!-- 底部栏 -->
- <footer class="navbar">
+ <footer class="bottom-navbar">
   <router-link class="navbar_item" to="/home" :class="{active:pageFlag('home')}">
    <i class="iconfont icon-direction-down"></i>
    <span>首页</span>
@@ -36,7 +36,7 @@ export default {
 </script>
 
 <style scoped lang="less">
-.navbar{
+.bottom-navbar{
   position:fixed;
   z-index:100;
   left:0;
@@ -84,7 +84,7 @@ export default {
 
     //当前页的标识
     &.active{
-      color:#9254de;
+      color:#9254DE;
     }
 
     .iconfont{

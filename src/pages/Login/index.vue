@@ -1,243 +1,143 @@
 <template>
- <div class="loginContainer">
-  <div class="loginInner">
-   <div class="login_header">
-    <h2 class="login_logo">硅谷外卖</h2>
-    <div class="login_header_title">
-     <a href="javascript:;" class="on">短信登录</a>
-     <a href="javascript:;">密码登录</a>
-    </div>
+ <!-- 登录页面 -->
+ <div class="login">
+  <!-- 左上角路由回退按钮 -->
+  <a class="back" @click="$router.back()"><i class="iconfont icon-direction-down"></i></a>
+  <!-- 页面顶部标题 -->
+  <h2>金狐外卖</h2>
+  <!-- 登录表单内容部分 -->
+  <div class="login-content">
+   <!-- 两种登录方式 -->
+   <div class="login-title">
+    <a :class="phoneLogin?'on':''" @click="toggleLoginType(true)">短信登录</a><a :class="!phoneLogin?'on':''" @click="toggleLoginType(false)">密码登录</a>
    </div>
-   <div class="login_content">
-    <form>
-     <div class="on">
-      <section class="login_message">
-       <input type="tel" maxlength="11" placeholder="手机号">
-       <button disabled="disabled" class="get_verification">获取验证码</button>
-      </section>
-      <section class="login_verification">
-       <input type="tel" maxlength="8" placeholder="验证码">
-      </section>
-      <section class="login_hint">
-       温馨提示：未注册硅谷外卖帐号的手机号，登录时将自动注册，且代表已同意
-       <a href="javascript:;">《用户服务协议》</a>
-      </section>
-     </div>
-     <div>
-      <section>
-       <section class="login_message">
-        <input type="tel" maxlength="11" placeholder="手机/邮箱/用户名">
-       </section>
-       <section class="login_verification">
-        <input type="tel" maxlength="8" placeholder="密码">
-        <div class="switch_button off">
-         <div class="switch_circle"></div>
-         <span class="switch_text">...</span>
-        </div>
-       </section>
-       <section class="login_message">
-        <input type="text" maxlength="11" placeholder="验证码">
-        <img class="get_verification" src="./images/captcha.svg" alt="captcha">
-       </section>
-      </section>
-     </div>
-     <button class="login_submit">登录</button>
-    </form>
-    <a href="javascript:;" class="about_us">关于我们</a>
-   </div>
-   <a href="javascript:" class="go_back" @click="$router.back()">
-    <i class="iconfont icon-direction-down"></i>
-   </a>
+   <!-- 登录表单 -->
+   <form>
+    <Message v-if="phoneLogin"></Message>
+    <Account v-else></Account>
+   </form>
+   <!-- 用户协议、登录按钮、关于我们 -->
+   <footer>
+    <span @click="toggleReadArgument"><input type="checkbox" :checked="ifReadArgument">我已认真阅读并同意</span><a class="argument">《用户服务协议》</a>
+    <button class="submit">登录</button>
+    <a class="about">关于我们</a>
+   </footer>
   </div>
+
  </div>
 </template>
 
 <script>
+import Message from "@/pages/Login/Message"
+import Account from "@/pages/Login/Account"
+
 export default {
   name:"Login",
+  components:{Message,Account},
+  data(){
+    return {
+      phoneLogin:true,
+      ifReadArgument:false,
+    }
+  },
+  methods:{
+    //切换登录的方式
+    toggleLoginType(flag){
+      this.phoneLogin=flag
+      //这里不能简单地对当前状态取反来实现，因为点击同一个登录方式两次时，简单取反方式会触发切换，但实际上不能让它切换
+      //this.phoneLogin=!this.phoneLogin
+    },
+    //记录用户协议的checked
+    toggleReadArgument(){
+      this.ifReadArgument= !this.ifReadArgument
+    },
+  },
 }
 </script>
 
 <style scoped lang="less">
-.loginContainer{
-  width:100%;
-  height:100%;
-  background:#FFFFFF;
+.login{
+  width:80vw;
+  height:100vw;
+  padding-top:50px;
+  margin:0 auto;
 
-  .loginInner{
-    padding-top:60px;
-    width:80%;
-    margin:0 auto;
+  .back{
+    position:absolute;
+    top:10px;
+    left:10px;
+    width:30px;
+    height:30px;
 
-    .login_header{
-      .login_logo{
-        font-size:40px;
-        font-weight:bold;
-        color:#684e94;
-        text-align:center;
-      }
+    & > .iconfont{
+      font-size:20px;
+      color:#999999;
+    }
+  }
 
-      .login_header_title{
-        padding-top:40px;
-        text-align:center;
+  h2{
+    font-size:40px;
+    font-weight:1000;
+    color:#684E94;
+    text-align:center;
+  }
 
-        & > a{
-          color:#333333;
-          font-size:14px;
-          padding-bottom:4px;
+  .login-content{
+    .login-title{
+      margin-top:30px;
+      text-align:center;
 
-          &:first-child{
-            margin-right:40px;
-          }
+      & > a{
+        color:#333333;
+        font-size:14px;
+        padding-bottom:4px;
+        width:30%;
+        display:inline-block;
 
-          &.on{
-            color:#684e94;
-            font-weight:700;
-            border-bottom:2px solid #684e94;
-          }
+        &.on{
+          color:#684E94;
+          font-weight:1000;
+          border-bottom:2px solid #684E94;
         }
       }
     }
 
-    .login_content{
-      & > form{
-        & > div{
-          display:none;
+    footer{
+      margin-top:15px;
+      font-size:14px;
+      color:#999999;
 
-          &.on{
-            display:block;
-          }
-
-          input{
-            width:100%;
-            height:100%;
-            padding-left:10px;
-            box-sizing:border-box;
-            border:1px solid #DDDDDD;
-            border-radius:4px;
-            outline:0;
-            font:400 14px Arial;
-
-            &:focus{
-              border:1px solid #684e94;
-            }
-          }
-
-          .login_message{
-            position:relative;
-            margin-top:16px;
-            height:48px;
-            font-size:14px;
-            background:#FFFFFF;
-
-            .get_verification{
-              position:absolute;
-              top:50%;
-              right:10px;
-              transform:translateY(-50%);
-              border:0;
-              color:#CCCCCC;
-              font-size:14px;
-              background:transparent;
-            }
-          }
-
-          .login_verification{
-            position:relative;
-            margin-top:16px;
-            height:48px;
-            font-size:14px;
-            background:#FFFFFF;
-
-            .switch_button{
-              font-size:12px;
-              border:1px solid #DDDDDD;
-              border-radius:8px;
-              transition:background-color 0.3s, border-color 0.3s;
-              padding:0 6px;
-              width:30px;
-              height:16px;
-              line-height:16px;
-              color:#FFFFFF;
-              position:absolute;
-              top:50%;
-              right:10px;
-              transform:translateY(-50%);
-
-              &.off{
-                background:#FFFFFF;
-
-                .switch_text{
-                  float:right;
-                  color:#DDDDDD;
-                }
-              }
-
-              &.on{
-                background:#684e94;
-              }
-
-              & > .switch_circle{
-                position:absolute;
-                top:-1px;
-                left:-1px;
-                width:16px;
-                height:16px;
-                border:1px solid #DDDDDD;
-                border-radius:50%;
-                background:#FFFFFF;
-                box-shadow:0 2px 4px 0 rgba(0, 0, 0, 0.1);
-                transition:transform 0.3s;
-              }
-            }
-          }
-
-          .login_hint{
-            margin-top:12px;
-            color:#999999;
-            font-size:14px;
-            line-height:20px;
-
-            & > a{
-              color:#684e94;
-            }
-          }
-        }
-
-        .login_submit{
-          display:block;
-          width:100%;
-          height:42px;
-          margin-top:30px;
-          border-radius:4px;
-          background:#684e94;
-          color:#FFFFFF;
-          text-align:center;
-          font-size:16px;
-          line-height:42px;
-          border:0;
-        }
+      //用户协议的checkbox
+      & > span > input{
+        width:1em;
+        height:1em;
       }
 
-      .about_us{
-        display:block;
+      .argument{
+        display:inline-block;
+
+      }
+
+      .submit{
+        display:inline-block;
+        width:100%;
+        height:42px;
+        margin-top:8px;
+        border-radius:5px;
+        background:#684E94;
+        color:#FFFFFF;
+        text-align:center;
+        font-size:18px;
+        border:0;
+      }
+
+      .about{
+        display:inline-block;
+        width:100%;
         font-size:12px;
         margin-top:20px;
         text-align:center;
-        color:#999999;
-      }
-    }
-
-    .go_back{
-      position:absolute;
-      top:5px;
-      left:5px;
-      width:30px;
-      height:30px;
-
-      & > .iconfont{
-        font-size:20px;
-        color:#999999;
+        color:#D5C0CF;
       }
     }
   }
