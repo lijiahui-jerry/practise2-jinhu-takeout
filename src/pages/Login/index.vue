@@ -13,13 +13,12 @@
    </div>
    <!-- 登录表单 -->
    <form>
-    <Message v-if="phoneLogin"></Message>
-    <Account v-else></Account>
+    <Message v-if="phoneLogin" ref="childMessage"></Message>
+    <Account v-else ref="childAccount"></Account>
    </form>
    <!-- 用户协议、登录按钮、关于我们 -->
    <footer>
-    <span @click="toggleReadArgument"><input type="checkbox" :checked="ifReadArgument">我已认真阅读并同意</span><a class="argument">《用户服务协议》</a>
-    <button class="submit">登录</button>
+    <button class="submit" @click="submitLoginInformation()">登录</button>
     <a class="about">关于我们</a>
    </footer>
   </div>
@@ -37,7 +36,6 @@ export default {
   data(){
     return {
       phoneLogin:true,
-      ifReadArgument:false,
     }
   },
   methods:{
@@ -47,9 +45,15 @@ export default {
       //这里不能简单地对当前状态取反来实现，因为点击同一个登录方式两次时，简单取反方式会触发切换，但实际上不能让它切换
       //this.phoneLogin=!this.phoneLogin
     },
-    //记录用户协议的checked
-    toggleReadArgument(){
-      this.ifReadArgument= !this.ifReadArgument
+    //提交登录所需的信息
+    submitLoginInformation(){
+      if(this.phoneLogin){
+        const {phoneNumber,captcha,ifReadArgument}=this.$refs.childMessage
+        console.log(phoneNumber,captcha,ifReadArgument)
+      }else{
+        const {account,password,captcha}=this.$refs.childAccount
+        console.log(account,password,captcha)
+      }
     },
   },
 }
@@ -106,17 +110,6 @@ export default {
       margin-top:15px;
       font-size:14px;
       color:#999999;
-
-      //用户协议的checkbox
-      & > span > input{
-        width:1em;
-        height:1em;
-      }
-
-      .argument{
-        display:inline-block;
-
-      }
 
       .submit{
         display:inline-block;

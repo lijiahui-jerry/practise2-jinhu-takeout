@@ -1,15 +1,20 @@
 <template>
- <div>
-  <section class="login_message">
+ <!-- 短信登录 -->
+ <div class="login-with-message">
+  <!-- 手机号输入框 -->
+  <div class="phone-input">
    <input type="tel" maxlength="11" placeholder="手机号" v-model="phoneNumber">
-   <button class="get_verification">获取验证码</button>
-  </section>
-  <section class="login_verification">
-   <input type="number" maxlength="6" placeholder="验证码" v-model="passcode">
-  </section>
-  <section class="login_hint">
+   <button class="captcha-get">获取验证码</button>
+  </div>
+  <!-- 验证码输入框 -->
+  <div class="captcha-input">
+   <input type="number" maxlength="6" placeholder="验证码" v-model="captcha">
+  </div>
+  <!-- 提示 -->
+  <div class="caution">
    <p>未注册的手机号，登录时将自动注册</p>
-  </section>
+   <span @click="toggleReadArgument"><input type="checkbox" :checked="ifReadArgument">我已认真阅读并同意</span><a class="argument">《用户服务协议》</a>
+  </div>
  </div>
 
 </template>
@@ -20,14 +25,21 @@ export default {
   data(){
     return {
       phoneNumber:'',
-      passcode:'',
+      captcha:'',
+      ifReadArgument:false,
     }
+  },
+  methods:{
+    //切换用户协议的同意与否
+    toggleReadArgument(){
+      this.ifReadArgument= !this.ifReadArgument
+    },
   },
 }
 </script>
 
 <style scoped lang="less">
-div{
+.login-with-message{
   input{
     width:100%;
     height:100%;
@@ -44,14 +56,14 @@ div{
     }
   }
 
-  .login_message{
+  .phone-input{
     position:relative;
     margin-top:16px;
     height:48px;
     font-size:14px;
     background:#FFFFFF;
 
-    .get_verification{
+    .captcha-get{
       position:absolute;
       top:50%;
       right:10px;
@@ -63,7 +75,7 @@ div{
     }
   }
 
-  .login_verification{
+  .captcha-input{
     position:relative;
     margin-top:16px;
     height:48px;
@@ -113,13 +125,20 @@ div{
     }
   }
 
-  .login_hint{
+  .caution{
     margin-top:12px;
     color:#999999;
     font-size:14px;
-    line-height:20px;
+    line-height:2em;
 
-    & > a{
+    //用户协议的checkbox
+    & > span > input{
+      width:12px;
+      height:12px;
+    }
+
+    .argument{
+      display:inline-block;
       color:red;
     }
   }

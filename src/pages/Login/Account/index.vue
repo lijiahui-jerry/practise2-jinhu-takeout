@@ -1,21 +1,24 @@
 <template>
- <div>
-  <section>
-   <section class="login_message">
-    <input type="tel" maxlength="11" placeholder="手机/邮箱/用户名" v-model="account">
-   </section>
-   <section class="login_verification">
-    <input type="tel" maxlength="8" placeholder="密码" v-model="password">
-    <div class="switch_button off">
-     <div class="switch_circle"></div>
-     <span class="switch_text">...</span>
-    </div>
-   </section>
-   <section class="login_message">
-    <input type="text" maxlength="11" placeholder="验证码" v-model="passcode">
-    <img class="get_verification" src="./images/captcha.svg" alt="captcha">
-   </section>
-  </section>
+ <!-- 密码登录 -->
+ <div class="login-with-account">
+  <!-- 账户名输入框 -->
+  <div class="account-input">
+   <input type="tel" maxlength="11" placeholder="手机/金狐ID" v-model="account">
+  </div>
+  <!-- 密码输入框 -->
+  <div class="password-input">
+   <input :type="ifCiphertext?'password':'text'" maxlength="8" placeholder="密码" v-model="password">
+   <!-- 密码是否明文显示的切换按钮，密文时off，明文时on -->
+   <div class="toggle-button" :class="ifCiphertext?'off':'on'" @click="toggleCiphertext">
+    <div class="inner-circle"></div>
+    <span class="inner-text">...</span>
+   </div>
+  </div>
+  <!-- 图形验证码输入框 -->
+  <div class="captcha-input">
+   <input type="text" maxlength="11" placeholder="验证码" v-model="captcha">
+   <img class="captcha-toggle" src="./images/captcha.svg">
+  </div>
  </div>
 </template>
 
@@ -26,15 +29,21 @@ export default {
     return {
       account:'',
       password:'',
-      passcode:'',
+      captcha:'',
+      ifCiphertext:true,
     }
   },
-
+  methods:{
+    //密码的明文或密文切换
+    toggleCiphertext(){
+      this.ifCiphertext= !this.ifCiphertext
+    },
+  },
 }
 </script>
 
 <style scoped lang="less">
-div{
+.login-with-account{
   input{
     width:100%;
     height:100%;
@@ -51,61 +60,37 @@ div{
     }
   }
 
-  .login_message{
+  .account-input{
     position:relative;
     margin-top:16px;
     height:48px;
     font-size:14px;
     background:#FFFFFF;
-
-    .get_verification{
-      position:absolute;
-      top:50%;
-      right:10px;
-      transform:translateY(-50%);
-      border:0;
-      color:#CCCCCC;
-      font-size:14px;
-      background:transparent;
-    }
   }
 
-  .login_verification{
+  .password-input{
     position:relative;
     margin-top:16px;
     height:48px;
     font-size:14px;
     background:#FFFFFF;
 
-    .switch_button{
+    .toggle-button{
+      position:absolute;
+      right:10px;
+      top:50%;
+      transform:translateY(-50%);
       font-size:12px;
       border:1px solid #DDDDDD;
-      border-radius:8px;
+      border-radius:10px;
       transition:background-color 0.3s, border-color 0.3s;
-      padding:0 6px;
-      width:30px;
+      padding:0 5px;
+      width:25px;
       height:16px;
       line-height:16px;
       color:#FFFFFF;
-      position:absolute;
-      top:50%;
-      right:10px;
-      transform:translateY(-50%);
 
-      &.off{
-        background:#FFFFFF;
-
-        .switch_text{
-          float:right;
-          color:#DDDDDD;
-        }
-      }
-
-      &.on{
-        background:#684E94;
-      }
-
-      & > .switch_circle{
+      .inner-circle{
         position:absolute;
         top:-1px;
         left:-1px;
@@ -114,35 +99,48 @@ div{
         border:1px solid #DDDDDD;
         border-radius:50%;
         background:#FFFFFF;
-        box-shadow:0 2px 4px 0 rgba(0, 0, 0, 0.1);
-        transition:transform 0.3s;
+      }
+
+      //密文
+      &.off{
+        background:#FFFFFF;
+
+        .inner-text{
+          float:right;
+          color:#DDDDDD;
+        }
+      }
+
+      //明文
+      &.on{
+        background:#684E94;
+
+        .inner-text{
+          display:none;
+        }
+
+        .inner-circle{
+          right:-1px;
+          left:auto;
+        }
       }
     }
   }
 
-  .login_hint{
-    margin-top:12px;
-    color:#999999;
+  .captcha-input{
+    position:relative;
+    margin-top:16px;
+    height:48px;
     font-size:14px;
-    line-height:20px;
+    background:#FFFFFF;
 
-    & > a{
-      color:red;
+    .captcha-toggle{
+      position:absolute;
+      top:50%;
+      transform:translateY(-50%);
+      right:0;
     }
   }
-}
 
-.login_submit{
-  display:block;
-  width:100%;
-  height:42px;
-  margin-top:30px;
-  border-radius:4px;
-  background:#684E94;
-  color:#FFFFFF;
-  text-align:center;
-  font-size:16px;
-  line-height:42px;
-  border:0;
 }
 </style>
