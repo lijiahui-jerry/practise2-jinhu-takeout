@@ -1,6 +1,8 @@
 <template>
  <!-- 登录页面 -->
  <div class="login">
+  <!-- 表单验证提示 -->
+  <Tip :tips="tips" v-if="showTips" @closeTip="closeTip"></Tip>
   <!-- 左上角路由回退按钮 -->
   <a class="back" @click="$router.back()"><i class="iconfont icon-direction-down"></i></a>
   <!-- 页面顶部标题 -->
@@ -29,31 +31,61 @@
 <script>
 import Message from "@/pages/Login/Message"
 import Account from "@/pages/Login/Account"
+import Tip from "@/components/Tip"
+import {reqLogin} from "@/api"
 
 export default {
   name:"Login",
-  components:{Message,Account},
+  components:{Message,Account,Tip},
   data(){
     return {
       phoneLogin:true,
+      tips:'',
+      showTips:false,
     }
   },
   methods:{
     //切换登录的方式
     toggleLoginType(flag){
-      this.phoneLogin=flag
       //这里不能简单地对当前状态取反来实现，因为点击同一个登录方式两次时，简单取反方式会触发切换，但实际上不能让它切换
       //this.phoneLogin=!this.phoneLogin
+      if(flag!=this.phoneLogin) this.phoneLogin=flag
+    },
+    //提示内容函数
+    tipBox(t){
+      this.showTips=true
+      this.tips=t
     },
     //提交登录所需的信息
     submitLoginInformation(){
+      //表单合法性验证
       if(this.phoneLogin){
+        //短信验证码登录
         const {phoneNumber,captcha,ifReadArgument}=this.$refs.childMessage
-        console.log(phoneNumber,captcha,ifReadArgument)
+        if(phoneNumber.length<11){
+          this.tipBox('请正确输入手机号')
+        }else if(0==captcha.length){
+          this.tipBox('请输入验证码')
+        }else if(6!=captcha.length){
+          this.tipBox('请正确输入6位验证码')
+        }else if(!ifReadArgument){
+          this.tipBox('请勾选同意协议')
+        }
       }else{
-        const {account,password,captcha}=this.$refs.childAccount
-        console.log(account,password,captcha)
+        //密码登录
+        const {password,captcha}=this.$refs.childAccount
+        if(password.length<8){
+          this.tipBox('密码至少为8位')
+        }else if(0==captcha.length){
+          this.tipBox('请输入验证码')
+        }else if(4!=captcha.length){
+          this.tipBox('请正确输入4位验证码')
+        }
       }
+    },
+    closeTip(){
+      this.showTips=false
+      this.tips=''
     },
   },
 }
@@ -61,8 +93,8 @@ export default {
 
 <style scoped lang="less">
 .login{
-  width:80vw;
-  height:100vw;
+  width:80%;
+  height:100%;
   padding-top:50px;
   margin:0 auto;
 

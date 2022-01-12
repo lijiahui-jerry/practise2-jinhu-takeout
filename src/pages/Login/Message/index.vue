@@ -4,11 +4,11 @@
   <!-- 手机号输入框 -->
   <div class="phone-input">
    <input type="tel" maxlength="11" placeholder="手机号" v-model="phoneNumber">
-   <button class="captcha-get">获取验证码</button>
+   <button :disabled="!ifPhoneCorrect||countDown!=0" class="captcha-get" @click="getCaptcha">{{captchaContent()}}</button>
   </div>
   <!-- 验证码输入框 -->
   <div class="captcha-input">
-   <input type="number" maxlength="6" placeholder="验证码" v-model="captcha">
+   <input type="tel" maxlength="6" placeholder="验证码" v-model="captcha">
   </div>
   <!-- 提示 -->
   <div class="caution">
@@ -27,12 +27,38 @@ export default {
       phoneNumber:'',
       captcha:'',
       ifReadArgument:false,
+      countDown:0,
     }
   },
   methods:{
     //切换用户协议的同意与否
     toggleReadArgument(){
       this.ifReadArgument= !this.ifReadArgument
+    },
+    //获取验证码
+    getCaptcha(){
+      if(0==this.countDown){
+        //倒计时的时间
+        this.countDown=30
+        const timer=setInterval(()=>{
+          this.countDown--
+          if(this.countDown<=0){
+            clearInterval(timer)
+            this.countDown=0
+          }
+        },1000)
+      }
+      //ajax请求登录
+    },
+    //.captcha的显示内容
+    captchaContent(){
+      return this.countDown>0?`已发送(${this.countDown}s)`:'获取验证码'
+    },
+  },
+  computed:{
+    //判断手机号是否合法
+    ifPhoneCorrect(){
+      return /^1\d{10}$/.test(this.phoneNumber)
     },
   },
 }
@@ -69,7 +95,6 @@ export default {
       right:10px;
       transform:translateY(-50%);
       border:0;
-      color:#CCCCCC;
       font-size:14px;
       background:transparent;
     }
@@ -129,12 +154,12 @@ export default {
     margin-top:12px;
     color:#999999;
     font-size:14px;
-    line-height:2em;
+    line-height:1.5em;
 
-    //用户协议的checkbox
-    & > span > input{
-      width:12px;
-      height:12px;
+    //用户协议前的checkbox
+    & > span > input[type='checkbox']{
+      width:11px;
+      height:11px;
     }
 
     .argument{

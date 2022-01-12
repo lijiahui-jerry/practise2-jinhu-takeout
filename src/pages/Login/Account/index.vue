@@ -7,16 +7,17 @@
   </div>
   <!-- 密码输入框 -->
   <div class="password-input">
-   <input :type="ifCiphertext?'password':'text'" maxlength="8" placeholder="密码" v-model="password">
+   <input :type="ifCiphertext?'password':'text'" placeholder="密码" v-model="password">
    <!-- 密码是否明文显示的切换按钮，密文时off，明文时on -->
    <div class="toggle-button" :class="ifCiphertext?'off':'on'" @click="toggleCiphertext">
     <div class="inner-circle"></div>
-    <span class="inner-text">...</span>
+    <span class="inner-text-left">abc</span>
+    <span class="inner-text-right">···</span>
    </div>
   </div>
   <!-- 图形验证码输入框 -->
   <div class="captcha-input">
-   <input type="text" maxlength="11" placeholder="验证码" v-model="captcha">
+   <input type="text" maxlength="4" placeholder="验证码" v-model="captcha">
    <img class="captcha-toggle" src="./images/captcha.svg">
   </div>
  </div>
@@ -85,7 +86,7 @@ export default {
       border-radius:10px;
       transition:background-color 0.3s, border-color 0.3s;
       padding:0 5px;
-      width:25px;
+      width:35px;
       height:16px;
       line-height:16px;
       color:#FFFFFF;
@@ -99,13 +100,20 @@ export default {
         border:1px solid #DDDDDD;
         border-radius:50%;
         background:#FFFFFF;
+        transition:transform .3s;
       }
 
       //密文
       &.off{
         background:#FFFFFF;
 
-        .inner-text{
+        .inner-text-left{
+          float:left;
+          display:none;
+          color:#DDDDDD;
+        }
+
+        .inner-text-right{
           float:right;
           color:#DDDDDD;
         }
@@ -115,12 +123,12 @@ export default {
       &.on{
         background:#684E94;
 
-        .inner-text{
+        .inner-text-right{
           display:none;
         }
 
         .inner-circle{
-          right:-1px;
+          transform:translateX(23px);
           left:auto;
         }
       }
