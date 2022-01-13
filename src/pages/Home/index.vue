@@ -1,6 +1,6 @@
 <template>
  <div>
-  <Header></Header>
+  <Header :title=school.name left=true right=true></Header>
   <Navigation></Navigation>
   <ShopList></ShopList>
  </div>
@@ -10,6 +10,7 @@
 import Header from "@/components/Header"
 import ShopList from "@/pages/Home/ShopList"
 import Navigation from "@/pages/Home/Navigation"
+import {mapState} from "vuex"
 
 export default {
   name:"Home",
@@ -18,6 +19,11 @@ export default {
     this.$store.dispatch('getLocation')
     this.$store.dispatch("getNavigation")
     this.$store.dispatch("getShops")
+  },
+  computed:{
+    ...mapState({
+      school:(state)=>state.home.school || {},
+    }),
   },
 }
 </script>

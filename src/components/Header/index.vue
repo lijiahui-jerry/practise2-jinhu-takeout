@@ -1,24 +1,23 @@
 <template>
  <!-- 首页头部 -->
  <header>
-  <span class="header-left"><i class="iconfont icon-direction-down"></i></span>
+  <span class="header-left" v-if="left"><i class="iconfont icon-direction-down"></i></span>
   <span class="title-container">
-   <span class="title-content">{{school.name}}</span>
+   <span class="title-content">{{title}}</span>
   </span>
-  <router-link to="/login" class="header-right"><span class="c">登录</span></router-link>
+  <router-link to="/login" class="header-right" v-if="right"><span class="c">登录</span></router-link>
  </header>
 </template>
 
 <script>
-import {mapState} from "vuex"
-
 export default {
   name:"Header",
-  computed:{
-    ...mapState({
-      school:(state)=>state.home.school || {},
-    }),
+  props:{
+    title:String,
+    left:false,
+    right:false,
   },
+
 }
 </script>
 

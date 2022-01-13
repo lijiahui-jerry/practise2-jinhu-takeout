@@ -39,6 +39,22 @@ export default {
     toggleCiphertext(){
       this.ifCiphertext= !this.ifCiphertext
     },
+    /*登录时判断（应该由后端人员编写api接口并处理），此时所有表单数据均已符合逻辑，但是否正确填写仍需进一步判断*/
+    accountLogin(a,p,c){
+      if('17601355494'==a && '12345678'==p && 'wk3v'==c){
+        localStorage.setItem("phoneNum","17601355494")
+        return {code:200}
+      }else if('8888'==a && '12345678'==p && 'wk3v'==c){
+        localStorage.setItem("phoneNum","18888888888")
+        return {code:200}
+      }else if('wk3v'!=c){
+        this.$parent.tipBox('验证码输入有误，请核对后重试')
+        return {code:400}
+      }else{
+        this.$parent.tipBox('账号或密码输入有误，请重试')
+        return {code:400}
+      }
+    },
   },
 }
 </script>
@@ -87,16 +103,16 @@ export default {
       transition:background-color 0.3s, border-color 0.3s;
       padding:0 5px;
       width:35px;
-      height:16px;
+      height:20px;
       line-height:16px;
       color:#FFFFFF;
 
       .inner-circle{
         position:absolute;
         top:-1px;
-        left:-1px;
-        width:16px;
-        height:16px;
+        left:-2px;
+        width:20px;
+        height:20px;
         border:1px solid #DDDDDD;
         border-radius:50%;
         background:#FFFFFF;

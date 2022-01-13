@@ -20,34 +20,33 @@
 export default {
   name:"Tip",
   props:{
-    tips:String
+    tips:String,
   },
   methods:{
     closeTip(){
       this.$emit('closeTip')
-    }
-  }
+    },
+  },
 }
 </script>
 
 <style scoped lang="less">
-//放大的动画
+//出现的动画
 @keyframes tipAppear{
   0%{
     transform:scale(0);
   }
-  100%{
-    transform:scale(1);
-  }
-}
 
-//缩小的动画
-@keyframes tipSubside{
-  0%{
-    transform:scale(1);
+  25%{
+    transform:scale(1.2);
   }
+
+  50%{
+    transform:scale(0.8);
+  }
+
   100%{
-    transform:scale(0);
+    transform:scale(1);
   }
 }
 
@@ -58,7 +57,7 @@ export default {
   right:0;
   bottom:0;
   z-index:1000;
-  background-color:rgba(0,0,0,.5);
+  background-color:rgba(0, 0, 0, .5);
 
   .tip-container{
     position:absolute;

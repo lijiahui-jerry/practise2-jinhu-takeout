@@ -32,7 +32,6 @@
 import Message from "@/pages/Login/Message"
 import Account from "@/pages/Login/Account"
 import Tip from "@/components/Tip"
-import {reqLogin} from "@/api"
 
 export default {
   name:"Login",
@@ -70,16 +69,20 @@ export default {
           this.tipBox('请正确输入6位验证码')
         }else if(!ifReadArgument){
           this.tipBox('请勾选同意协议')
+        }else{
+          if(200==this.$refs.childMessage.messageLogin(phoneNumber,captcha).code) this.$router.push('/me')
         }
       }else{
         //密码登录
-        const {password,captcha}=this.$refs.childAccount
+        const {account,password,captcha}=this.$refs.childAccount
         if(password.length<8){
           this.tipBox('密码至少为8位')
         }else if(0==captcha.length){
           this.tipBox('请输入验证码')
         }else if(4!=captcha.length){
           this.tipBox('请正确输入4位验证码')
+        }else{
+          if(200==this.$refs.childAccount.accountLogin(account,password,captcha).code) this.$router.push('/me')
         }
       }
     },

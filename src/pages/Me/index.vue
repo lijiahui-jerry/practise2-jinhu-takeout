@@ -1,189 +1,215 @@
 <template>
- <div>
-  <section class="profile">
-   <!-- 个人页面头部 -->
-   <Header title="金狐外卖 "></Header>
+ <div class="me">
+  <!-- 个人页面头部 -->
+  <Header title="金狐外卖"></Header>
+  <!-- 姓名、手机号 -->
+  <div class="info">
+   <div class="info-image">
+    <i class="iconfont icon-direction-down"></i>
+   </div>
 
-   <section class="profile-number">
+   <div class="info-name">
+    <p class="user-info-top">{{userInfo.name || '登录/注册'}}</p>
+    <p>
+     <span class="user-icon"><i class="iconfont icon-direction-down"></i></span><span class="icon-mobile">{{userInfo.phone || '暂无绑定手机号'}}</span>
+    </p>
+   </div>
 
-    <router-link to="/login" class="profile-link">
+   <span class="arrow-right">
+    <i class="iconfont icon-direction-down"></i>
+   </span>
+  </div>
 
-     <div class="profile_image">
-      <i class="iconfont icon-direction-down"></i>
-     </div>
-
-     <div class="user-info">
-      <p class="user-info-top">登录/注册</p>
-      <p>
-       <span class="user-icon"><i class="iconfont icon-direction-down icon-direction-down"></i></span>
-       <span class="icon-mobile">暂无绑定手机号</span>
-      </p>
-     </div>
-
-     <span class="arrow">
-      <i class="iconfont icon-direction-down"></i>
-     </span>
-    </router-link>
-   </section>
-   <section class="profile_info_data border-1px">
-    <ul class="info_data_list">
-     <a href="javascript:" class="info_data_link">
-      <span class="info_data_top"><span>0.00</span>元</span>
-      <span class="info_data_bottom">我的余额</span>
-     </a>
-     <a href="javascript:" class="info_data_link">
-      <span class="info_data_top"><span>0</span>个</span>
-      <span class="info_data_bottom">我的优惠</span>
-     </a>
-     <a href="javascript:" class="info_data_link">
-      <span class="info_data_top"><span>0</span>分</span>
-      <span class="info_data_bottom">我的积分</span>
-     </a>
-    </ul>
-   </section>
-   <section class="profile_my_order border-1px">
-    <!-- 我的订单 -->
-    <a href='javascript:' class="my_order">
-     <span>
-      <i class="iconfont icon-direction-down"></i>
-     </span>
-     <div class="my_order_div">
-      <span>我的订单</span>
-      <span class="my_order_icon">
-       <i class="iconfont icon-direction-down"></i>
-      </span>
-     </div>
+  <section class="profile_info_data border-1px">
+   <ul class="info_data_list">
+    <a href="javascript:" class="info_data_link">
+     <span class="info_data_top"><span>{{userInfo.balance || '0.00'}}</span>元</span>
+     <span class="info_data_bottom">余额</span>
     </a>
-    <!-- 积分商城 -->
-    <a href='javascript:' class="my_order">
-     <span>
+    <a href="javascript:" class="info_data_link">
+     <span class="info_data_top"><span>{{redPacketCount}}</span>个</span>
+     <span class="info_data_bottom">红包</span>
+    </a>
+    <a href="javascript:" class="info_data_link">
+     <span class="info_data_top"><span>{{userInfo.points || '0'}}</span>根</span>
+     <span class="info_data_bottom">狐毛</span>
+    </a>
+   </ul>
+  </section>
+  <section class="profile_my_order border-1px">
+   <!-- 我的订单 -->
+   <a href='javascript:' class="my_order">
+    <span>
+     <i class="iconfont icon-direction-down"></i>
+    </span>
+    <div class="my_order_div">
+     <span>我的订单</span>
+     <span class="my_order_icon">
       <i class="iconfont icon-direction-down"></i>
      </span>
-     <div class="my_order_div">
-      <span>积分商城</span>
-      <span class="my_order_icon">
-       <i class="iconfont icon-direction-down"></i>
-      </span>
-     </div>
-    </a>
-    <!-- 硅谷外卖会员卡 -->
-    <a href="javascript:" class="my_order">
-     <span>
+    </div>
+   </a>
+   <!-- 我的餐车 -->
+   <a href='javascript:' class="my_order">
+    <span>
+     <i class="iconfont icon-direction-down"></i>
+    </span>
+    <div class="my_order_div">
+     <span>我的餐车</span>
+     <span class="my_order_icon">
       <i class="iconfont icon-direction-down"></i>
      </span>
-     <div class="my_order_div">
-      <span>硅谷外卖会员卡</span>
-      <span class="my_order_icon">
-       <i class="iconfont icon-direction-down"></i>
-      </span>
-     </div>
-    </a>
-   </section>
-   <section class="profile_my_order border-1px">
-    <!-- 服务中心 -->
-    <a href="javascript:" class="my_order">
-     <span>
+    </div>
+   </a>
+   <!-- 薅狐毛 -->
+   <a href="javascript:" class="my_order">
+    <span>
+     <i class="iconfont icon-direction-down"></i>
+    </span>
+    <div class="my_order_div">
+     <span>薅狐毛</span>
+     <span class="my_order_icon">
       <i class="iconfont icon-direction-down"></i>
      </span>
-     <div class="my_order_div">
-      <span>服务中心</span>
-      <span class="my_order_icon">
-       <i class="iconfont icon-direction-down"></i>
-      </span>
-     </div>
-    </a>
-   </section>
+    </div>
+   </a>
+  </section>
+  <section class="profile_my_order border-1px">
+   <!-- 退出登录 -->
+   <a href="javascript:" class="my_order">
+    <span>
+     <i class="iconfont icon-direction-down"></i>
+    </span>
+    <div class="my_order_div">
+     <span>退出登录</span>
+     <span class="my_order_icon">
+      <i class="iconfont icon-direction-down"></i>
+     </span>
+    </div>
+   </a>
+   <!-- 联系客服 -->
+   <a href="javascript:" class="my_order">
+    <span>
+     <i class="iconfont icon-direction-down"></i>
+    </span>
+    <div class="my_order_div">
+     <span>联系客服</span>
+     <span class="my_order_icon">
+      <i class="iconfont icon-direction-down"></i>
+     </span>
+    </div>
+   </a>
   </section>
  </div>
 </template>
 
 <script>
 import Header from "@/components/Header"
+import {mapState} from "vuex"
 
 export default {
   name:"Me",
+  mounted(){
+    if(localStorage.getItem('phoneNum')){
+      this.$store.dispatch('getUserInfo')
+    }
+  },
+  computed:{
+    ...mapState({
+      userInfo:(state)=>{
+        if('17601355494'==localStorage.getItem('phoneNum')){
+          return state.me.userInfo[0] || {}
+        }else{
+          return state.me.userInfo[1] || {}
+        }
+      },
+    }),
+    //计算红包个数
+    redPacketCount(){
+      /*不能这么写，因为不能确定redPacket这个数组是否undefined，length函数对未定义数组使用时会报错*/
+      //return this.userInfo.redPacket.length || 0
+      if(this.userInfo.redPacket) return this.userInfo.redPacket.length
+      else return 0
+    },
+  },
   components:{Header},
 }
 </script>
 
 <style scoped lang="less">
-.profile{
+.me{
   width:100%;
 
-  .profile-number{
+  .info{
     margin-top:45px;
+    position:relative;
+    background:#684E94;
+    padding:0 20px 10px;
 
-    .profile-link{
-      position:relative;
+    &::after{
+      content:'';
       display:block;
-      background:#684e94;
-      padding:20px 10px;
+      clear:both;
+    }
 
-      &::after{
-        content:'';
-        display:block;
-        clear:both;
+    .info-image{
+      float:left;
+      width:60px;
+      height:60px;
+      border-radius:50%;
+      overflow:hidden;
+      vertical-align:top;
+
+      .icon-direction-down{
+        background:#E4E4E4;
+        font-size:62px;
       }
+    }
 
-      .profile_image{
-        float:left;
-        width:60px;
-        height:60px;
-        border-radius:50%;
-        overflow:hidden;
-        vertical-align:top;
+    .info-name{
+      float:left;
+      margin-top:8px;
+      margin-left:15px;
+
+      p{
+        font-weight:700;
+        font-size:18px;
+        color:#FFFFFF;
+
+        &.user-info-top{
+          padding-bottom:8px;
+        }
+
+        .user-icon{
+          display:inline-block;
+          margin-left:-15px;
+          margin-right:5px;
+          width:20px;
+          height:20px;
+
+          .icon-mobile{
+            font-size:30px;
+            vertical-align:text-top;
+          }
+        }
 
         .icon-direction-down{
-          background:#E4E4E4;
-          font-size:62px;
+          font-size:14px;
+          color:#FFFFFF;
         }
       }
+    }
 
-      .user-info{
-        float:left;
-        margin-top:8px;
-        margin-left:15px;
+    .arrow-right{
+      width:12px;
+      height:12px;
+      position:absolute;
+      right:15px;
+      top:40%;
 
-        p{
-          font-weight:700;
-          font-size:18px;
-          color:#FFFFFF;
-
-          &.user-info-top{
-            padding-bottom:8px;
-          }
-
-          .user-icon{
-            display:inline-block;
-            margin-left:-15px;
-            margin-right:5px;
-            width:20px;
-            height:20px;
-
-            .icon-mobile{
-              font-size:30px;
-              vertical-align:text-top;
-            }
-          }
-
-          .icon-direction-down{
-            font-size:14px;
-            color:#FFFFFF;
-          }
-        }
-      }
-
-      .arrow{
-        width:12px;
-        height:12px;
-        position:absolute;
-        right:15px;
-        top:40%;
-
-        .icon-direction-down{
-          color:#FFFFFF;
-          font-size:5px;
-        }
+      .icon-direction-down{
+        color:#FFFFFF;
+        font-size:5px;
       }
     }
   }
@@ -298,7 +324,7 @@ export default {
         }
 
         .icon-direction-down{
-          color:#684e94;
+          color:#684E94;
         }
       }
 

@@ -5,5 +5,5 @@ export const reqNavigation=()=>mockRequests.get('/navigation')
 export const reqLocation=()=>mockRequests.get('/location')
 //首页商家列表
 export const reqShops=()=>mockRequests.get('/shops')
-//登录
-export const reqLogin=()=>mockRequests('/login','post')
+//获取用户信息
+export const reqUserInfo=()=>mockRequests.get('/userInfo')
