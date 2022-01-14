@@ -38,7 +38,7 @@ export default {
 <style scoped lang="less">
 .bottom-navbar{
   position:fixed;
-  z-index:100;
+  z-index:200;
   left:0;
   right:0;
   bottom:0;
@@ -46,20 +46,19 @@ export default {
   height:50px;
   display:flex;
 
-  //清除浮动
   &::after{
     content:'';
     display:block;
     clear:both;
   }
 
-  //1px细线
+  //底部导航栏上方的1px细线
   &::before{
     content:'';
     position:absolute;
     left:0;
+    right:0;
     top:0;
-    width:100%;
     height:1px;
     background-color:#E4E4E4;
     @media screen{
@@ -74,7 +73,6 @@ export default {
 
   .navbar_item{
     display:flex;
-    /*使flex的元素平分所占的空间，默认为0时不平分*/
     flex:1;
     flex-direction:column;
     align-items:center;

@@ -101,6 +101,7 @@ export default {
   padding-top:50px;
   margin:0 auto;
 
+  //左上角返回按钮
   .back{
     position:absolute;
     top:10px;
@@ -114,6 +115,7 @@ export default {
     }
   }
 
+  //金狐外卖标题
   h2{
     font-size:40px;
     font-weight:1000;
@@ -146,6 +148,7 @@ export default {
       font-size:14px;
       color:#999999;
 
+      //登录按钮
       .submit{
         display:inline-block;
         width:100%;
@@ -159,6 +162,7 @@ export default {
         border:0;
       }
 
+      //关于我们按钮
       .about{
         display:inline-block;
         width:100%;

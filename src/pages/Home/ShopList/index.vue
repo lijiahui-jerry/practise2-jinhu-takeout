@@ -95,13 +95,13 @@ export default {
     color:#999999;
   }
 
-  //1px细线
+  //分割导航栏和附近商家的1px细线
   &::before{
     content:'';
     position:absolute;
     left:0;
+    right:0;
     top:0;
-    width:100%;
     height:1px;
     background-color:#E4E4E4;
     @media screen{
@@ -141,14 +141,14 @@ export default {
         position:relative;
         width:100%;
 
-        //1px细线
+        //分割每个商家的1px细线
         &::before{
           content:'';
           position:absolute;
           z-index:200;
           left:0;
+          right:0;
           bottom:0;
-          width:100%;
           height:1px;
           background-color:#F1F1F1;
           @media screen{
