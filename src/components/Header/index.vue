@@ -5,7 +5,7 @@
   <span class="title-container">
    <span class="title-content">{{title}}</span>
   </span>
-  <router-link to="/login" class="header-right" v-if="right"><span class="c">登录</span></router-link>
+  <div @click="routerGo('login')" class="header-right" v-if="right"><span class="c">登录</span></div>
  </header>
 </template>
 
@@ -16,6 +16,12 @@ export default {
     title:String,
     left:false,
     right:false,
+  },
+  methods:{
+    //路由跳转
+    routerGo(path){
+      this.$router.push(path)
+    },
   },
 
 }

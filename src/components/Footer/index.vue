@@ -1,25 +1,22 @@
 <template>
  <!-- 底部栏 -->
  <footer class="bottom-navbar">
-  <router-link class="navbar_item" to="/home" :class="{active:pageFlag('home')}">
+  <div class="navbar_item" @click="routerGo('home')" :class="{active:pageFlag('home')}">
    <i class="iconfont icon-direction-down"></i>
    <span>首页</span>
-  </router-link>
-
-  <router-link class="navbar_item" to="/search" :class="{active:pageFlag('search')}">
+  </div>
+  <div class="navbar_item" @click="routerGo('search')" :class="{active:pageFlag('search')}">
    <i class="iconfont icon-direction-down"></i>
    <span>搜索</span>
-  </router-link>
-
-  <router-link class="navbar_item" to="/order" :class="{active:pageFlag('order')}">
+  </div>
+  <div class="navbar_item" @click="routerGo('order')" :class="{active:pageFlag('order')}">
    <i class="iconfont icon-direction-down"></i>
    <span>订单</span>
-  </router-link>
-
-  <router-link class="navbar_item" to="/me" :class="{active:pageFlag('me')}">
+  </div>
+  <div class="navbar_item" @click="routerGo('me')" :class="{active:pageFlag('me')}">
    <i class="iconfont icon-direction-down"></i>
    <span>我</span>
-  </router-link>
+  </div>
  </footer>
 </template>
 
@@ -30,6 +27,10 @@ export default {
     //判断当前页，控制active样式
     pageFlag(path){
       return this.$route.path.indexOf(path)==1
+    },
+    //路由跳转
+    routerGo(path){
+      this.$router.push(path)
     },
   },
 }

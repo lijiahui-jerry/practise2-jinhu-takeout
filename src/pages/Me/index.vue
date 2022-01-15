@@ -3,7 +3,7 @@
   <!-- 个人页面头部 -->
   <Header title="金狐外卖"></Header>
   <!-- 个人信息栏 -->
-  <div class="info" @click="login">
+  <div class="info" @click="routerGo('login')">
    <div class="info-image">
     <i class="iconfont icon-direction-down"></i>
    </div>
@@ -34,34 +34,12 @@
     <p class="second-line">狐毛</p>
    </div>
   </div>
-  <!-- 功能栏1 -->
-  <div class="tool-bars" v-if="ifLogged()">
-   <div class="bar">
+  <!-- 功能栏 -->
+  <!-- /*这个功能用了整整两个下午才完成，全靠自己一点点摸索，对于json格式的设置有了更深一步的理解，json设置得好，前端人员可以很轻松地进行vfor，而设置得不好，前端人员甚至无法完成需求，只能通过纯手动来完成*/ -->
+  <div class="tool-bars" v-if="ifLogged()" v-for="(pwr,index) in powerTools" :key="index">
+   <div class="bar" @click="routerGo(p.link)" v-for="(p,index) in pwr" :key="index">
     <div class="bar-left"><i class="iconfont icon-direction-down"></i></div>
-    <div class="bar-name">我的订单</div>
-    <div class="bar-right"><i class="iconfont icon-direction-down"></i></div>
-   </div>
-   <div class="bar">
-    <div class="bar-left"><i class="iconfont icon-direction-down"></i></div>
-    <div class="bar-name">我的餐车</div>
-    <div class="bar-right"><i class="iconfont icon-direction-down"></i></div>
-   </div>
-   <div class="bar">
-    <div class="bar-left"><i class="iconfont icon-direction-down"></i></div>
-    <div class="bar-name">薅狐毛</div>
-    <div class="bar-right"><i class="iconfont icon-direction-down"></i></div>
-   </div>
-  </div>
-  <!-- 功能栏2 -->
-  <div class="tool-bars" v-if="ifLogged()">
-   <div class="bar" @click="logOut()">
-    <div class="bar-left"><i class="iconfont icon-direction-down"></i></div>
-    <div class="bar-name">退出登录</div>
-    <div class="bar-right"><i class="iconfont icon-direction-down"></i></div>
-   </div>
-   <div class="bar" v-if="0!=userPower.id">
-    <div class="bar-left"><i class="iconfont icon-direction-down"></i></div>
-    <div class="bar-name">联系客服</div>
+    <div class="bar-name">{{p.name}}</div>
     <div class="bar-right"><i class="iconfont icon-direction-down"></i></div>
    </div>
   </div>
@@ -102,11 +80,22 @@ export default {
       if(this.userInfo.power) return this.userInfo.power
       else return {}
     },
+    //返回包含权限信息的对象
+    powerInfo(){
+      if(this.userInfo) return this.userInfo.power
+      else return {}
+    },
+    //返回所拥有的权限组成的数组
+    powerTools(){
+      if(this.powerInfo) return this.powerInfo.tools
+      else return []
+    },
   },
   methods:{
-    //登录路由
-    login(){
-      this.$router.push('/login')
+    //路由跳转
+    routerGo(path){
+      if('logout'!=path) this.$router.push(path)
+      else this.logOut()
     },
     //判断是否登录
     ifLogged(){
@@ -120,7 +109,8 @@ export default {
     //退出登录
     logOut(){
       localStorage.clear()
-      this.$router.push("/login")
+      //刷新页面，重新获取用户信息
+      this.$router.go(0)
     },
   },
   components:{Header},
@@ -270,7 +260,7 @@ export default {
       }
 
       .data1{
-        color:#FF9900;
+        color:green;
       }
 
       .data2{
@@ -278,7 +268,7 @@ export default {
       }
 
       .data3{
-        color:#6AC20B;
+        color:brown;
       }
     }
   }
