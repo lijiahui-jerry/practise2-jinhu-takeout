@@ -8,7 +8,7 @@
   <div class="items-container">
    <ul>
     <!-- 单个商家 -->
-    <li class="items" v-for="(shop) in shops" :key="shops.id">
+    <li class="items" v-for="(shop,index) in shops" :key="shops.id" @click="$router.push('shop')">
      <a>
       <!-- 商家图片 -->
       <div class="item-img"><img :src="shop.image"></div>

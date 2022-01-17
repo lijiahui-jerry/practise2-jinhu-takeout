@@ -33,7 +33,29 @@ export default [
     name:'shop',
     path:'/shop',
     component:()=>import('@/pages/Shop'),
-    meta:{showFooter:true},
+    meta:{showFooter:false},
+    children:[
+      {
+        path:'/shop/goods',
+        component:()=>import('@/pages/Shop/ShopGoods'),
+        meta:{showFooter:false},
+      },
+      {
+        path:'/shop/info',
+        component:()=>import('@/pages/Shop/ShopInfo'),
+        meta:{showFooter:false},
+      },
+      {
+        path:'/shop/ratings',
+        component:()=>import('@/pages/Shop/ShopRatings'),
+        meta:{showFooter:false},
+      },
+      //重定向
+      {
+        path:'/shop',
+        redirect:'/shop/goods',
+      },
+    ],
   },
 
   //重定向

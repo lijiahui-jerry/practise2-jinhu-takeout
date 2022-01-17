@@ -1,5 +1,7 @@
 <template>
-
+<div>
+ shopgoods
+</div>
 </template>
 
 <script>

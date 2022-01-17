@@ -7,3 +7,5 @@ export const reqLocation=()=>mockRequests.get('/location')
 export const reqShops=()=>mockRequests.get('/shops')
 //获取用户信息
 export const reqUserInfo=()=>mockRequests.get('/userInfo')
+//获取商家商品
+export const reqShopDetaial=()=>mockRequests.get('/shopDetail')
