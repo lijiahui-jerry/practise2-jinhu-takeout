@@ -1,119 +1,37 @@
 <template>
  <div class="shop-header">
-  <div class="back" @click="$router.back()">
-   <i class="iconfont icon-direction-down"></i>
+  <div class="header-background" :style="{backgroundImage:`url(${info.bgImg})`}">
+   <span class="back" @click="$router.back()"><i class="iconfont icon-direction-down"></i></span>
   </div>
-  <div class="brief">
+  <div class="shop-brief">
    <div class="avatar">
     <img :src="info.avatar">
    </div>
-   <div class="header-content">
-    <h2 class="content-title">
-     <span class="content-tag">
-      <span class="mini-tag">品牌</span>
+   <div class="brief-content">
+    <h2 class="shop-name">{{info.name}}</h2>
+    <div class="sell">
+     <span class="sell-detail">{{info.score}}</span>
+     <span class="sell-detail">月售{{info.sellCount}}单</span>
+     <span class="sell-detail">{{info.description}}<span>约{{info.deliveryTime}}分钟</span>
      </span>
-     <span class="content-name">{{info.name}}</span>
-     <i class="content-icon"></i>
-    </h2>
-    <div class="shop-message">
-     <span class="shop-message-detail">{{info.score}}</span>
-     <span class="shop-message-detail">月售{{info.sellCount}}单</span>
-     <span class="shop-message-detail">
-      {{info.description}}
-      <span>约{{info.deliveryTime}}分钟</span>
-     </span>
-     <span class="shop-message-detail">距离{{info.distance}}</span>
+     <span class="sell-detail">距离{{info.distance}}</span>
     </div>
    </div>
   </div>
 
-  <div class="shop-header-discounts">
-   <div class="discounts-left">
-    <div class="activity">
-     <span class="content-tag">
-      <span class="mini-tag">{{}}</span>
-     </span>
-     <span class="activity-content">{{}}</span>
-    </div>
-   </div>
-   <div class="discounts-right">
-    {{}}个优惠
-   </div>
-  </div>
-
-  <transition name="fade">
-   <div class="shop-brief-modal">
-    <div class="brief-modal-content">
-     <h2 class="content-title">
-      <span class="content-tag">
-       <span class="mini-tag">品牌</span>
-      </span>
-      <span class="content-name">{{}}</span>
-     </h2>
-     <ul class="brief-modal-msg">
-      <li>
-       <h3>{{}}</h3>
-       <p>评分</p>
-      </li>
-      <li>
-       <h3>{{}}单</h3>
-       <p>月售</p>
-      </li>
-      <li>
-       <h3>{{}}</h3>
-       <p>约{{}}分钟</p>
-      </li>
-      <li>
-       <h3>{{}}元</h3>
-       <p>配送费用</p>
-      </li>
-      <li>
-       <h3>{{}}</h3>
-       <p>距离</p>
-      </li>
-     </ul>
-     <h3 class="brief-modal-title">
-      <span>公告</span>
-     </h3>
-     <div class="brief-modal-notice">
-      {{}}
-     </div>
-     <div class="mask-footer">
-      <span class="iconfont icon-direction-down"></span>
-     </div>
-    </div>
-    <div class="brief-modal-cover"></div>
-   </div>
-  </transition>
-
-  <transition name="fade">
-   <div class="activity-sheet">
-    <div class="activity-sheet-content">
-     <h2 class="activity-sheet-title">优惠活动</h2>
-     <ul class="list">
-      <li class="activity-item">
-       <span class="content-tag">
-        <span class="mini-tag">{{}}</span>
-       </span>
-       <span class="activity-content">{{}}</span>
-      </li>
-     </ul>
-     <div class="activity-sheet-close">
-      <span class="iconfont icon-direction-down"></span>
-     </div>
-    </div>
-    <div class="activity-sheet-cover"></div>
-   </div>
-  </transition>
  </div>
 </template>
 
 
 <script>
+import {mapState} from "vuex"
+
 export default {
   name:"ShopHeader",
-  props:{
-    info:{},
+  computed:{
+    ...mapState({
+      info:(state)=>state.shop.info || {},
+    }),
   },
 }
 </script>
@@ -123,29 +41,53 @@ export default {
   width:100%;
   position:relative;
   background:#FFFFFF;
-  color:#FFFFFF;
   overflow:hidden;
 
-  .back{
-    position:absolute;
-    top:0;
-    left:0;
-    padding:10px 0 10px 5px;
-    color:red;
+  .header-background{
+    background-size:cover;
+    background-repeat:no-repeat;
+    position:relative;
+    height:70px;
+    padding:0 5px;
 
-    //返回按钮的透明背景色
-    &::before{
-      content:"";
-      position:absolute;
-      left:0;
-      right:0;
-      top:0;
-      bottom:0;
-      background-color:rgba(213, 192, 207, .3);
+    .back{
+      color:red;
+      height:100%;
+
+      //返回按钮的透明背景色
+      &::before{
+        content:"";
+        position:absolute;
+        left:0;
+        top:0;
+        background-color:#FFFFFF;
+      }
+    }
+  }
+
+  .shop-brief{
+    padding:30px 20px 5px 20px;
+    background:#FFFFFF;
+    text-align:center;
+    position:absolute;
+    top:86px;
+
+    //商家头像的盒子
+    .avatar{
+      & > img{
+        display:block;
+        position:absolute;
+        top:20px;
+        left:50%;
+        transform:translateX(-50%);
+        width:66px;
+        height:66px;
+        border-radius:4px;
+        z-index:19999;
+      }
     }
 
-    & > .iconfont{
-      font-size:40px;
+    .brief-content{
     }
   }
 }

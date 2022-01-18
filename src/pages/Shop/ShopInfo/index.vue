@@ -1,12 +1,19 @@
 <template>
-<div>
- shopinfo
-</div>
+ <div>
+  shopinfo
+ </div>
 </template>
 
 <script>
+import {mapState} from "vuex"
+
 export default {
   name:"ShopInfo",
+  computed:{
+    ...mapState({
+      info:(state)=>state.shop.info || {},
+    }),
+  },
 }
 </script>
 
