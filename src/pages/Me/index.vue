@@ -75,11 +75,6 @@ export default {
       if(this.userInfo.redPacket) return this.userInfo.redPacket.length
       else return 0
     },
-    //返回存储权利的二维数组的对象
-    userPower(){
-      if(this.userInfo.power) return this.userInfo.power
-      else return {}
-    },
     //返回包含权限信息的对象
     powerInfo(){
       if(this.userInfo) return this.userInfo.power
@@ -95,7 +90,10 @@ export default {
     //路由跳转
     routerGo(path){
       if('logout'!=path) this.$router.push(path)
-      else this.logOut()
+      else{
+        localStorage.clear()
+        this.$router.replace('home')
+      }
     },
     //判断是否登录
     ifLogged(){
@@ -105,12 +103,6 @@ export default {
     setUserName(){
       if(this.userInfo.name) return this.userInfo.name+'，欢迎您！'
       else return '登录/注册'
-    },
-    //退出登录
-    logOut(){
-      localStorage.clear()
-      //刷新页面，重新获取用户信息
-      this.$router.go(0)
     },
   },
   components:{Header},

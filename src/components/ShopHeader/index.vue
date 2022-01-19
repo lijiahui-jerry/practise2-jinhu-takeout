@@ -1,9 +1,9 @@
 <template>
  <div class="shop-header">
   <div class="header-background" :style="{backgroundImage:`url(${info.bgImg})`}">
-   <span class="back" @click="$router.back()"><i class="iconfont icon-direction-down"></i></span>
+   <div class="back" @click="$router.back()"><i class="iconfont icon-direction-down"></i></div>
   </div>
-  <div class="shop-brief">
+  <div class="brief">
    <div class="avatar">
     <img :src="info.avatar">
    </div>
@@ -11,14 +11,28 @@
     <h2 class="shop-name">{{info.name}}</h2>
     <div class="sell">
      <span class="sell-detail">{{info.score}}</span>
-     <span class="sell-detail">月售{{info.sellCount}}单</span>
-     <span class="sell-detail">{{info.description}}<span>约{{info.deliveryTime}}分钟</span>
-     </span>
-     <span class="sell-detail">距离{{info.distance}}</span>
+     <span class="sell-detail">月均{{info.sellCount}}单</span>
+     <span class="sell-detail">{{info.description}}<span>约{{info.deliveryTime}}分钟</span></span>
+     <span class="sell-detail">{{info.distance}}</span>
     </div>
    </div>
   </div>
 
+
+  <div class="discounts" v-if="info.supports">
+   <div class="discounts-left">
+    <div class="activity">
+     <span class="tag">
+      <span class="minimum-tag">{{info.supports[0].name}}</span>
+     </span>
+     <span class="activity-detail">{{info.supports[0].content}}</span>
+    </div>
+   </div>
+   <div class="discounts-right">
+    <span>{{info.supports.length}}个优惠</span>
+
+   </div>
+  </div>
  </div>
 </template>
 
@@ -42,52 +56,153 @@ export default {
   position:relative;
   background:#FFFFFF;
   overflow:hidden;
+  text-align:center;
 
   .header-background{
     background-size:cover;
     background-repeat:no-repeat;
     position:relative;
     height:70px;
-    padding:0 5px;
 
+    //返回按钮
     .back{
-      color:red;
+      padding-left:5px;
+      position:relative;
+      color:#FFFFFF;
+      width:40px;
       height:100%;
 
       //返回按钮的透明背景色
-      &::before{
+      &::after{
         content:"";
         position:absolute;
         left:0;
+        right:0;
         top:0;
-        background-color:#FFFFFF;
+        bottom:0;
+        background-color:rgba(255, 255, 255, .2);
+      }
+
+      .iconfont{
+        font-size:40px;
+        line-height:2em;
       }
     }
   }
 
-  .shop-brief{
-    padding:30px 20px 5px 20px;
+  .brief{
+    position:relative;
     background:#FFFFFF;
     text-align:center;
-    position:absolute;
-    top:86px;
+    display:flex;
 
     //商家头像的盒子
     .avatar{
+      position:absolute;
+      top:-36px;
+      left:50%;
+      transform:translateX(-50%);
+      z-index:400;
+      width:66px;
+      height:66px;
+      border-radius:4px;
+      overflow:hidden;
+
       & > img{
-        display:block;
-        position:absolute;
-        top:20px;
-        left:50%;
-        transform:translateX(-50%);
-        width:66px;
-        height:66px;
-        border-radius:4px;
-        z-index:19999;
+        width:100%;
       }
     }
 
     .brief-content{
+      width:100%;
+      margin-top:31px;
+
+      & > h2{
+        font-size:20px;
+        line-height:24px;
+        font-weight:1000;
+      }
+
+      .sell{
+        display:flex;
+        width:70%;
+        margin:2px auto 0;
+        font-size:14px;
+
+        .sell-detail{
+          flex-grow:1;
+        }
+      }
+    }
+  }
+
+  .discounts{
+    width:90%;
+    display:flex;
+    margin:1px auto;
+    font-size:12px;
+    border:1px solid #E7DDB8;
+    padding:1px;
+    border-radius:4px;
+
+    //活动的标签和具体信息
+    .discounts-left{
+      flex:1;
+      overflow:hidden;
+
+      .activity{
+        display:flex;
+        align-items:center;
+
+        //活动的标签
+        .tag{
+          border-radius:4px;
+          width:25px;
+          height:13px;
+          margin-right:5px;
+          color:#FFFFFF;
+          font-weight:1000;
+          position:relative;
+          background-color:rgb(112, 188, 70);
+
+          .minimum-tag{
+            position:absolute;
+            left:0;
+            top:0;
+            right:-100%;
+            bottom:-100%;
+            font-size:18px;
+            font-weight:1000;
+            transform:scale(.5);
+            transform-origin:0 0;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+          }
+        }
+      }
+    }
+
+    //更多优惠活动
+    .discounts-right{
+      width:50px;
+      flex-shrink:0;
+      position:relative;
+      padding-right:10px;
+      text-align:right;
+
+      //css实现倒三角表示点击显示更多
+      &::after{
+        content:'';
+        display:block;
+        border-style:solid;
+        border-width:4px 4px 0;
+        border-color:rgba(0, 0, 0, .5) transparent transparent;
+        position:absolute;
+        top:50%;
+        transform:translateY(-50%);
+        right:0;
+      }
     }
   }
 }
