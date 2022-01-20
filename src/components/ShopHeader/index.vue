@@ -19,19 +19,17 @@
   </div>
 
 
-  <div class="discounts" v-if="info.supports">
-   <div class="discounts-left">
+  <div class="discount" v-if="info.supports">
+   <div class="discount-left">
     <div class="activity">
-     <span class="tag">
-      <span class="minimum-tag">{{info.supports[0].name}}</span>
-     </span>
+     <span class="activity-tag">{{info.supports[0].name}}</span>
      <span class="activity-detail">{{info.supports[0].content}}</span>
     </div>
    </div>
-   <div class="discounts-right">
-    <span>{{info.supports.length}}个优惠</span>
-
+   <div class="discount-right">
+    <span class="discount-count">{{info.supports.length}}个优惠</span>
    </div>
+
   </div>
  </div>
 </template>
@@ -126,7 +124,7 @@ export default {
       .sell{
         display:flex;
         width:70%;
-        margin:2px auto 0;
+        margin:5px auto 0;
         font-size:14px;
 
         .sell-detail{
@@ -136,17 +134,17 @@ export default {
     }
   }
 
-  .discounts{
+  .discount{
     width:90%;
     display:flex;
-    margin:1px auto;
+    margin:5px auto;
     font-size:12px;
     border:1px solid #E7DDB8;
-    padding:1px;
+    padding:2px;
     border-radius:4px;
 
     //活动的标签和具体信息
-    .discounts-left{
+    .discount-left{
       flex:1;
       overflow:hidden;
 
@@ -154,42 +152,30 @@ export default {
         display:flex;
         align-items:center;
 
-        //活动的标签
-        .tag{
+        //活动的简称tag的内容
+        .activity-tag{
           border-radius:4px;
-          width:25px;
-          height:13px;
-          margin-right:5px;
+          padding:3px 4px 4px;
+          background-color:#684E94;
           color:#FFFFFF;
           font-weight:1000;
-          position:relative;
-          background-color:rgb(112, 188, 70);
-
-          .minimum-tag{
-            position:absolute;
-            left:0;
-            top:0;
-            right:-100%;
-            bottom:-100%;
-            font-size:18px;
-            font-weight:1000;
-            transform:scale(.5);
-            transform-origin:0 0;
-            display:flex;
-            align-items:center;
-            justify-content:center;
-          }
+          transform:scale(.8);
         }
       }
     }
 
-    //更多优惠活动
-    .discounts-right{
+    .discount-right{
       width:50px;
       flex-shrink:0;
-      position:relative;
       padding-right:10px;
-      text-align:right;
+      position:relative;
+
+      .discount-count{
+        position:absolute;
+        right:10px;
+        margin-top:3px;
+        text-align:right;
+      }
 
       //css实现倒三角表示点击显示更多
       &::after{
@@ -201,7 +187,7 @@ export default {
         position:absolute;
         top:50%;
         transform:translateY(-50%);
-        right:0;
+        right:1px;
       }
     }
   }
