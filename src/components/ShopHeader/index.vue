@@ -19,17 +19,29 @@
   </div>
 
 
-  <div class="discount" v-if="info.supports">
+  <div class="discount shrink" v-if="ifShowDetail()&&ifDetailShrink" @click="toggleDetaiShowType()">
    <div class="discount-left">
     <div class="activity">
      <span class="activity-tag">{{info.supports[0].name}}</span>
      <span class="activity-detail">{{info.supports[0].content}}</span>
     </div>
    </div>
-   <div class="discount-right">
-    <span class="discount-count">{{info.supports.length}}个优惠</span>
+   <div class="discount-right" v-if="ifShowDetail()">
+    <span class="discount-count">{{ifShowDetail()}}个优惠</span>
    </div>
+  </div>
 
+
+  <div class="discount stretch" v-if="ifShowDetail()&&(!ifDetailShrink)" @click="toggleDetaiShowType()">
+   <div class="discount-left" v-for="(i,index) in 4" :key="index">
+    <div class="activity">
+     <span class="activity-tag">{{info.supports[i].name}}</span>
+     <span class="activity-detail">{{info.supports[i].content}}</span>
+    </div>
+   </div>
+   <div class="discount-right" v-if="ifShowDetail()">
+    <span class="discount-count">{{ifShowDetail()}}个优惠</span>
+   </div>
   </div>
  </div>
 </template>
@@ -40,10 +52,26 @@ import {mapState} from "vuex"
 
 export default {
   name:"ShopHeader",
+  data(){
+    return {
+      ifDetailShrink:true,
+    }
+  },
   computed:{
     ...mapState({
       info:(state)=>state.shop.info || {},
     }),
+  },
+  methods:{
+    //判断是否有优惠信息并显示有几个优惠
+    ifShowDetail(){
+      if(this.info.supports) return this.info.supports.length
+      return false
+    },
+    //切换优惠显示的形式，缩略或完整
+    toggleDetaiShowType(){
+      this.ifDetailShrink= !this.ifDetailShrink
+    },
   },
 }
 </script>
@@ -135,59 +163,122 @@ export default {
   }
 
   .discount{
-    width:90%;
-    display:flex;
-    margin:5px auto;
-    font-size:12px;
-    border:1px solid #E7DDB8;
-    padding:2px;
-    border-radius:4px;
+    //折叠时的样式
+    &.shrink{
+      width:90%;
+      display:flex;
+      margin:5px auto;
+      font-size:12px;
+      border:1px solid #E7DDB8;
+      padding:2px;
+      border-radius:4px;
 
-    //活动的标签和具体信息
-    .discount-left{
-      flex:1;
-      overflow:hidden;
+      //活动的标签和具体信息
+      .discount-left{
+        flex:1;
+        overflow:hidden;
 
-      .activity{
-        display:flex;
-        align-items:center;
+        .activity{
+          display:flex;
+          align-items:center;
 
-        //活动的简称tag的内容
-        .activity-tag{
-          border-radius:4px;
-          padding:3px 4px 4px;
-          background-color:#684E94;
-          color:#FFFFFF;
-          font-weight:1000;
-          transform:scale(.8);
+          //活动的简称tag的内容
+          .activity-tag{
+            border-radius:4px;
+            padding:3px 4px 4px;
+            background-color:#684E94;
+            color:#FFFFFF;
+            font-weight:1000;
+            transform:scale(.8);
+          }
+        }
+      }
+
+      .discount-right{
+        width:50px;
+        flex-shrink:0;
+        padding-right:10px;
+        position:relative;
+
+        .discount-count{
+          position:absolute;
+          right:10px;
+          margin-top:3px;
+          text-align:right;
+        }
+
+        //css实现倒三角表示点击显示更多
+        &::after{
+          content:'';
+          display:block;
+          border-style:solid;
+          border-width:4px 4px 0;
+          border-color:rgba(0, 0, 0, .5) transparent transparent;
+          position:absolute;
+          top:50%;
+          transform:translateY(-50%);
+          right:1px;
         }
       }
     }
 
-    .discount-right{
-      width:50px;
-      flex-shrink:0;
-      padding-right:10px;
-      position:relative;
+    //展开时的样式
+    &.stretch{
+      width:90%;
+      display:flex;
+      flex-direction:column;
+      margin:5px auto;
+      font-size:12px;
+      border:1px solid #E7DDB8;
+      padding:2px;
+      border-radius:4px;
 
-      .discount-count{
-        position:absolute;
-        right:10px;
-        margin-top:3px;
-        text-align:right;
+      //活动的标签和具体信息
+      .discount-left{
+        flex:1;
+        overflow:hidden;
+
+        .activity{
+          display:flex;
+          align-items:center;
+
+          //活动的简称tag的内容
+          .activity-tag{
+            border-radius:4px;
+            padding:3px 4px 4px;
+            background-color:#684E94;
+            color:#FFFFFF;
+            font-weight:1000;
+            transform:scale(.8);
+          }
+        }
       }
 
-      //css实现倒三角表示点击显示更多
-      &::after{
-        content:'';
-        display:block;
-        border-style:solid;
-        border-width:4px 4px 0;
-        border-color:rgba(0, 0, 0, .5) transparent transparent;
-        position:absolute;
-        top:50%;
-        transform:translateY(-50%);
-        right:1px;
+      .discount-right{
+        width:50px;
+        flex-shrink:0;
+        padding-right:10px;
+        position:relative;
+
+        .discount-count{
+          position:absolute;
+          right:10px;
+          margin-top:3px;
+          text-align:right;
+        }
+
+        //css实现倒三角表示点击显示更多
+        &::after{
+          content:'';
+          display:block;
+          border-style:solid;
+          border-width:4px 4px 0;
+          border-color:rgba(0, 0, 0, .5) transparent transparent;
+          position:absolute;
+          top:50%;
+          transform:translateY(-50%);
+          right:1px;
+        }
       }
     }
   }
