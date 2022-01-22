@@ -12,13 +12,11 @@
     <div class="sell">
      <span class="sell-detail">{{info.score}}</span>
      <span class="sell-detail">月均{{info.sellCount}}单</span>
-     <span class="sell-detail">{{info.description}}<span>约{{info.deliveryTime}}分钟</span></span>
+     <span class="sell-detail">人均{{info.sellCount}}元</span>
      <span class="sell-detail">{{info.distance}}</span>
     </div>
    </div>
   </div>
-
-
   <div class="discount shrink" v-if="ifShowDetail()&&ifDetailShrink" @click="toggleDetaiShowType()">
    <div class="discount-left">
     <div class="activity">
@@ -30,13 +28,11 @@
     <span class="discount-count">{{ifShowDetail()}}个优惠</span>
    </div>
   </div>
-
-
   <div class="discount stretch" v-if="ifShowDetail()&&(!ifDetailShrink)" @click="toggleDetaiShowType()">
-   <div class="discount-left" v-for="(i,index) in 4" :key="index">
+   <div class="discount-left" v-for="(support,index) in info.supports" :key="index">
     <div class="activity">
-     <span class="activity-tag">{{info.supports[i].name}}</span>
-     <span class="activity-detail">{{info.supports[i].content}}</span>
+     <span class="activity-tag">{{support.name}}</span>
+     <span class="activity-detail">{{support.content}}</span>
     </div>
    </div>
    <div class="discount-right" v-if="ifShowDetail()">
@@ -45,7 +41,6 @@
   </div>
  </div>
 </template>
-
 
 <script>
 import {mapState} from "vuex"
@@ -162,6 +157,12 @@ export default {
     }
   }
 
+  /*
+   * 2022-01-22 ljh
+   * discount类css需要优化
+   * ↓
+   */
+
   .discount{
     //折叠时的样式
     &.shrink{
@@ -232,6 +233,7 @@ export default {
       border:1px solid #E7DDB8;
       padding:2px;
       border-radius:4px;
+      position:relative;
 
       //活动的标签和具体信息
       .discount-left{
@@ -256,9 +258,10 @@ export default {
 
       .discount-right{
         width:50px;
-        flex-shrink:0;
         padding-right:10px;
-        position:relative;
+        position:absolute;
+        top:2px;
+        right:2px;
 
         .discount-count{
           position:absolute;
@@ -267,17 +270,16 @@ export default {
           text-align:right;
         }
 
-        //css实现倒三角表示点击显示更多
+        //css实现正三角表示点击隐藏详细优惠信息
         &::after{
           content:'';
           display:block;
           border-style:solid;
-          border-width:4px 4px 0;
-          border-color:rgba(0, 0, 0, .5) transparent transparent;
+          border-width:0 4px 4px;
+          border-color:transparent transparent rgba(0, 0, 0, .5);
           position:absolute;
-          top:50%;
-          transform:translateY(-50%);
           right:1px;
+          top:5px;
         }
       }
     }
