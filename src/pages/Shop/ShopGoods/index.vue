@@ -5,8 +5,7 @@
    <div class="left">
     <ul ref="leftUl">
      <!-- current -->
-     <li class="menu-item" v-for="(good, index) in goods"
-         :key="good.name" @click="clickItem(index)" :class="{current: index===currentIndex}">
+     <li class="menu-item" v-for="(good, index) in goods" :key="index" @click="clickItem(index)" :class="{current: index===currentIndex}">
       <span class="text bottom-border-1px">
        <img class="icon" v-if="good.icon" :src="good.icon">
        {{good.name}}
@@ -36,7 +35,6 @@
           <span class="old" v-if="food.oldPrice">￥{{food.oldPrice}}</span>
          </div>
          <div class="cartcontrol-wrapper">
-          <CartControl :food="food"/>
          </div>
         </div>
        </li>
@@ -45,7 +43,6 @@
     </ul>
    </div>
 
-   <ShopCart/>
   </div>
   <Food :food="food" ref="food"/>
  </div>
@@ -56,6 +53,10 @@ import {mapState} from "vuex"
 
 export default {
   name:"ShopGoods",
+  components:{},
+  data(){
+    return {}
+  },
   computed:{
     ...mapState({
       goods:(state)=>state.shop.goods || [],
@@ -75,6 +76,7 @@ export default {
     height:74vh;
     overflow-x:hidden;
     overflow-y:scroll;
+
   }
 
   .right{

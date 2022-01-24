@@ -2,11 +2,12 @@
  <div class="order">
   <!-- 订单页头部 -->
   <Header title="订单列表"></Header>
+  <!-- 已登录 -->
 
-  <div class="no-login">
-   <img src="./images/no-login.png">
-   <h3>
-    请先&nbsp;<span>登录</span>
+  <!-- 未登录 -->
+  <div class="not-logged" v-if="!ifLogged()">
+   <img src="./images/not-logged.png">
+   <h3>请先&nbsp;<button @click="$router.push('login')">登录</button>
    </h3>
   </div>
  </div>
@@ -18,40 +19,43 @@ import Header from "@/components/Header"
 export default {
   name:"Order",
   components:{Header},
+  methods:{
+    //判断是否登录
+    ifLogged(){
+      console.log(localStorage.getItem('userId'))
+      return localStorage.getItem('userId')
+    },
+  },
 }
 </script>
 
 <style scoped lang="less">
 .order{
-  width:100%;
+  width:100vw;
 
-  .no-login{
-    padding-top:140px;
-    width:60%;
-    margin:0 auto;
+  //未登录时的样式
+  .not-logged{
+    width:100%;
     text-align:center;
 
     & > img{
       display:block;
+      margin-top:15vh;
       width:100%;
-      height:30%;
     }
 
     & > h3{
-      padding:10px 0;
-      font-size:17px;
-      color:#6A6A6A;
-    }
+      font-size:20px;
 
-    & > button{
-      display:inline-block;
-      background:#02A774;
-      font-size:14px;
-      color:#FFFFFF;
-      border:0;
-      outline:none;
-      border-radius:5px;
-      padding:10px 20px;
+      & > button{
+        background:#684E94;
+        font-size:16px;
+        line-height:1em;
+        color:#FFFFFF;
+        border:0 none;
+        border-radius:4px;
+        padding:6px;
+      }
     }
   }
 }
