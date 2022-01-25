@@ -160,7 +160,6 @@ export default {
   /*
    * 2022-01-22 ljh
    * discount类css需要优化
-   * ↓
    */
 
   .discount{

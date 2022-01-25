@@ -3,15 +3,9 @@
   <div class="goods">
    <!-- 左侧大类 -->
    <div class="left">
-    <ul ref="leftUl">
-     <!-- current -->
-     <li class="menu-item" v-for="(good, index) in goods" :key="index" @click="clickItem(index)" :class="{current: index===currentIndex}">
-      <span class="text bottom-border-1px">
-       <img class="icon" v-if="good.icon" :src="good.icon">
-       {{good.name}}
-      </span>
-     </li>
-    </ul>
+    <div class="goods-menu" v-for="(good, index) in goods" :key="index" @click="clickItem(index)" :class="{current: index===currentIndex}">
+     <span>{{good.name}}</span>
+    </div>
    </div>
    <!-- 右侧具体菜品 -->
    <div class="right">
@@ -67,24 +61,36 @@ export default {
 
 <style scoped lang="less">
 .container{
+  height:75vh;
+  position:relative;
 
+  .goods{
+    height:100%;
+    position:absolute;
+    top:-7px;
 
-  .left{
-    float:left;
-    width:30%;
-    background-color:#E4E4E4;
-    height:74vh;
-    overflow-x:hidden;
-    overflow-y:scroll;
+    .left{
+      float:left;
+      width:30%;
+      height:100%;
+      background-color:#E4E4E4;
+      overflow-x:hidden;
+      overflow-y:scroll;
+      display:flex;
+      flex-direction:column;
 
-  }
+      .goods-menu{
+        width:100%;
+      }
+    }
 
-  .right{
-    float:left;
-    width:70%;
-    height:74vh;
-    overflow-x:hidden;
-    overflow-y:scroll;
+    .right{
+      float:left;
+      width:70%;
+      height:100%;
+      overflow-x:hidden;
+      overflow-y:scroll;
+    }
   }
 }
 </style>
