@@ -1,13 +1,13 @@
 <template>
  <div>
 
-cart
+ Food
  </div>
 </template>
 
 <script>
 export default {
-  name:"Cart",
+  name:"Food",
 }
 </script>
 

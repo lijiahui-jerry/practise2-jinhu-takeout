@@ -1,13 +1,13 @@
 <template>
  <div>
 
-cart
+ CartControl
  </div>
 </template>
 
 <script>
 export default {
-  name:"Cart",
+  name:"CartControl",
 }
 </script>
 
