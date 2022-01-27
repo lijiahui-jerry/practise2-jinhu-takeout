@@ -8,9 +8,11 @@ const state={
 
 const mutations={
   GETSHOPDETAIL(state,shopDetail){
-    state.goods=shopDetail.goods
     state.info=shopDetail.info
     state.ratings=shopDetail.ratings
+  },
+  GETSHOPGOODS(state,shopGoods){
+    state.goods=shopGoods
   },
 }
 
@@ -18,6 +20,11 @@ const actions={
   async getShopDetail({commit}){
     let result=await reqShopDetaial()
     if(200==result.code) commit('GETSHOPDETAIL',result.data)
+  },
+  async getShopGoods({commit},callback){
+    let result=await reqShopDetaial()
+    if(200==result.code) commit('GETSHOPGOODS',result.data.goods)
+    callback && callback()
   },
 }
 
