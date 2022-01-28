@@ -1,14 +1,27 @@
 <template>
  <div class="cart-control">
-  <div class="iconfont icon-direction-down"></div>
-  <div class="count">1</div>
-  <div class="iconfont icon-direction-up"></div>
+  <transition name="move">
+   <!-- 餐品数量减一 -->
+   <div class="iconfont icon-direction-down" v-if="food.count" @click="updateCount(false)"></div>
+  </transition>
+  <div class="count" v-if="food.count">{{food.count}}</div>
+  <!-- 餐品数量加一 -->
+  <div class="iconfont icon-direction-up" @click="updateCount(true)"></div>
  </div>
 </template>
 
 <script>
 export default {
   name:"CartControl",
+  props:{
+    food:Object,
+  },
+  methods:{
+    //修改购物车中菜品的数量，true为加1，false为减1
+    updateCount(flag){
+      this.$store.dispatch('updateCountOfFood',{flag,food:this.food})
+    },
+  },
 }
 </script>
 
@@ -37,7 +50,7 @@ export default {
 
     &.move-enter, &.move-leave-to{
       opacity:0;
-      transform:translateX(15px) rotate(180deg);
+      transform:translateX(15px) rotate(90deg);
     }
   }
 

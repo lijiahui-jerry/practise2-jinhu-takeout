@@ -1,4 +1,5 @@
 import {reqShopDetaial} from "@/api"
+import Vue from "vue"
 
 const state={
   goods:[],
@@ -14,6 +15,21 @@ const mutations={
   GETSHOPGOODS(state,shopGoods){
     state.goods=shopGoods
   },
+  ADDCOUNTOFFOOD(state,{food}){
+    if(!food.count){
+      Vue.set(food,"count",1)
+    }else{
+      food.count++
+    }
+  }  ,
+  MINUSCOUNTOFFOOD(state,{food}){
+    if(food.count>=1){
+      food.count--
+    }else{
+      //防止多次点击出现读负数或出现负数后点击无反应
+      food.count=0
+    }
+  }
 }
 
 const actions={
@@ -25,6 +41,14 @@ const actions={
     let result=await reqShopDetaial()
     if(200==result.code) commit('GETSHOPGOODS',result.data.goods)
     callback && callback()
+  },
+  updateCountOfFood({commit},{flag,food}){
+    if(flag){
+      commit("ADDCOUNTOFFOOD",{food})
+    }else{
+      commit("MINUSCOUNTOFFOOD",{food})
+    }
+
   },
 }
 
