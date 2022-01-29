@@ -19,9 +19,10 @@ export default {
   width:100%;
   height:100vh;
   max-height:100vh;
+
+  a{
+    text-decoration:none;
+  }
 }
 
-a{
-  text-decoration:none;
-}
 </style>

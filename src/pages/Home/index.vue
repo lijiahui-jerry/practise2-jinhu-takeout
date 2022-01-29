@@ -1,6 +1,6 @@
 <template>
  <div>
-  <Header :title=school.name left=true right=true></Header>
+  <Header :title=school.name left=true :right=!ifLogged()></Header>
   <Navigation></Navigation>
   <ShopList></ShopList>
  </div>
@@ -24,6 +24,12 @@ export default {
     ...mapState({
       school:(state)=>state.home.school || {},
     }),
+  },
+  methods:{
+    //判断是否已经登录，用于决定header的右侧“登录”要不要显示
+    ifLogged(){
+      return localStorage.getItem('userId')
+    },
   },
 }
 </script>
