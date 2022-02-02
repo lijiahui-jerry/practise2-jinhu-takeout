@@ -5,6 +5,7 @@ const state={
   goods:[],
   info:{},
   ratings:[],
+  foodsInCart:[],
 }
 
 const mutations={
@@ -21,7 +22,7 @@ const mutations={
     }else{
       food.count++
     }
-  }  ,
+  },
   MINUSCOUNTOFFOOD(state,{food}){
     if(food.count>=1){
       food.count--
@@ -29,7 +30,7 @@ const mutations={
       //防止多次点击出现读负数或出现负数后点击无反应
       food.count=0
     }
-  }
+  },
 }
 
 const actions={
@@ -52,6 +53,13 @@ const actions={
   },
 }
 
-const getters={}
+const getters={
+  totalCount(state){
+    return state.foodsInCart.reduce((preTotal,food)=>preTotal+food.count,0)
+  },
+  totalPrice(state){
+    return state.foodsInCart.reduce((preTotal,food)=>preTotal+food.count*food.price,0)
+  }
+}
 
 export default {state,mutations,actions,getters}

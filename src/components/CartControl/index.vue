@@ -1,12 +1,12 @@
 <template>
  <div class="cart-control">
-  <transition name="move">
+  <transition name="roll">
    <!-- 餐品数量减一 -->
-   <div class="iconfont icon-direction-down" v-if="food.count" @click="updateCount(false)"></div>
+   <div class="iconfont icon-direction-down" v-if="food.count" @click.stop="updateCount(false)"></div>
   </transition>
   <div class="count" v-if="food.count">{{food.count}}</div>
   <!-- 餐品数量加一 -->
-  <div class="iconfont icon-direction-up" @click="updateCount(true)"></div>
+  <div class="iconfont icon-direction-up" @click.stop="updateCount(true)"></div>
  </div>
 </template>
 
@@ -27,50 +27,32 @@ export default {
 
 <style scoped lang="less">
 .cart-control{
-  font-size:0;
+  height:34px;
 
-  .cart-decrease{
+  .iconfont{
+    color:#684E94;
     display:inline-block;
-    padding:6px;
-    line-height:24px;
+    padding:5px;
     font-size:24px;
-    color:rgb(0, 160, 220);
-  }
+    line-height:1em;
 
-  .icon-direction-down{
-    display:inline-block;
-    padding:6px;
-    line-height:24px;
-    font-size:24px;
-    color:green;
-
-    &.move-enter-active, &.move-leave-active{
+    &.roll-enter-active, &.roll-leave-active{
       transition:all .3s;
     }
 
-    &.move-enter, &.move-leave-to{
+    &.roll-enter, &.roll-leave-to{
       opacity:0;
-      transform:translateX(15px) rotate(90deg);
+      transform:translateX(10px) rotate(90deg);
     }
   }
 
   .count{
+    font-size:12px;
     display:inline-block;
-    vertical-align:top;
-    width:12px;
-    padding-top:6px;
-    line-height:24px;
     text-align:center;
-    font-size:10px;
-    color:rgb(147, 153, 159);
-  }
-
-  .icon-direction-up{
-    display:inline-block;
-    padding:6px;
-    line-height:24px;
-    font-size:24px;
-    color:green;
+    vertical-align:middle;
+    width:1em;
+    height:50%;
   }
 }
 </style>

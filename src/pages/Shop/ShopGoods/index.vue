@@ -4,8 +4,8 @@
    <div class="menu-wrapper">
     <ul>
      <li class="menu-item" v-for="(good, index) in goods" :key="index"
-         :class="{current: index===currentIndex}" @click="MenuJumpTo(index)">
-      <span class="text bottom-border-1px">
+         :class="{current: index===currentIndex}" @click="menuJumpTo(index)">
+      <span class="text">
        <img class="icon" :src="good.icon" v-if="good.icon">
        {{good.name}}
       </span>
@@ -17,8 +17,7 @@
      <li class="food-list-hook" v-for="(good, index) in goods" :key="index">
       <h1 class="title">{{good.name}}</h1>
       <ul>
-       <li class="food-item bottom-border-1px" v-for="(food, index) in good.foods"
-           :key="index">
+       <li class="food-item" v-for="(food, index) in good.foods" :key="index" @click="showFoodDetail(food)">
         <div class="icon">
          <img width="57" height="57" :src="food.icon">
         </div>
@@ -33,7 +32,7 @@
           <span class="now">￥{{food.price}}</span>
           <span class="old" v-if="food.oldPrice">￥{{food.oldPrice}}</span>
          </div>
-         <div class="cartcontrol-wrapper">
+         <div class="cart-control-container">
           <CartControl :food="food"/>
          </div>
         </div>
@@ -42,9 +41,9 @@
      </li>
     </ul>
    </div>
-<!--   <Cart/>-->
+   <Cart></Cart>
   </div>
-<!--  <Food :food="food" ref="food"/>-->
+  <Food :food="food" ref="food"/>
  </div>
 </template>
 
@@ -62,6 +61,7 @@ export default {
     return {
       scrollY:0,
       tops:[],
+      food:{},
     }
   },
   computed:{
@@ -78,8 +78,13 @@ export default {
     },
   },
   methods:{
+    //显示餐品的详细信息
+    showFoodDetail(food){
+      this.food=food
+      this.$refs.food.toggleIfShow()
+    },
     //点击左侧菜单，右侧滑动至相应位置
-    MenuJumpTo(index){
+    menuJumpTo(index){
       const y=this.tops[index]
       this.scrollY=y
       this.foodsScroll.scrollTo(0,-y,200)
@@ -299,7 +304,7 @@ export default {
         }
 
 
-        .cartcontrol-wrapper{
+        .cart-control-container{
           position:absolute;
           right:0;
           bottom:12px;
