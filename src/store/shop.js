@@ -18,17 +18,25 @@ const mutations={
   },
   ADDCOUNTOFFOOD(state,{food}){
     if(!food.count){
+      //增加购买数量
       Vue.set(food,"count",1)
+      //加入购物车
+      state.foodsInCart.push(food)
     }else{
       food.count++
     }
   },
   MINUSCOUNTOFFOOD(state,{food}){
     if(food.count>=1){
+      //减少购买数量
       food.count--
     }else{
       //防止多次点击出现读负数或出现负数后点击无反应
       food.count=0
+    }
+    if(food.count<=0){
+      //从购物车移除
+      state.foodsInCart.splice(state.foodsInCart.indexOf(food),1)
     }
   },
 }
@@ -59,7 +67,7 @@ const getters={
   },
   totalPrice(state){
     return state.foodsInCart.reduce((preTotal,food)=>preTotal+food.count*food.price,0)
-  }
+  },
 }
 
 export default {state,mutations,actions,getters}

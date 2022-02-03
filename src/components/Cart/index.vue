@@ -2,7 +2,7 @@
  <div class="cart">
   <div class="shopcart">
    <div class="content">
-    <div class="content-left">
+    <div class="content-left" @click="toggleIfShowList()">
      <div class="logo-wrapper">
       <div class="logo" :class="{highlight: totalCount}">
        <i class="iconfont icon-direction-up" :class="{highlight: totalCount}"></i>
@@ -10,7 +10,7 @@
       <div class="num" v-if="totalCount">{{totalCount}}</div>
      </div>
      <div class="price" :class="{highlight: totalCount}">￥{{totalPrice}}</div>
-     <div class="desc">另需配送费￥{{info.deliveryPrice}}元</div>
+     <div class="desc">另需配送费{{info.deliveryPrice}}元</div>
     </div>
     <div class="content-right">
      <div class="pay" :class="payOrNotCLASS()">
@@ -19,7 +19,7 @@
     </div>
    </div>
    <transition name="move">
-    <div class="shopcart-list" v-show="listShow">
+    <div class="shopcart-list" v-show="couldShowList">
      <div class="list-header">
       <h1 class="title">购物车</h1>
       <span class="empty">清空</span>
@@ -39,7 +39,7 @@
    </transition>
 
   </div>
-  <!--  <div class="list-mask" v-show="listShow" @click="toggleShow"></div>-->
+  <div class="list-mask" v-show="couldShowList" @click="toggleIfShowList()"></div>
  </div>
 </template>
 
@@ -53,10 +53,18 @@ export default {
   components:{CartControl},
   data(){
     return {
-      ifShow:false,
+      ifShowList:false,
     }
   },
   computed:{
+    //根据当前购物车是否为空及是否需要显示列表，综合计算当前是否应该显示购物车列表
+    couldShowList(){
+      if(0==this.totalCount){
+        this.ifShowList=false
+        return false
+      }
+      return this.ifShowList
+    },
     ...mapState({
       foodsInCart:state=>state.shop.foodsInCart || [],
       info:state=>state.shop.info || {},
@@ -64,7 +72,7 @@ export default {
     ...mapGetters(['totalCount','totalPrice']),
   },
   methods:{
-    //判断当前是否满足起送价要求，返回类名
+    //判断当前是否满足起送价要求，返回css类
     payOrNotCLASS(){
       const {totalPrice}=this
       const {minPrice}=this.info
@@ -79,6 +87,12 @@ export default {
       if(0==totalPrice) return `${minPrice}元起送`
       else if(totalPrice<minPrice) return `还差${minPrice-totalPrice}元起送`
       else return '立即干饭'
+    },
+    //切换购物车列表的显示状态
+    toggleIfShowList(){
+      if(this.totalCount>0){
+        this.ifShowList= !this.ifShowList
+      }
     },
   },
 }
@@ -261,7 +275,7 @@ export default {
       .list-content{
         padding:0 18px;
         max-height:217px;
-        overflow:hidden;
+        overflow:scroll;
         background:#FFFFFF;
 
         .food{
