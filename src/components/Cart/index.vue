@@ -22,7 +22,7 @@
     <div class="shopcart-list" v-show="couldShowList">
      <div class="list-header">
       <h1 class="title">购物车</h1>
-      <span class="empty">清空</span>
+      <span class="empty" @click="clearCart()">清空</span>
      </div>
      <div class="list-content">
       <ul>
@@ -39,14 +39,19 @@
    </transition>
 
   </div>
-  <div class="list-mask" v-show="couldShowList" @click="toggleIfShowList()"></div>
+  <transition name="fade">
+
+   <div class="list-mask" v-show="couldShowList" @click="toggleIfShowList()"></div>
+  </transition>
  </div>
 </template>
 
 
 <script>
+import BScroll from "better-scroll"
 import CartControl from "@/components/CartControl"
 import {mapState,mapGetters} from "vuex"
+import {MessageBox} from "mint-ui"
 
 export default {
   name:"Cart",
@@ -63,7 +68,17 @@ export default {
         this.ifShowList=false
         return false
       }
-      return this.ifShowList
+      //在购物车列表显示后实例化BScroll对象
+      if(this.ifShowList){
+        this.$nextTick(()=>{
+          if(!this.bscroll){
+            this.bscroll=new BScroll('.list-content',{click:true})
+          }else{
+            this.bscroll.refresh()
+          }
+        })
+        return this.ifShowList
+      }
     },
     ...mapState({
       foodsInCart:state=>state.shop.foodsInCart || [],
@@ -72,6 +87,12 @@ export default {
     ...mapGetters(['totalCount','totalPrice']),
   },
   methods:{
+    //清空购物车
+    clearCart(){
+      MessageBox.confirm('是否确定清空购物车?').then(action=>{
+        this.$store.dispatch('clearCart')
+      },()=>{})
+    },
     //判断当前是否满足起送价要求，返回css类
     payOrNotCLASS(){
       const {totalPrice}=this
@@ -275,7 +296,7 @@ export default {
       .list-content{
         padding:0 18px;
         max-height:217px;
-        overflow:scroll;
+        overflow:hidden;
         background:#FFFFFF;
 
         .food{
@@ -332,20 +353,20 @@ export default {
     position:fixed;
     top:0;
     left:0;
-    width:100%;
-    height:100%;
-    z-index:40;
+    width:100vw;
+    height:100vh;
+    z-index:45;
     backdrop-filter:blur(10px);
     opacity:1;
     background:rgba(7, 17, 27, 0.6);
 
     &.fade-enter-active, &.fade-leave-active{
-      transition:all .5s;
+      transition:all .3s;
     }
 
     &.fade-enter, &.fade-leave-to{
       opacity:0;
-      background:rgba(7, 17, 27, 0);
+      background:rgb(7, 17, 27);
     }
   }
 }

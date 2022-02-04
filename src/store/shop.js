@@ -16,6 +16,9 @@ const mutations={
   GETSHOPGOODS(state,shopGoods){
     state.goods=shopGoods
   },
+  GETSHOPRATINGS(state,shopRatings){
+    state.ratings=shopRatings
+  },
   ADDCOUNTOFFOOD(state,{food}){
     if(!food.count){
       //增加购买数量
@@ -39,6 +42,10 @@ const mutations={
       state.foodsInCart.splice(state.foodsInCart.indexOf(food),1)
     }
   },
+  CLEARCART(state){
+    state.foodsInCart.forEach((food)=>food.count=0)
+    state.foodsInCart=[]
+  },
 }
 
 const actions={
@@ -51,13 +58,20 @@ const actions={
     if(200==result.code) commit('GETSHOPGOODS',result.data.goods)
     callback && callback()
   },
+  async getShopRatings({commit},callback){
+    let result=await reqShopDetaial()
+    if(200==result.code) commit('GETSHOPRATINGS',result.data.ratings)
+    callback && callback()
+  },
   updateCountOfFood({commit},{flag,food}){
     if(flag){
       commit("ADDCOUNTOFFOOD",{food})
     }else{
       commit("MINUSCOUNTOFFOOD",{food})
     }
-
+  },
+  clearCart({commit}){
+    commit('CLEARCART')
   },
 }
 

@@ -28,26 +28,26 @@
    <div class="split"></div>
 
    <div class="ratingselect">
-    <div class="rating-type border-1px">
-     <span class="block positive" :class="{active: selectType===2}" @click="setSelectType(2)">
+    <div class="rating-type">
+     <span class="block positive" :class="{active: selectType===2}">
       全部<span class="count">{{ratings.length}}</span>
      </span>
-     <span class="block positive" :class="{active: selectType===0}" @click="setSelectType(0)">
+     <span class="block positive" :class="{active: selectType===0}">
       满意<span class="count">{{positiveSize}}</span>
      </span>
-     <span class="block negative" :class="{active: selectType===1}" @click="setSelectType(1)">
-      不满意<span class="count">{{ratings.length-positiveSize}}</span>
+     <span class="block negative" :class="{active: selectType===1}">
+      不满意<span class="count">{{ratings.length}}</span>
      </span>
     </div>
-    <div class="switch" :class="{on: onlyShowText}" @click="toggleOnlyShowText">
-     <span class="iconfont icon-check_circle"></span>
+    <div class="switch" :class="{on: onlyShowText}">
+     <span class="iconfont icon-direction-up"></span>
      <span class="text">只看有内容的评价</span>
     </div>
    </div>
 
    <div class="rating-wrapper">
     <ul>
-     <li class="rating-item" v-for="(rating, index) in filterRatings" :key="index">
+     <li class="rating-item" v-for="(rating, index) in ratings" :key="index">
       <div class="avatar">
        <img width="28" height="28" :src="rating.avatar">
       </div>
@@ -59,10 +59,10 @@
        </div>
        <p class="text">{{rating.text}}</p>
        <div class="recommend">
-        <span class="iconfont" :class="rating.rateType===0 ? 'icon-thumb_up' : 'icon-thumb_down'"></span>
+        <span class="iconfont" :class="rating.rateType===0 ? 'icon-direction-up' : 'icon-direction-down'"></span>
         <span class="item" v-for="(item, index) in rating.recommend" :key="index">{{item}}</span>
        </div>
-       <!--       <div class="time">{{rating.rateTime | date-format}}</div>-->
+              <div class="time">{{rating.rateTime}}</div>
       </div>
      </li>
     </ul>
@@ -72,33 +72,40 @@
 </template>
 
 <script>
-import BScroll from "better-scroll"
 import Star from "@/components/Star"
 import {mapState,mapGetters} from "vuex"
-
+import BScroll from "better-scroll"
 export default {
   name:"ShopRatings",
   data(){
-    return{
-
+    return {
+      selectType:0,
     }
+  },
+  mounted(){
+    this.$store.dispatch('getShopRatings',()=>{
+      this.$nextTick(()=>{
+        new BScroll(this.$refs.ratings)
+      })
+    })
   },
   computed:{
     ...mapState({
-      ratings:(state)=>state.shop.ratings || [],
       info:(state)=>state.shop.info || {},
+      ratings:(state)=>state.shop.ratings || [],
     }),
   },
+  components:{Star},
 }
 </script>
 
 <style scoped lang="less">
-.rating{
-  position:absolute;
-  top:195px;
-  bottom:0;
-  left:0;
-  width:100%;
+.ratings{
+  //position:absolute;
+  //top:230px;
+  //bottom:0;
+  //left:0;
+  width:100vw;
   overflow:hidden;
   background:#FFFFFF;
 
@@ -121,7 +128,7 @@ export default {
         margin-bottom:6px;
         line-height:28px;
         font-size:24px;
-        color:rgb(255, 153, 0);
+        color:purple;
       }
 
       .title{
@@ -168,7 +175,7 @@ export default {
           line-height:18px;
           vertical-align:top;
           font-size:12px;
-          color:rgb(255, 153, 0);
+          color:purple;
         }
       }
 
@@ -355,7 +362,7 @@ export default {
           }
 
           .icon-direction-up{
-            color:yellow;
+            color:purple;
           }
 
           .icon-direction-down{
