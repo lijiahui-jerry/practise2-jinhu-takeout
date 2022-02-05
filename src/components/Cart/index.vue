@@ -24,7 +24,7 @@
       <h1 class="title">购物车</h1>
       <span class="empty" @click="clearCart()">清空</span>
      </div>
-     <div class="list-content">
+     <div class="list-content" ref="cartList">
       <ul>
        <li class="food" v-for="(food, index) in foodsInCart" :key="index">
         <span class="name">{{food.name}}</span>
@@ -72,7 +72,7 @@ export default {
       if(this.ifShowList){
         this.$nextTick(()=>{
           if(!this.bscroll){
-            this.bscroll=new BScroll('.list-content',{click:true})
+            this.bscroll=new BScroll(this.$refs.cartList,{click:true})
           }else{
             this.bscroll.refresh()
           }

@@ -11,7 +11,6 @@ const state={
 const mutations={
   GETSHOPDETAIL(state,shopDetail){
     state.info=shopDetail.info
-    state.ratings=shopDetail.ratings
   },
   GETSHOPGOODS(state,shopGoods){
     state.goods=shopGoods
@@ -81,6 +80,9 @@ const getters={
   },
   totalPrice(state){
     return state.foodsInCart.reduce((preTotal,food)=>preTotal+food.count*food.price,0)
+  },
+  thumbsUpCount(state){
+    return state.ratings.reduce((preTotal,rating)=>preTotal+(rating.thumbsUp?1:0),0)
   },
 }
 

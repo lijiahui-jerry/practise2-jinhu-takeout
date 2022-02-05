@@ -9,7 +9,7 @@
 export default {
   name:"Star",
   props:{
-    rating:String,
+    rating:String | Number,
     size:String,
   },
   computed:{

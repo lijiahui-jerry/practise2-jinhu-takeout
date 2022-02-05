@@ -10,12 +10,12 @@
     <div class="overview-right">
      <div class="score-wrapper">
       <span class="title">服务态度</span>
-      <Star :score="info.serviceScore" :size="36"/>
+      <Star :rating="info.serviceScore" size="36"/>
       <span class="score">{{info.serviceScore}}</span>
      </div>
      <div class="score-wrapper">
       <span class="title">商品评分</span>
-      <Star :score="info.foodScore" :size="36"/>
+      <Star :rating="info.foodScore" size="36"/>
       <span class="score">{{info.foodScore}}</span>
      </div>
      <div class="delivery-wrapper">
@@ -29,17 +29,17 @@
 
    <div class="ratingselect">
     <div class="rating-type">
-     <span class="block positive" :class="{active: selectType===2}">
+     <span class="block positive" :class="{active: 0==showRatingType}" @click="toggleRatingType(0)">
       全部<span class="count">{{ratings.length}}</span>
      </span>
-     <span class="block positive" :class="{active: selectType===0}">
-      满意<span class="count">{{positiveSize}}</span>
+     <span class="block positive" :class="{active: 1==showRatingType}" @click="toggleRatingType(1)">
+      满意<span class="count">{{thumbsUpCount}}</span>
      </span>
-     <span class="block negative" :class="{active: selectType===1}">
-      不满意<span class="count">{{ratings.length}}</span>
+     <span class="block negative" :class="{active: 2==showRatingType}" @click="toggleRatingType(2)">
+      不满意<span class="count">{{thumbsDownCount}}</span>
      </span>
     </div>
-    <div class="switch" :class="{on: onlyShowText}">
+    <div class="switch" :class="{on: ifShowRatingsWithContent}" @click="toggleIfShowRatingsWithContent()">
      <span class="iconfont icon-direction-up"></span>
      <span class="text">只看有内容的评价</span>
     </div>
@@ -47,22 +47,22 @@
 
    <div class="rating-wrapper">
     <ul>
-     <li class="rating-item" v-for="(rating, index) in ratings" :key="index">
+     <li class="rating-item" v-for="(rating, index) in filteredRatings" :key="index">
       <div class="avatar">
        <img width="28" height="28" :src="rating.avatar">
       </div>
       <div class="content">
        <h1 class="name">{{rating.username}}</h1>
        <div class="star-wrapper">
-        <Star :score="rating.score" :size="24"/>
+        <Star :rating="rating.score" size="24"/>
         <span class="delivery">{{rating.deliveryTime}}</span>
        </div>
        <p class="text">{{rating.text}}</p>
        <div class="recommend">
-        <span class="iconfont" :class="rating.rateType===0 ? 'icon-direction-up' : 'icon-direction-down'"></span>
+        <span class="iconfont" :class="rating.thumbsUp ? 'icon-direction-up' : 'icon-direction-down'"></span>
         <span class="item" v-for="(item, index) in rating.recommend" :key="index">{{item}}</span>
        </div>
-              <div class="time">{{rating.rateTime}}</div>
+       <div class="time">{{rating.rateTime}}</div>
       </div>
      </li>
     </ul>
@@ -75,25 +75,70 @@
 import Star from "@/components/Star"
 import {mapState,mapGetters} from "vuex"
 import BScroll from "better-scroll"
+
 export default {
   name:"ShopRatings",
   data(){
     return {
-      selectType:0,
+      ifShowRatingsWithContent:true,
+      //要看的评价类型：0为全部，1为好评，2为差评
+      showRatingType:0,
     }
+  },
+  methods:{
+    //切换查看的评价类型
+    toggleRatingType(type){
+      this.showRatingType=type
+      /* 此处必须借助nextTick，使refresh等待DOM加载后同步完成，
+         直接refresh的话会因为DOM没有加载完成而报错 */
+      this.$nextTick(()=>{this.bscroll.refresh()})
+    },
+    //切换是否只看有内容的评价
+    toggleIfShowRatingsWithContent(){
+      this.ifShowRatingsWithContent= !this.ifShowRatingsWithContent
+      this.$nextTick(()=>{this.bscroll.refresh()})
+    },
   },
   mounted(){
     this.$store.dispatch('getShopRatings',()=>{
       this.$nextTick(()=>{
-        new BScroll(this.$refs.ratings)
+        this.bscroll=new BScroll(this.$refs.ratings,{click:true})
       })
     })
   },
   computed:{
+    //过滤评价数组
+    filteredRatings(){
+      const {ratings,ifShowRatingsWithContent,showRatingType}=this
+      if(ifShowRatingsWithContent && 1==showRatingType){
+        //好评且有评论内容的
+        return ratings.filter((rating)=>rating.text.length>0 && rating.thumbsUp)
+      }else if(ifShowRatingsWithContent && 2==showRatingType){
+        //差评且有评论内容的
+        return ratings.filter((rating)=>rating.text.length>0 && !rating.thumbsUp)
+      }else if(!ifShowRatingsWithContent && 1==showRatingType){
+        //好评但没评论内容的
+        return ratings.filter((rating)=>rating.thumbsUp)
+      }else if(!ifShowRatingsWithContent && 2==showRatingType){
+        //差评但没评论内容的
+        return ratings.filter((rating)=>!rating.thumbsUp)
+      }else if(ifShowRatingsWithContent && 0==showRatingType){
+        //全部有评论内容的
+        return ratings.filter((rating)=>rating.text.length>0)
+      }else{
+        //全部评论
+        return ratings
+      }
+    },
+    //根据评论数及好评数计算差评数
+    thumbsDownCount(){
+      return this.ratings.length-this.thumbsUpCount
+    },
     ...mapState({
       info:(state)=>state.shop.info || {},
       ratings:(state)=>state.shop.ratings || [],
     }),
+    ...mapGetters(['thumbsUpCount']),
   },
   components:{Star},
 }
@@ -101,10 +146,10 @@ export default {
 
 <style scoped lang="less">
 .ratings{
-  //position:absolute;
-  //top:230px;
-  //bottom:0;
-  //left:0;
+  position:absolute;
+  top:230px;
+  bottom:0;
+  left:0;
   width:100vw;
   overflow:hidden;
   background:#FFFFFF;
@@ -280,6 +325,7 @@ export default {
 
   .rating-wrapper{
     padding:0 18px;
+    overflow:hidden;
 
     .rating-item{
       display:flex;

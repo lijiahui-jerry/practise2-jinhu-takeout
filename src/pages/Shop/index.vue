@@ -20,7 +20,7 @@ import ShopRatings from "@/pages/Shop/ShopRatings"
 export default {
   name:"Shop",
   mounted(){
-    this.$store.dispatch('getShopDetail')
+    this.$store.dispatch('getShopDetail','getShopRatings')
   },
   methods:{
     //通过url判断当前哪个bar该active
@@ -43,24 +43,6 @@ export default {
     background:#FFFFFF;
     display:flex;
     position:relative;
-
-    &::after{
-      content:'';
-      position:absolute;
-      left:0;
-      right:0;
-      bottom:7px;
-      height:1px;
-      background-color:#E4E4E4;
-      @media screen{
-        @media (-webkit-device-pixel-ratio:2){
-          transform:scaleY(0.5);
-        }
-        @media (-webkit-device-pixel-ratio:3){
-          transform:scaleY(0.3);
-        }
-      }
-    }
 
     .bar{
       flex-grow:1;
