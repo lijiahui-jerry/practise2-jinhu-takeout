@@ -89,7 +89,7 @@ export default {
     //切换查看的评价类型
     toggleRatingType(type){
       this.showRatingType=type
-      /* 此处必须借助nextTick，使refresh等待DOM加载后同步完成，
+      /* 此处必须借助nextTick，使refresh在等待DOM加载完成后进行，
          直接refresh的话会因为DOM没有加载完成而报错 */
       this.$nextTick(()=>{this.bscroll.refresh()})
     },
