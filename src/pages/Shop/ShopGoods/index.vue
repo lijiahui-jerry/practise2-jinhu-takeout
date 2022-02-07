@@ -6,7 +6,7 @@
      <li class="menu-item" v-for="(good, index) in goods" :key="index"
          :class="{current: index===currentIndex}" @click="menuJumpTo(index)">
       <span class="text">
-       <img class="icon" :src="good.icon" v-if="good.icon">
+       <img class="icon" v-lazy="good.icon" v-if="good.icon">
        {{good.name}}
       </span>
      </li>
@@ -19,7 +19,7 @@
       <ul>
        <li class="food-item" v-for="(food, index) in good.foods" :key="index" @click="showFoodDetail(food)">
         <div class="icon">
-         <img width="57" height="57" :src="food.icon">
+         <img width="57" height="57" v-lazy="food.icon">
         </div>
         <div class="content">
          <h2 class="name">{{food.name}}</h2>

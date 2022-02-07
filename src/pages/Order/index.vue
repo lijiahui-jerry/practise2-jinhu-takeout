@@ -22,7 +22,6 @@ export default {
   methods:{
     //判断是否登录
     ifLogged(){
-      console.log(localStorage.getItem('userId'))
       return localStorage.getItem('userId')
     },
   },

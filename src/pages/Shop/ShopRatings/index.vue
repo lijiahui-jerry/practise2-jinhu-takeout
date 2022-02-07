@@ -62,7 +62,7 @@
         <span class="iconfont" :class="rating.thumbsUp ? 'icon-direction-up' : 'icon-direction-down'"></span>
         <span class="item" v-for="(item, index) in rating.recommend" :key="index">{{item}}</span>
        </div>
-       <div class="time">{{rating.rateTime}}</div>
+       <div class="time">{{rating.rateTime|dateFormat}}</div>
       </div>
      </li>
     </ul>
@@ -147,7 +147,7 @@ export default {
 <style scoped lang="less">
 .ratings{
   position:absolute;
-  top:230px;
+  top:184px;
   bottom:0;
   left:0;
   width:100vw;

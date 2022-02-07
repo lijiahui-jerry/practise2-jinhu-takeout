@@ -11,7 +11,7 @@
     <li class="items" v-for="(shop,index) in shops" :key="shops.id" @click="$router.push('shop')">
      <a>
       <!-- 商家图片 -->
-      <div class="item-img"><img :src="shop.image"></div>
+      <div class="item-img"><img v-lazy="shop.image"></div>
       <!-- 商家详细信息第一行 -->
       <div class="line1-container">
        <!-- 是否推荐、商家名、提供的保障 -->

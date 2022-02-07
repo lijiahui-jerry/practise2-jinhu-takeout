@@ -5,7 +5,7 @@
   </div>
   <div class="brief">
    <div class="avatar">
-    <img :src="info.avatar">
+    <img v-lazy="info.avatar">
    </div>
    <div class="brief-content">
     <h2 class="shop-name">{{info.name}}</h2>
@@ -60,7 +60,7 @@ export default {
   methods:{
     //判断是否有优惠信息并显示有几个优惠
     ifShowDetail(){
-      if(this.info.supports) return this.info.supports.length
+      if(this.info.supports && this.$route.path.indexOf('shop/goods')!= -1) return this.info.supports.length
       return false
     },
     //切换优惠显示的形式，缩略或完整

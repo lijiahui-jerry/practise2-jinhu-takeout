@@ -1,14 +1,12 @@
 <template>
- <div>
-  <section class="search">
+ <div class="search">
    <!-- 搜索页头部 -->
    <Header title="搜索"></Header>
 
    <form class="search_form" action="#">
     <input type="search" name="search" placeholder="请输入商家或美食名称" class="search_input">
-    <input type="submit" name="submit" class="search_submit">
+    <input type="submit" name="submit" class="search_submit" >
    </form>
-  </section>
  </div>
 </template>
 
@@ -16,6 +14,8 @@
 import Header from "@/components/Header"
 
 export default {
+  methods:{
+  },
   name:"Search",
   components:{Header},
 

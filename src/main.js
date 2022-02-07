@@ -8,8 +8,8 @@ import '@/mock/mockServe'
 import 'swiper/dist/css/swiper.min.css'
 import Mint from 'mint-ui'
 import 'mint-ui/lib/style.min.css'
-
-Vue.use(VueLazyload,{loading:loading})
+import './filters'
+Vue.use(VueLazyload,{loading})
 Vue.use(Mint)
 
 Vue.config.productionTip=false

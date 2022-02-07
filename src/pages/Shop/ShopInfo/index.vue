@@ -17,8 +17,7 @@
    <section class="section">
     <h3 class="section-title">活动与服务</h3>
     <div class="activity">
-     <div class="activity-item" v-for="(support, index) in info.supports" :key="index"
-          :class="supportClasses[support.type]">
+     <div class="activity-item activity" v-for="(support, index) in info.supports" :key="index">
       <span class="content-tag">
        <span class="mini-tag">{{support.name}}</span>
       </span>
@@ -32,7 +31,7 @@
    <section class="section">
     <h3 class="section-title">商家实景</h3>
     <div class="pic-wrapper">
-     <ul class="pic-list" ref="picsUl">
+     <ul class="pic-list" ref="pics">
       <li class="pic-item" v-for="(pic, index) in info.pics" :key="index">
        <img width="120" height="90" :src="pic"/>
       </li>
@@ -57,21 +56,31 @@
 
 <script>
 import {mapState} from "vuex"
+import BScroll from "better-scroll"
 
 export default {
   name:"ShopInfo",
-  data(){
-    return {
-      supportClasses:['activity-green','activity-red','activity-orange'],
-    }
-  },
   mounted(){
     if(!this.info.pics) return
+    this._newBScroll()
+  },
+  watch:{
+    info(){
+      this.$nextTick(()=>{
+        this._newBScroll()
+      })
+    },
   },
   methods:{
-    _initScroll(){
+    _newBScroll(){
+      const liWidth=120
+      const liMarginRight=6
+      const picCount=this.info.pics.length
+      this.$refs.pics.style.width=(liWidth+liMarginRight)*picCount-liMarginRight+'px'
 
-    }
+      new BScroll('.shop-info')
+      new BScroll('.pic-wrapper',{scrollX:true})
+    },
   },
   computed:{
     ...mapState({
@@ -83,6 +92,10 @@ export default {
 
 <style scoped lang="less">
 .shop-info{
+  position:absolute;
+  top:184px;
+  bottom:0;
+  left:0;
   width:100vw;
   background:#FFFFFF;
   overflow:hidden;
@@ -137,21 +150,9 @@ export default {
         font-size:13px;
         align-items:center;
 
-        &.activity-green{
+        &.activity{
           .content-tag{
-            background-color:rgb(112, 188, 70);
-          }
-        }
-
-        &.activity-red{
-          .content-tag{
-            background-color:rgb(240, 115, 115);
-          }
-        }
-
-        &.activity-orange{
-          .content-tag{
-            background-color:rgb(241, 136, 79);
+            background-color:#684E94;
           }
         }
 
@@ -183,12 +184,11 @@ export default {
     }
 
     .pic-wrapper{
-      width:100%;
-      overflow:hidden;
-      white-space:nowrap;
       margin-top:16px;
 
       .pic-list{
+        overflow:hidden;
+        white-space:nowrap;
         font-size:0;
 
         .pic-item{
@@ -198,7 +198,7 @@ export default {
           height:90px;
 
           &:last-child{
-            margin:0;
+            margin-right:0;
           }
         }
       }

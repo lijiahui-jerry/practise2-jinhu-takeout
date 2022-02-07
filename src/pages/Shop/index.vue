@@ -7,7 +7,10 @@
    <div class="bar" :class="ifActive('ratings')?'bar-active':''" @click="$router.replace('/shop/ratings')">评价</div>
    <div class="bar" :class="ifActive('info')?'bar-active':''" @click="$router.replace('/shop/info')">商家</div>
   </div>
-  <router-view></router-view>
+  <!-- 路由缓存，避免频繁加载及购买数量bug -->
+  <keep-alive>
+   <router-view></router-view>
+  </keep-alive>
  </div>
 </template>
 

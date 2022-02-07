@@ -6,7 +6,7 @@
     <div class="swiper-slide" v-for="(navPages,index) in navigationArr" :key="index">
      <div class="nav-link" v-for="(nav) in navPages" :key="nav.id">
       <div class="img-container">
-       <img :src="nav.image" :alt="nav.description">
+       <img v-lazy="nav.image" :alt="nav.description">
       </div>
       <span>{{nav.title}}</span>
      </div>
