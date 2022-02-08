@@ -40,8 +40,10 @@
 
   </div>
   <transition name="fade">
-
-   <div class="list-mask" v-show="couldShowList" @click="toggleIfShowList()"></div>
+<!-- 购物车列表的遮罩 -->
+    <div class="list-cover" v-show="couldShowList"
+         @click="toggleIfShowList()">
+    </div>
   </transition>
  </div>
 </template>
@@ -121,13 +123,13 @@ export default {
 
 <style scoped lang="less">
 .cart{
+  height:50px;
   .shopcart{
-    position:fixed;
+    position:absolute;
     left:0;
+    right:0;
     bottom:0;
     z-index:50;
-    width:100%;
-    height:48px;
 
     .content{
       display:flex;
@@ -349,16 +351,16 @@ export default {
     }
   }
 
-  .list-mask{
+  .list-cover{
     position:fixed;
     top:0;
     left:0;
     width:100vw;
     height:100vh;
-    z-index:45;
+    z-index:49;
     backdrop-filter:blur(10px);
     opacity:1;
-    background:rgba(7, 17, 27, 0.6);
+    background:rgba(7, 17, 27, .7);
 
     &.fade-enter-active, &.fade-leave-active{
       transition:all .3s;

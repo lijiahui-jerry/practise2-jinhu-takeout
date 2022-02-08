@@ -307,7 +307,7 @@ export default {
                 color:#666666;
               }
 
-              //分割号
+              //分割号/
               .segmentation{
                 color:#2D1C4D;
               }

@@ -1,48 +1,56 @@
 <template>
- <div class="container">
+ <div class="shop-goods">
   <div class="goods">
+   <!-- 左侧菜单 -->
    <div class="menu-wrapper">
     <ul>
      <li class="menu-item" v-for="(good, index) in goods" :key="index"
          :class="{current: index===currentIndex}" @click="menuJumpTo(index)">
-      <span class="text">
-       <img class="icon" v-lazy="good.icon" v-if="good.icon">
-       {{good.name}}
-      </span>
+      <span class="food-item-name">{{good.name}}</span>
      </li>
     </ul>
    </div>
+   <!-- 右侧餐品 -->
    <div class="foods-wrapper">
-    <ul ref="foodsUl">
-     <li class="food-list-hook" v-for="(good, index) in goods" :key="index">
-      <h1 class="title">{{good.name}}</h1>
+    <!-- 包裹所有餐品的大ul -->
+    <ul ref="foods">
+     <li class="food-list" v-for="(good, index) in goods" :key="index">
+      <!-- 餐品对应左侧菜单分类的header -->
+      <h3 class="food-header-name">{{good.name}}</h3>
+      <!-- 包裹每个分类的小ul -->
       <ul>
-       <li class="food-item" v-for="(food, index) in good.foods" :key="index" @click="showFoodDetail(food)">
-        <div class="icon">
-         <img width="57" height="57" v-lazy="food.icon">
+       <li class="food-item" v-for="(food, index) in good.foods" :key="index"
+           @click="showFoodDetail(food)">
+        <!-- 餐品图片 -->
+        <div class="food-img">
+         <img width="60" height="60" v-lazy="food.icon">
         </div>
-        <div class="content">
-         <h2 class="name">{{food.name}}</h2>
+        <!-- 餐品简介 -->
+        <div class="brief">
+         <h3 class="name">{{food.name}}</h3>
          <p class="desc">{{food.description}}</p>
-         <div class="extra">
-          <span class="count">月售{{food.sellCount}}份</span>
-          <span>好评率{{food.rating}}%</span>
+         <!-- 销售情况 -->
+         <div class="sells-situation">
+          <span>月售{{food.sellCount}}份</span>
+          <span>好评{{food.rating}}%</span>
          </div>
+         <!-- 价格情况 -->
          <div class="price">
-          <span class="now">￥{{food.price}}</span>
-          <span class="old" v-if="food.oldPrice">￥{{food.oldPrice}}</span>
+          <span class="old" v-if="food.oldPrice">￥{{food.oldPrice}}&nbsp;</span>
+          <span class="new">￥{{food.price}}</span>
          </div>
-         <div class="cart-control-container">
-          <CartControl :food="food"/>
-         </div>
+         <!-- 购物车行为控制 -->
+         <CartControl class="cart-control" :food="food"></CartControl>
         </div>
        </li>
       </ul>
      </li>
     </ul>
    </div>
-   <Cart></Cart>
   </div>
+  <!-- 购物车 -->
+  <Cart></Cart>
+  <!-- 点击后全屏显示餐品详情 -->
   <Food :food="food" ref="food"/>
  </div>
 </template>
@@ -60,7 +68,8 @@ export default {
   data(){
     return {
       scrollY:0,
-      tops:[],
+      //用于存放右侧每个小ul的Y轴位置
+      menuItemPositions:[],
       food:{},
     }
   },
@@ -70,27 +79,28 @@ export default {
     }),
     //计算当前右侧分类的下标
     currentIndex(){
-      const {scrollY,tops}=this
-      return tops.findIndex((top,index)=>{
-        //寻找一个下标，这个下标所对应的元素不但要位于当前滑动高度之前，还要位于下一个元素之前（上一个元素-所找元素-下一个元素）
-        return top<=scrollY && scrollY<tops[index+1]
+      const {scrollY,menuItemPositions}=this
+      return menuItemPositions.findIndex((top,index)=>{
+        //寻找一个下标，这个下标所对应的元素不但要位于当前滑动高度之前，还要位于下一个元素之前
+        //上一个元素->所找元素->下一个元素
+        return top<=scrollY && scrollY<menuItemPositions[index+1]
       })
     },
   },
   methods:{
-    //显示餐品的详细信息
+    //全屏显示餐品的详细信息
     showFoodDetail(food){
       this.food=food
       this.$refs.food.toggleIfShow()
     },
-    //点击左侧菜单，右侧滑动至相应位置
+    //点击左侧菜单，右侧自动滑动至相应小ul
     menuJumpTo(index){
-      const y=this.tops[index]
+      const y=this.menuItemPositions[index]
       this.scrollY=y
       this.foodsScroll.scrollTo(0,-y,200)
     },
-    //初始化BS相关的信息
-    _initScroll(){
+    //创建BScroll
+    newScroll(){
       new BScroll('.menu-wrapper',{
         click:true,
       })
@@ -103,24 +113,35 @@ export default {
         this.scrollY=Math.abs(y)
       })
     },
-    //初始化右侧分类菜单位置相关的信息
-    _initTops(){
-      const tops=[]
-      let top=0
-      tops.push(top)
-      const lis=this.$refs.foodsUl.getElementsByClassName('food-list-hook')
+    //右侧分类菜单位置相关的信息
+    initialMenuItemPositions(){
+      const menuItemPositions=[]
+      let pos=0
+      //首个分类菜单的位置一定是0，最顶部
+      menuItemPositions.push(pos)
+
+      const lis=this.$refs.foods.getElementsByClassName('food-list')
+      /*************************************************
+       * 为什么要这样写？                                  *
+       * 得到的HTMLCollection并不是一个数组，而是一个对象，    *
+       * 所以它不能直接使用数组的forEach（它甚至没有这个方法）。 *
+       * 因此需要先将它转换为数组：                          *
+       *  1.使用from()，将对象转为数组                      *
+       *  2.使用slice，将对象切分为数组                     *
+       *************************************************/
       Array.prototype.slice.call(lis).forEach((li)=>{
-        top+=li.clientHeight
-        tops.push(top)
+        pos+=li.clientHeight
+        menuItemPositions.push(pos)
       })
-      this.tops=tops
+
+      this.menuItemPositions=menuItemPositions
     },
   },
   mounted(){
     this.$store.dispatch('getShopGoods',()=>{
       this.$nextTick(()=>{
-        this._initScroll()
-        this._initTops()
+        this.newScroll()
+        this.initialMenuItemPositions()
       })
     })
   },
@@ -128,20 +149,20 @@ export default {
 </script>
 
 <style scoped lang="less">
-.container{
+.shop-goods{
+  /*
+  调试日记 2022-02-08
+   多次修改position类型及位置属性无果后，发现Cart组件放在了goods类中，移出后正常。
+   */
+
   .goods{
     display:flex;
     background:#FFFFFF;
-    height:68vh;
-    @media screen{
-      @media (-webkit-device-pixel-ratio:3){
-        height:68vh;
-      }
-      @media (-webkit-device-pixel-ratio:2){
-        height:60vh;
-      }
-    }
-    overflow:scroll;
+    position:absolute;
+    top:220px;
+    bottom:50px;
+    left:0;
+    overflow:hidden;
 
     .menu-wrapper{
       flex:0 0 80px;
@@ -149,165 +170,147 @@ export default {
       background:#F3F5F7;
 
       .menu-item{
-        display:table;
-        height:54px;
-        width:56px;
+        display:inline-block;
+        height:50px;
+        width:60px;
         padding:0 12px;
-        line-height:14px;
-
-        &.current{
-          position:relative;
-          z-index:10;
-          margin-top:-1px;
-          background:#FFFFFF;
-          color:green;
-          font-weight:1000;
-
-          .text{
-            border-style:none;
-          }
-        }
-
-        .icon{
-          display:inline-block;
-          vertical-align:top;
-          width:12px;
-          height:12px;
-          margin-right:2px;
-          background-size:12px 12px;
-          background-repeat:no-repeat;
-        }
-
-        .text{
-          display:table-cell;
-          width:56px;
-          vertical-align:middle;
-          position:relative;
-          border:none;
-
-          &::after{
-            content:'';
-            position:absolute;
-            left:0;
-            bottom:0;
-            width:100%;
-            background:rgba(7, 17, 27, 0.1);
-            height:1px;
-            @media screen{
-              @media (-webkit-device-pixel-ratio:3){
-                transform:scaleY(0.5);
-              }
-              @media (-webkit-device-pixel-ratio:2){
-                transform:scaleY(0.3);
-              }
-            }
-          }
-
-          font-size:12px;
-        }
-      }
-
-    }
-
-    .foods-wrapper{
-      flex:1;
-
-      .title{
-        padding-left:14px;
-        height:26px;
-        line-height:26px;
-        border-left:2px solid #D9DDE1;
-        font-size:12px;
-        color:rgb(147, 153, 159);
-        background:rgba(7, 17, 27, 0.1);
-      }
-
-      .food-item{
-        display:flex;
-        margin:18px;
-        padding-bottom:18px;
+        line-height:50px;
         position:relative;
-        border:none;
 
         &::after{
           content:'';
           position:absolute;
-          left:0;
-          bottom:0;
-          width:100%;
-          background-color:#D9DDE1;
+          top:0;
+          left:10%;
+          right:10%;
+          background:rgba(0, 0, 0, .1);
           height:1px;
           @media screen{
-            @media (-webkit-device-pixel-ratio:3){
+            @media (-webkit-device-pixel-ratio:2){
               transform:scaleY(0.5);
             }
-            @media (-webkit-device-pixel-ratio:2){
+            @media (-webkit-device-pixel-ratio:3){
               transform:scaleY(0.3);
             }
           }
         }
 
-        &:last-child{
-          border-style:none;
-          margin-bottom:0;
+        &.current{
+          margin:-1px 0;
+          background:#FFFFFF;
+          color:#684E94;
+          font-weight:1000;
         }
 
-        .icon{
-          flex:0 0 57px;
+        .food-item-name{
+          font-size:12px;
+          width:56px;
+        }
+      }
+    }
+
+    .foods-wrapper{
+      //flex:1;
+
+      .food-header-name{
+        font-size:12px;
+        padding-left:1em;
+        height:2em;
+        line-height:2em;
+        border-left:2px solid #999999;
+        color:#666666;
+        background:rgba(7, 17, 27, 0.1);
+      }
+
+      .food-item{
+        display:flex;
+        margin:16px;
+        padding-bottom:16px;
+        position:relative;
+
+        &::after{
+          content:'';
+          position:absolute;
+          bottom:0;
+          left:0;
+          right:0;
+          background-color:#D9DDE1;
+          height:1px;
+          @media screen{
+            @media (-webkit-device-pixel-ratio:2){
+              transform:scaleY(0.5);
+            }
+            @media (-webkit-device-pixel-ratio:3){
+              transform:scaleY(0.3);
+            }
+          }
+        }
+
+        //每个小类中的最后一个餐品
+        &:last-child{
+          margin-bottom:0;
+
+          &::after{
+            height:0;
+          }
+        }
+
+        //餐品照片
+        .food-img{
+          flex:0 0 60px;
           margin-right:10px;
         }
 
-        .content{
-          flex:1;
-
+        .brief{
           .name{
-            margin:2px 0 8px 0;
-            height:14px;
-            line-height:14px;
-            font-size:14px;
-            color:rgb(7, 17, 27);
-          }
-
-          .desc, .extra{
-            line-height:10px;
-            font-size:10px;
-            color:rgb(147, 153, 159);
+            font-size:15px;
+            height:1em;
+            line-height:1em;
+            margin:2px 0 4px;
           }
 
           .desc{
-            line-height:12px;
-            margin-bottom:8px;
+            font-size:12px;
+            line-height:1em;
+            color:#999999;
+            margin-bottom:6px;
           }
 
-          .extra{
-            .count{
-              margin-right:12px;
+          .sells-situation{
+            font-size:12px;
+            line-height:1em;
+            color:#999999;
+
+            & > span{
+              margin-right:1em;
+
+              &:last-child{
+                margin:0;
+              }
             }
           }
 
           .price{
-            font-weight:700;
+            font-weight:1000;
             line-height:24px;
 
-            .now{
-              margin-right:8px;
-              font-size:14px;
-              color:rgb(240, 20, 20);
+            .new{
+              font-size:16px;
+              color:red;
             }
 
             .old{
               text-decoration:line-through;
-              font-size:10px;
-              color:rgb(147, 153, 159);
+              font-size:12px;
+              color:gray;
             }
           }
         }
 
-
-        .cart-control-container{
+        .cart-control{
           position:absolute;
           right:0;
-          bottom:12px;
+          bottom:0;
         }
       }
     }

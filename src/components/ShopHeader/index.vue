@@ -73,7 +73,6 @@ export default {
 
 <style scoped lang="less">
 .shop-header{
-  width:100%;
   position:relative;
   background:#FFFFFF;
   overflow:hidden;
@@ -123,7 +122,6 @@ export default {
       top:-36px;
       left:50%;
       transform:translateX(-50%);
-      z-index:400;
       width:66px;
       height:66px;
       border-radius:4px;
@@ -233,6 +231,8 @@ export default {
       padding:2px;
       border-radius:4px;
       position:relative;
+      z-index:50;
+      background-color:#FFFFFF;
 
       //活动的标签和具体信息
       .discount-left{

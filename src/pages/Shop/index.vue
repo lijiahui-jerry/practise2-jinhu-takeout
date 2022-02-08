@@ -37,9 +37,8 @@ export default {
 
 <style scoped lang="less">
 .shop{
-  width:100%;
   height:100vh;
-
+  width:100vw;
   .nav-bar{
     height:40px;
     width:100%;

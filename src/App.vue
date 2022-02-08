@@ -16,7 +16,6 @@ export default {
 
 <style scoped lang="less">
 *{
-  max-height:100vh;
 
   a{
     text-decoration:none;

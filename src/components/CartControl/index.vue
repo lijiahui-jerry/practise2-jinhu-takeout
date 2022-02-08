@@ -1,4 +1,5 @@
 <template>
+<!-- 添加至购物车或控制购物车中餐品数量 -->
  <div class="cart-control">
   <transition name="roll">
    <!-- 餐品数量减一 -->

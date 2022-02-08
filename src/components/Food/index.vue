@@ -1,30 +1,37 @@
 <template>
- <div class="food" v-if="ifShow">
-  <div class="food-content">
-   <div class="image-header">
-    <img v-lazy="food.image">
-    <p class="foodpanel-desc">{{food.info}}</p>
-    <div class="back" @click="toggleIfShow()">
-     <i class="iconfont icon-direction-up"></i>
-    </div>
-   </div>
+ <transition name="fade">
+  <div class="food" v-if="ifShow">
+   <!-- 餐品详情 -->
    <div class="content">
-    <h1 class="title">{{food.name}}</h1>
-    <div class="detail">
-     <span class="sell-count">月售{{food.sellCount}}份</span>
-     <span class="rating">好评率{{food.rating}}%</span>
+    <!-- 上半部分 -->
+    <div class="up">
+     <!-- 餐品照片 -->
+     <img v-lazy="food.image">
+     <!-- 返回按钮 -->
+     <div class="back" @click="toggleIfShow()">
+      <i class="iconfont icon-direction-up"></i>
+     </div>
     </div>
-    <div class="price">
-     <span class="now">￥{{food.price}}</span>
-     <span class="old" v-show="food.oldPrice">￥{{food.oldPrice}}</span>
-    </div>
-    <div class="cart-control-container">
-     <CartControl :food="food"/>
+    <!-- 下半部分 -->
+    <div class="down">
+     <h3 class="food-name">{{food.name}}</h3>
+     <!-- 餐品用料 -->
+     <p class="components">{{food.info}}</p>
+     <div class="sells-detail">
+      <span class="counts">月售{{food.sellCount}}份&nbsp;</span>
+      <span class="rating">好评{{food.rating}}%</span>
+     </div>
+     <div class="price">
+      <span class="old" v-show="food.oldPrice">￥{{food.oldPrice}}&nbsp;</span>
+      <span class="new">￥{{food.price}}</span>
+     </div>
+     <CartControl class="cart-control" :food="food"/>
     </div>
    </div>
+   <!-- 遮罩 -->
+   <div class="cover" @click="toggleIfShow()"></div>
   </div>
-  <div class="food-cover" @click="toggleIfShow()"></div>
- </div>
+ </transition>
 </template>
 
 <script>
@@ -52,37 +59,30 @@ export default {
 
 <style scoped lang="less">
 .food{
-  position:fixed;
-  left:0;
+  width:100vw;
+  height:100vh;
+  position:absolute;
   top:0;
-  bottom:48px;
-  z-index:1400;
-  width:100%;
+  left:0;
+  z-index:50;
+  backdrop-filter:blur(10px);
 
-  &.fade-enter-active, &.fade-leave-active{
-    transition:opacity .5s;
-  }
-
-  &.fade-enter, &.fade-leave-to{
-    opacity:0;
-  }
-
-  .food-content{
+  .content{
     position:absolute;
     left:50%;
     top:50%;
-    transform:translate(-50%, 50%);
+    transform:translate(-50%, -50%);
     width:80%;
-    height:65%;
-    z-index:50;
+    height:60%;
+    z-index:51;
     background:#FFFFFF;
-    border-radius:5px;
+    border-radius:10px;
+    overflow:hidden;
 
-    .image-header{
+    .up{
       position:relative;
       width:100%;
-      height:0;
-      padding-top:100%;
+      height:60%;
 
       img{
         position:absolute;
@@ -92,116 +92,97 @@ export default {
         height:100%;
       }
 
-      .foodpanel-desc{
-        font-size:10px;
-        color:#DDDDDD;
-        letter-spacing:0;
-        position:absolute;
-        bottom:0;
-        left:0;
-        right:0;
-        padding:0 10px 10px;
-      }
-
       .back{
         position:absolute;
-        top:10px;
+        top:0;
         left:0;
 
         .icon-direction-up{
-          display:block;
-          padding:10px;
-          font-size:20px;
           color:#FFFFFF;
+          font-size:24px;
+          display:block;
+          //用padding实现定位，而不是直接靠position，这样按钮会更容易被点到
+          padding:30px 20px;
         }
       }
     }
 
-    .content{
+    .down{
       position:relative;
-      padding:18px;
+      padding:24px;
+      height:30%;
 
-      .title{
-        line-height:14px;
-        margin-bottom:8px;
-        font-size:14px;
+      .food-name{
+        line-height:18px;
+        margin-bottom:10px;
+        font-size:18px;
         font-weight:1000;
-        color:rgb(7, 17, 27);
       }
 
-      .detail{
-        margin-bottom:18px;
-        line-height:10px;
-        height:10px;
-        font-size:0;
+      .components{
+        font-size:12px;
+        color:#999999;
+      }
 
-        .sell-count, .rating{
-          font-size:10px;
-          color:rgb(147, 153, 159);
-        }
-
-        .sell-count{
-          font-size:12px;
-        }
+      .sells-detail{
+        margin:10px 0;
+        font-size:14px;
+        color:#999999;
       }
 
       .price{
         font-weight:1000;
-        line-height:24px;
+        position:absolute;
+        left:10%;
+        bottom:10%;
 
-        .now{
-          margin-right:8px;
-          font-size:14px;
-          color:rgb(240, 20, 20);
+        .new{
+          margin-left:8px;
+          font-size:30px;
+          color:red;
         }
 
         .old{
           text-decoration:line-through;
-          font-size:10px;
-          color:rgb(147, 153, 159);
+          font-size:12px;
+          color:gray;
         }
       }
 
-      .cart-control-container{
+      .cart-control{
         position:absolute;
-        right:12px;
-        bottom:12px;
-      }
-
-      .buy{
-        position:absolute;
-        right:18px;
-        bottom:18px;
-        z-index:10;
-        height:24px;
-        line-height:24px;
-        padding:0 12px;
-        box-sizing:border-box;
-        border-radius:12px;
-        font-size:10px;
-        color:#FFFFFF;
-        background:rgb(0, 160, 220);
-
-        &.fade-transition{
-          transition:all .2s;
-          opacity:1;
-        }
-
-        &.fade-enter, &.fade-leave{
-          opacity:0;
-        }
+        right:5%;
+        bottom:5%;
       }
     }
   }
 
-  .food-cover{
-    position:absolute;
+  &.fade-enter-active, &.fade-leave-active{
+    transition:all .3s;
+  }
+
+  &.fade-enter, &.fade-leave-to{
+    opacity:0;
+    background:rgb(7, 17, 27);
+  }
+
+  //遮罩
+  .cover{
+    position:fixed;
     top:0;
     right:0;
-    bottom:-48px;
-    left:0;
-    z-index:155;
-    background-color:rgba(0, 0, 0, .5);
+    width:100vw;
+    height:100vh;
+    background:rgba(0, 0, 0, .7);
+  }
+
+  &.fade-enter-active, &.fade-leave-active{
+    transition:all .3s;
+  }
+
+  &.fade-enter, &.fade-leave-to{
+    opacity:0;
+    background:#000000;
   }
 }
 </style>
