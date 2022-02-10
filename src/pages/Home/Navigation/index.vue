@@ -1,10 +1,10 @@
 <template>
  <!-- 首页商家导航 -->
- <nav class="nav">
+ <div class="nav">
   <div class="swiper-container" ref="mySwiper">
    <div class="swiper-wrapper">
     <div class="swiper-slide" v-for="(navPages,index) in navigationArr" :key="index">
-     <div class="nav-link" v-for="(nav) in navPages" :key="nav.id">
+     <div class="nav-link" v-for="(nav) in navPages" :key="nav.id" @click="$router.push(nav.link)">
       <div class="img-container">
        <img v-lazy="nav.image" :alt="nav.description">
       </div>
@@ -15,7 +15,7 @@
    <!-- 分页器 -->
    <div class="swiper-pagination"></div>
   </div>
- </nav>
+ </div>
 </template>
 
 <script>
@@ -65,7 +65,7 @@ export default {
   position:relative;
   margin-top:50px;
   height:220px;
-  background:#FFFFFF;
+  background:#F7F7F7;
 
   //swiper插件
   .swiper-container{

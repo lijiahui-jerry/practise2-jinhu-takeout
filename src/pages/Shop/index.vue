@@ -37,14 +37,30 @@ export default {
 
 <style scoped lang="less">
 .shop{
-  height:100vh;
-  width:100vw;
   .nav-bar{
     height:40px;
     width:100%;
     background:#FFFFFF;
     display:flex;
     position:relative;
+
+    &::before{
+      content:'';
+      position:absolute;
+      top:4px;
+      left:0;
+      right:0;
+      background-color:rgba(0, 0, 0, .1);
+      height:1px;
+      @media screen{
+        @media (-webkit-device-pixel-ratio:2){
+          transform:scaleY(0.5);
+        }
+        @media (-webkit-device-pixel-ratio:3){
+          transform:scaleY(0.3);
+        }
+      }
+    }
 
     .bar{
       flex-grow:1;

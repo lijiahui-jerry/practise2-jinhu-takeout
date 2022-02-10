@@ -60,7 +60,7 @@ export default {
 <style scoped lang="less">
 .food{
   width:100vw;
-  height:100vh;
+  height:100%;
   position:absolute;
   top:0;
   left:0;
@@ -163,7 +163,7 @@ export default {
 
   &.fade-enter, &.fade-leave-to{
     opacity:0;
-    background:rgb(7, 17, 27);
+    background:rgb(0, 0, 0);
   }
 
   //遮罩
@@ -172,7 +172,7 @@ export default {
     top:0;
     right:0;
     width:100vw;
-    height:100vh;
+    height:100%;
     background:rgba(0, 0, 0, .7);
   }
 

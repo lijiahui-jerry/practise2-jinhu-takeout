@@ -57,6 +57,54 @@ export default [
       },
     ],
   },
+  {
+    name:'breakfastReserve',
+    path:'/breakfastReserve',
+    component:()=>import('@/pages/BreakfastReserve'),
+    meta:{showFooter:false},
+  },
+  {
+    name:'communityActivities',
+    path:'/communityActivities',
+    component:()=>import('@/pages/CommunityActivities'),
+    meta:{showFooter:false},
+  },
+  {
+    name:'educationSupermarket',
+    path:'/educationSupermarket',
+    component:()=>import('@/pages/EducationSupermarket'),
+    meta:{showFooter:false},
+  },
+  {
+    name:'errand',
+    path:'/errand',
+    component:()=>import('@/pages/Errand'),
+    meta:{showFooter:false},
+  },
+  {
+    name:'helpEachOther',
+    path:'/helpEachOther',
+    component:()=>import('@/pages/HelpEachOther'),
+    meta:{showFooter:false},
+  },
+  {
+    name:'libraryReserve',
+    path:'/libraryReserve',
+    component:()=>import('@/pages/LibraryReserve'),
+    meta:{showFooter:false},
+  },
+  {
+    name:'lostAndFound',
+    path:'/lostAndFound',
+    component:()=>import('@/pages/LostAndFound'),
+    meta:{showFooter:false},
+  },
+  {
+    name:'printService',
+    path:'/printService',
+    component:()=>import('@/pages/PrintService'),
+    meta:{showFooter:false},
+  },
 
   //重定向
   {

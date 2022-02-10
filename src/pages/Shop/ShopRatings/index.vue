@@ -1,68 +1,74 @@
 <template>
- <div class="ratings" ref="ratings">
-  <div class="ratings-content">
-   <div class="overview">
-    <div class="overview-left">
-     <h1 class="score">{{info.score}}</h1>
-     <div class="title">综合评分</div>
-     <div class="rank">高于周边商家99%</div>
+ <div class="shop-ratings" ref="shopRatings">
+  <div>
+   <!-- 商家总体评价 -->
+   <div class="brief">
+    <div class="left">
+     <div class="value">{{info.score}}</div>
+     <div class="key">综合评分</div>
     </div>
-    <div class="overview-right">
-     <div class="score-wrapper">
-      <span class="title">服务态度</span>
-      <Star :rating="info.serviceScore" size="36"/>
-      <span class="score">{{info.serviceScore}}</span>
+    <div class="right">
+     <div class="service">
+      <div class="key">服务态度</div>
+      <Star :rating="info.serviceScore" size="36"></Star>
+      <div class="value">{{info.serviceScore}}</div>
      </div>
-     <div class="score-wrapper">
-      <span class="title">商品评分</span>
-      <Star :rating="info.foodScore" size="36"/>
-      <span class="score">{{info.foodScore}}</span>
+     <div class="commodity">
+      <div class="key">商品评分</div>
+      <Star :rating="info.foodScore" size="36"></Star>
+      <div class="value">{{info.foodScore}}</div>
      </div>
-     <div class="delivery-wrapper">
-      <span class="title">送达时间</span>
-      <span class="delivery">{{info.deliveryTime}}分钟</span>
+     <div class="delivery">
+      <span class="key">平均送达时间</span>
+      <span class="value">{{info.deliveryTime}}分钟</span>
      </div>
     </div>
    </div>
 
-   <div class="split"></div>
+   <div class="split-bar"></div>
 
-   <div class="ratingselect">
+   <div class="filtered-ratings">
     <div class="rating-type">
-     <span class="block positive" :class="{active: 0==showRatingType}" @click="toggleRatingType(0)">
-      全部<span class="count">{{ratings.length}}</span>
-     </span>
-     <span class="block positive" :class="{active: 1==showRatingType}" @click="toggleRatingType(1)">
-      满意<span class="count">{{thumbsUpCount}}</span>
-     </span>
-     <span class="block negative" :class="{active: 2==showRatingType}" @click="toggleRatingType(2)">
-      不满意<span class="count">{{thumbsDownCount}}</span>
-     </span>
+     <div class="choice" :class="{active: 2==showRatingType}"
+          @click="toggleRatingType(2)">
+      差评<span>{{thumbsDownCount}}</span>
+     </div>
+     <div class="choice" :class="{active: 0==showRatingType}"
+          @click="toggleRatingType(0)">
+      全部<span>{{ratings.length}}</span>
+     </div>
+     <div class="choice" :class="{active: 1==showRatingType}"
+          @click="toggleRatingType(1)">
+      好评<span>{{thumbsUpCount}}</span>
+     </div>
     </div>
-    <div class="switch" :class="{on: ifShowRatingsWithContent}" @click="toggleIfShowRatingsWithContent()">
-     <span class="iconfont icon-direction-up"></span>
-     <span class="text">只看有内容的评价</span>
+    <div class="toggle" :class="{active: ifShowRatingsWithContent}"
+         @click="toggleIfShowRatingsWithContent()">
+     <span>只看有内容的评价</span>
+     <i class="iconfont icon-direction-up"></i>
     </div>
    </div>
-
-   <div class="rating-wrapper">
+   <div class="ratings-wrapper">
     <ul>
-     <li class="rating-item" v-for="(rating, index) in filteredRatings" :key="index">
+     <!-- 具体评价 -->
+     <li class="rating-item" v-for="(rating, index) in filteredRatings"
+         :key="index">
       <div class="avatar">
-       <img width="28" height="28" :src="rating.avatar">
+       <img :src="rating.avatar">
       </div>
-      <div class="content">
-       <h1 class="name">{{rating.username}}</h1>
-       <div class="star-wrapper">
-        <Star :rating="rating.score" size="24"/>
-        <span class="delivery">{{rating.deliveryTime}}</span>
-       </div>
-       <p class="text">{{rating.text}}</p>
+      <div class="rating-content">
+       <div class="user-name">{{rating.username}}</div>
+       <Star class="star" :rating="rating.score" size="24"/>
+       <div class="delivery-time">{{rating.deliveryTime}}分钟送达</div>
+       <div class="rating-text">{{rating.text}}</div>
        <div class="recommend">
-        <span class="iconfont" :class="rating.thumbsUp ? 'icon-direction-up' : 'icon-direction-down'"></span>
-        <span class="item" v-for="(item, index) in rating.recommend" :key="index">{{item}}</span>
+        <i class="iconfont"
+           :class="rating.thumbsUp ?
+           'icon-direction-up' : 'icon-direction-down'"></i>
+        <span class="recommend-item" v-for="(item, index) in rating.recommend"
+              :key="index">{{item}}</span>
        </div>
-       <div class="time">{{rating.rateTime|dateFormat}}</div>
+       <div class="rating-time">{{rating.rateTime|dateFormat}}</div>
       </div>
      </li>
     </ul>
@@ -102,7 +108,7 @@ export default {
   mounted(){
     this.$store.dispatch('getShopRatings',()=>{
       this.$nextTick(()=>{
-        this.bscroll=new BScroll(this.$refs.ratings,{click:true})
+        this.bscroll=new BScroll(this.$refs.shopRatings,{click:true})
       })
     })
   },
@@ -145,201 +151,168 @@ export default {
 </script>
 
 <style scoped lang="less">
-.ratings{
+.shop-ratings{
   position:absolute;
-  top:184px;
+  top:180px;
   bottom:0;
   left:0;
   width:100vw;
   overflow:hidden;
-  background:#FFFFFF;
 
-  .overview{
+  .brief{
     display:flex;
-    padding:18px 0;
+    padding:15px 0;
 
-    .overview-left{
-      flex:0 0 137px;
-      padding:6px 0;
-      width:137px;
-      border-right:1px solid rgba(7, 17, 27, 0.1);
+    .left{
+      flex:0 0 120px;
+      padding-top:10px;
+      width:120px;
+      border-right:1px solid rgba(0, 0, 0, .1);
       text-align:center;
-      @media only screen and  (max-width:320px){
-        flex:0 0 120px;
-        width:120px;
-      }
 
-      .score{
-        margin-bottom:6px;
-        line-height:28px;
-        font-size:24px;
-        color:purple;
-      }
-
-      .title{
-        margin-bottom:8px;
-        line-height:12px;
+      & > .key{
         font-size:12px;
-        color:rgb(7, 17, 27);
+        line-height:1em;
+        height:1em;
       }
 
-      .rank{
-        line-height:10px;
-        font-size:10px;
-        color:rgb(147, 153, 159);
+      & > .value{
+        line-height:1em;
+        height:1em;
+        font-size:30px;
+        margin-bottom:10px;
+        color:#684E94;
       }
+
     }
 
-    .overview-right{
-      flex:1;
-      padding:6px 0 6px 24px;
-      @media only screen and  (max-width:320px){
-        padding-left:6px;
-      }
+    .right{
+      padding:5px 0 5px 40px;
 
-      .score-wrapper{
-        margin-bottom:8px;
-        font-size:0;
+      .service, .commodity{
+        height:20px;
+        line-height:12px;
 
-        .title{
-          display:inline-block;
-          line-height:18px;
-          vertical-align:top;
+        .key{
+          float:left;
           font-size:12px;
-          color:rgb(7, 17, 27);
+          height:20px;
+          line-height:20px;
+          margin-right:10px;
         }
 
         .star{
-          display:inline-block;
-          margin:0 12px;
-          vertical-align:top;
+          float:left;
+          margin:2px 10px 0 0;
         }
 
-        .score{
-          display:inline-block;
-          line-height:18px;
-          vertical-align:top;
+        .value{
+          float:left;
           font-size:12px;
-          color:purple;
+          height:20px;
+          line-height:20px;
+          color:#684E94;
         }
       }
 
-      .delivery-wrapper{
-        font-size:0;
+      .delivery{
+        float:left;
 
-        .title{
-          line-height:18px;
+        & > .key{
+          line-height:20px;
           font-size:12px;
-          color:rgb(7, 17, 27);
         }
 
-        .delivery{
-          margin-left:12px;
+        & > .value{
+          margin-left:10px;
           font-size:12px;
-          color:rgb(147, 153, 159);
+          color:#684E94;
         }
       }
     }
   }
 
-  .split{
+  .split-bar{
     width:100%;
-    height:16px;
-    border-top:1px solid rgba(7, 17, 27, .1);
-    border-bottom:1px solid rgba(7, 17, 27, .1);
+    height:14px;
+    border-top:1px solid rgba(0, 0, 0, .1);
+    border-bottom:1px solid rgba(0, 0, 0, .1);
     background:#F3F5F7;
   }
 
-  .ratingselect{
+  .filtered-ratings{
     .rating-type{
-      padding:18px 0;
-      margin:0 18px;
-      @media only screen and (-webkit-device-pixel-ratio:2 ){
-        .border-1px{
-          &::before{
-            transform:scaleY(.5);
-          }
-        }
-      }
+      display:flex;
+      padding:10px 20px;
 
-      @media only screen and (-webkit-device-pixel-ratio:3 ){
-        .border-1px{
-          &::before{
-            transform:scaleY(.333333);
-          }
-        }
-      }
-
-      font-size:0;
-
-      .block{
-        display:inline-block;
-        padding:8px 12px;
-        margin-right:8px;
-        line-height:16px;
-        border-radius:1px;
+      .choice{
+        flex:1 0 20px;
         font-size:12px;
-        color:rgb(77, 85, 93);
+        padding:8px 14px;
+        width:20px;
+        margin:0 20px;
+        line-height:16px;
+        border-radius:5px;
         background:rgba(77, 85, 93, .2);
 
         &.active{
-          background:green;
+          background:#684E94;
           color:#FFFFFF;
         }
 
-        .count{
-          margin-left:2px;
-          font-size:8px;
+        & > span{
+          margin-left:3px;
+          font-size:12px;
         }
       }
     }
 
-    .switch{
-      padding:12px 18px;
+    .toggle{
+      padding:5px 20px;
       line-height:24px;
-      border-bottom:1px solid rgba(7, 17, 27, .1);
+      height:24px;
+      border-bottom:1px solid rgba(0, 0, 0, .1);
       color:rgb(147, 153, 159);
-      font-size:0;
+      text-align:right;
 
-      &.on{
-        .icon-direction-up{
-          color:green;
-        }
-      }
-
-      .icon-direction-up{
+      & > .iconfont{
         display:inline-block;
-        vertical-align:top;
-        margin-right:4px;
+        margin-left:4px;
         font-size:24px;
       }
 
-      .text{
-        display:inline-block;
-        vertical-align:top;
+      & > span{
         font-size:12px;
       }
 
+      &.active{
+        & > .iconfont{
+          color:#684E94;
+        }
+      }
     }
   }
 
-  .rating-wrapper{
-    padding:0 18px;
+  //所有用户的评价
+  .ratings-wrapper{
+    padding:0 20px;
     overflow:hidden;
 
+    //单个用户的评价
     .rating-item{
       display:flex;
-      padding:18px 0;
+      padding:15px 0;
       position:relative;
 
       &::after{
         content:'';
         display:block;
-        left:0;
+        position:absolute;
         bottom:0;
+        left:0;
         right:0;
         height:1px;
-        background-color:rgba(7, 17, 27, 0.1);
+        background-color:rgba(0, 0, 0, .1);
         @media screen{
           @media (-webkit-device-pixel-ratio:2){
             transform:scaleY(0.5);
@@ -351,86 +324,89 @@ export default {
       }
 
       .avatar{
-        flex:0 0 28px;
-        width:28px;
-        margin-right:12px;
+        flex:0 0 30px;
+        width:30px;
 
-        img{
+        & > img{
+          width:30px;
+          height:30px;
+          border:none;
           border-radius:50%;
         }
       }
 
-      .content{
+      .rating-content{
         position:relative;
         flex:1;
+        width:100%;
+        margin-left:10px;
 
-        .name{
-          margin-bottom:4px;
+        .user-name{
           line-height:12px;
-          font-size:10px;
-          color:rgb(7, 17, 27);
-        }
-
-        .star-wrapper{
-          margin-bottom:6px;
-          font-size:0;
-
-          .star{
-            display:inline-block;
-            margin-right:6px;
-            vertical-align:top;
-          }
-
-          .delivery{
-            display:inline-block;
-            vertical-align:top;
-            line-height:12px;
-            font-size:10px;
-            color:rgb(147, 153, 159);
-          }
-        }
-
-        .text{
-          margin-bottom:8px;
-          line-height:18px;
-          color:rgb(7, 17, 27);
           font-size:12px;
+        }
+
+        .star{
+          margin-top:4px;
+          display:inline-block;
+        }
+
+        .delivery-time{
+          float:right;
+          margin-top:5px;
+          display:inline-block;
+          line-height:12px;
+          font-size:12px;
+          color:#999999;
+        }
+
+        .rating-text{
+          width:100%;
+          font-size:12px;
+          display:inline-block;
+          margin-top:4px;
+          line-height:16px;
         }
 
         .recommend{
           line-height:16px;
-          font-size:0;
 
-          .icon-direction-up, .icon-direction-down, .item{
+          & .iconfont, .recommend-item{
             display:inline-block;
-            margin:0 8px 4px 0;
-            font-size:9px;
+            margin:4px;
+            font-size:12px;
           }
 
           .icon-direction-up{
-            color:purple;
+            color:#684E94;
           }
 
           .icon-direction-down{
-            color:rgb(147, 153, 159);
+            color:#555555;
           }
 
-          .item{
-            padding:0 6px;
-            border:1px solid rgba(7, 17, 27, 0.1);
-            border-radius:1px;
-            color:rgb(147, 153, 159);
-            background:#FFFFFF;
+          .recommend-item{
+            padding:1px 5px;
+            @media screen{
+              @media (-webkit-device-pixel-ratio:2){
+                border:.5px solid rgba(0, 0, 0, 0.1);
+              }
+              @media (-webkit-device-pixel-ratio:3){
+                border:.3px solid rgba(0, 0, 0, 0.1);
+              }
+            }
+            border-radius:4px;
+            color:#999999;
           }
         }
 
-        .time{
+        .rating-time{
           position:absolute;
           top:0;
           right:0;
-          line-height:12px;
-          font-size:10px;
-          color:rgb(147, 153, 159);
+          font-size:12px;
+          line-height:1em;
+          color:#666666;
         }
       }
     }

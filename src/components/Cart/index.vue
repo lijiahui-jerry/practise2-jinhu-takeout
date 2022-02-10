@@ -1,49 +1,62 @@
 <template>
  <div class="cart">
-  <div class="shopcart">
-   <div class="content">
-    <div class="content-left" @click="toggleIfShowList()">
-     <div class="logo-wrapper">
-      <div class="logo" :class="{highlight: totalCount}">
-       <i class="iconfont icon-direction-up" :class="{highlight: totalCount}"></i>
+  <div class="brief">
+   <div class="brief-content">
+    <div class="left" @click="toggleIfShowList()">
+     <div class="cart-logo" :class="{'cart-logo-active': totalCount}">
+      <!-- 购物车logo -->
+      <i class="iconfont icon-direction-up"
+         :class="{'cart-iconfont-active': totalCount}"></i>
+      <!-- 计数红点 -->
+      <div class="goods-count" v-if="totalCount">
+       {{totalCount}}
       </div>
-      <div class="num" v-if="totalCount">{{totalCount}}</div>
      </div>
-     <div class="price" :class="{highlight: totalCount}">￥{{totalPrice}}</div>
-     <div class="desc">另需配送费{{info.deliveryPrice}}元</div>
+     <div class="price">
+      <div class="goods">
+       ￥{{totalPrice}}
+      </div>
+      <div class="delivery">
+       {{deliveryFee(info.deliveryPrice)}}
+      </div>
+     </div>
     </div>
-    <div class="content-right">
+    <!-- 立即干饭 -->
+    <div class="right">
      <div class="pay" :class="payOrNotCLASS()">
       {{payOrNotTEXT()}}
      </div>
     </div>
    </div>
-   <transition name="move">
-    <div class="shopcart-list" v-show="couldShowList">
+   <!-- 购物车列表弹出动画 -->
+   <transition name="pop-up">
+    <div class="cart-list" v-show="couldShowList">
      <div class="list-header">
-      <h1 class="title">购物车</h1>
-      <span class="empty" @click="clearCart()">清空</span>
+      <h3 class="list-title">购物车</h3>
+      <span class="clear-cart" @click="clearCart()">清空</span>
      </div>
      <div class="list-content" ref="cartList">
       <ul>
-       <li class="food" v-for="(food, index) in foodsInCart" :key="index">
-        <span class="name">{{food.name}}</span>
-        <div class="price"><span>￥{{food.price}}</span></div>
-        <div class="cartcontrol-wrapper">
-         <CartControl :food="food"/>
+       <li class="goods" v-for="(food, index) in foodsInCart" :key="index">
+        <div class="goods-name">
+         {{food.name}}
         </div>
+        <div class="goods-price">
+         ￥{{food.price}}
+        </div>
+        <CartControl class="cart-control" :food="food"></CartControl>
        </li>
       </ul>
      </div>
     </div>
    </transition>
-
   </div>
+  <!-- 遮罩模糊动画 -->
   <transition name="fade">
-<!-- 购物车列表的遮罩 -->
-    <div class="list-cover" v-show="couldShowList"
-         @click="toggleIfShowList()">
-    </div>
+   <!-- 购物车列表的遮罩 -->
+   <div class="list-cover" v-show="couldShowList"
+        @click="toggleIfShowList()">
+   </div>
   </transition>
  </div>
 </template>
@@ -89,6 +102,14 @@ export default {
     ...mapGetters(['totalCount','totalPrice']),
   },
   methods:{
+    //配送费
+    deliveryFee(fee){
+      if(fee){
+        return '另需配送费'+fee+'元'
+      }else{
+        return '免配送费'
+      }
+    },
     //清空购物车
     clearCart(){
       MessageBox.confirm('是否确定清空购物车?').then(action=>{
@@ -123,107 +144,100 @@ export default {
 
 <style scoped lang="less">
 .cart{
-  height:50px;
-  .shopcart{
+  position:relative;
+  .brief{
     position:absolute;
     left:0;
     right:0;
     bottom:0;
     z-index:50;
 
-    .content{
+    .brief-content{
       display:flex;
       background:#141D27;
-      font-size:0;
-      color:rgba(255, 255, 255, 0.4);
+      color:#999999;
 
-      .content-left{
-        flex:1;
+      .left{
+        flex-grow:1;
+        height:50px;
 
-        .logo-wrapper{
-          display:inline-block;
-          vertical-align:top;
+        .cart-logo{
           position:relative;
-          top:-10px;
-          margin:0 12px;
-          padding:6px;
-          width:56px;
-          height:56px;
-          box-sizing:border-box;
+          display:inline-block;
+          border:solid 3px;
           border-radius:50%;
+          width:52px;
+          height:52px;
+          box-sizing:border-box;
           background:#141D27;
+          top:-10px;
+          right:-10px;
 
-          .logo{
-            width:100%;
-            height:100%;
-            border-radius:50%;
+          &.cart-logo-active{
+            background-color:#684E94;
+            border-color:#684E94;
+          }
+
+          .iconfont{
+            display:inline-block;
+            width:46px;
+            height:46px;
+            line-height:46px;
             text-align:center;
-            background-color:#2B343C;
+            font-size:36px;
+            color:#999999;
 
-            &.highlight{
-              background-color:green;
-            }
-
-            .icon-direction-up{
-              line-height:44px;
-              font-size:24px;
-              color:#80858A;
-
-              &.highlight{
-                color:#FFFFFF;
-              }
+            &.cart-iconfont-active{
+              color:#FFFFFF;
             }
           }
 
-          .num{
+          .goods-count{
             position:absolute;
-            top:0;
-            right:0;
-            width:24px;
-            height:16px;
-            line-height:16px;
+            top:-8px;
+            right:-8px;
+            width:20px;
+            height:20px;
+            line-height:20px;
             text-align:center;
-            border-radius:16px;
-            font-size:9px;
+            border-radius:50%;
+            font-size:12px;
             font-weight:1000;
             color:#FFFFFF;
-            background:rgb(240, 20, 20);
-            box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.4);
+            background:red;
           }
         }
 
         .price{
           display:inline-block;
+          height:50px;
           vertical-align:top;
-          margin-top:5px;
-          line-height:24px;
-          padding-right:12px;
-          box-sizing:border-box;
-          font-size:16px;
-          font-weight:1000;
-          color:#FFFFFF;
+          margin-left:20px;
 
-          &.highlight{
+          .goods{
             color:#FFFFFF;
+            font-size:18px;
+            line-height:30px;
+            height:30px;
+            font-weight:1000;
           }
-        }
 
-        .desc{
-          display:inline-block;
-          vertical-align:bottom;
-          margin-bottom:15px;
-          margin-left:-45px;
-          font-size:10px;
+          .delivery{
+            color:#999999;
+            font-size:12px;
+            height:1em;
+            line-height:1em;
+          }
         }
       }
 
-      .content-right{
-        flex:0 0 105px;
-        width:105px;
+      .right{
+        flex:0 0 100px;
+        width:100px;
 
         .pay{
-          height:48px;
-          line-height:48px;
+          height:50px;
+          line-height:50px;
           text-align:center;
           font-size:12px;
           font-weight:1000;
@@ -234,87 +248,65 @@ export default {
           }
 
           &.enough{
-            background-color:#00B43C;
-            color:#FFFFFF;
+            background-color:#684E94;
           }
         }
       }
     }
 
-    .ball-container{
-      .ball{
-        position:fixed;
-        left:32px;
-        bottom:22px;
-        z-index:200;
-        transition:all .4s cubic-bezier(0.49, -0.29, 0.75, 0.41);
-
-        .inner{
-          width:16px;
-          height:16px;
-          border-radius:50%;
-          background-color:green;
-          transition:.4s linear;
-        }
-      }
-    }
-
-    .shopcart-list{
+    .cart-list{
       position:absolute;
       left:0;
+      right:0;
       top:0;
       z-index:-1;
-      width:100%;
       transform:translateY(-100%);
 
-      &.move-enter-active, &.move-leave-active{
+      &.pop-up-enter-active, &.pop-up-leave-active{
         transition:transform .3s;
       }
 
-      &.move-enter, &.move-leave-to{
+      &.pop-up-enter, &.pop-up-leave-to{
         transform:translateY(0);
       }
 
       .list-header{
-        height:40px;
-        line-height:40px;
-        padding:0 18px;
+        height:30px;
+        line-height:30px;
+        padding:0 20px;
         background:#F3F5F7;
-        border-bottom:1px solid rgba(7, 17, 27, 0.1);
+        border-bottom:1px solid rgba(0, 0, 0, .1);
 
-        .title{
+        .list-title{
           float:left;
           font-size:14px;
-          color:rgb(7, 17, 27);
         }
 
-        .empty{
+        .clear-cart{
           float:right;
-          font-size:12px;
+          font-size:14px;
           color:rgb(0, 160, 220);
         }
       }
 
       .list-content{
-        padding:0 18px;
-        max-height:217px;
+        padding:0 20px;
+        max-height:220px;
         overflow:hidden;
         background:#FFFFFF;
 
-        .food{
+        .goods{
           position:relative;
-          padding:12px 0;
-          box-sizing:border-box;
-          border:none;
+          padding:10px 0;
 
           &::after{
             content:'';
             display:block;
-            left:0;
             bottom:0;
+            left:0;
             right:0;
             height:1px;
-            background-color:rgba(7, 17, 27, 0.1);
+            background-color:rgba(0, 0, 0, 0.1);
             @media screen{
               @media (-webkit-device-pixel-ratio:2){
                 transform:scaleY(0.5);
@@ -325,26 +317,28 @@ export default {
             }
           }
 
-          .name{
-            line-height:24px;
-            font-size:14px;
-            color:rgb(7, 17, 27);
+          .goods-name{
+            font-size:16px;
+            line-height:1em;
+            height:1em;
+            margin-bottom:8px;
           }
 
-          .price{
+          .goods-price{
             position:absolute;
             right:90px;
-            bottom:12px;
+            bottom:14px;
             line-height:24px;
+            height:24px;
             font-size:14px;
             font-weight:1000;
-            color:rgb(240, 20, 20);
+            color:red;
           }
 
-          .cartcontrol-wrapper{
+          .cart-control{
             position:absolute;
             right:0;
-            bottom:6px;
+            bottom:10px;
           }
         }
       }
@@ -356,11 +350,10 @@ export default {
     top:0;
     left:0;
     width:100vw;
-    height:100vh;
-    z-index:49;
-    backdrop-filter:blur(10px);
+    height:100%;
+    backdrop-filter:blur(5px);
     opacity:1;
-    background:rgba(7, 17, 27, .7);
+    background:rgba(0, 0, 0, .7);
 
     &.fade-enter-active, &.fade-leave-active{
       transition:all .3s;
@@ -368,7 +361,7 @@ export default {
 
     &.fade-enter, &.fade-leave-to{
       opacity:0;
-      background:rgb(7, 17, 27);
+      background:rgb(0, 0, 0);
     }
   }
 }

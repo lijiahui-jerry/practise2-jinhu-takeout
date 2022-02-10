@@ -73,7 +73,6 @@ export default {
 
 <style scoped lang="less">
 .shop-header{
-  position:relative;
   background:#FFFFFF;
   overflow:hidden;
   text-align:center;

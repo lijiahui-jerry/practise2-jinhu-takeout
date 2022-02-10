@@ -49,7 +49,7 @@
    </div>
   </div>
   <!-- 购物车 -->
-  <Cart></Cart>
+  <Cart class="cart-component"></Cart>
   <!-- 点击后全屏显示餐品详情 -->
   <Food :food="food" ref="food"/>
  </div>
@@ -154,6 +154,14 @@ export default {
   调试日记 2022-02-08
    多次修改position类型及位置属性无果后，发现Cart组件放在了goods类中，移出后正常。
    */
+
+  .cart-component{
+    position:absolute;
+    left:0;
+    right:0;
+    bottom:0;
+    height:50px;
+  }
 
   .goods{
     display:flex;

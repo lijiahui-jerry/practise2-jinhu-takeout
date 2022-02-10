@@ -35,7 +35,10 @@
    </div>
   </div>
   <!-- 功能栏 -->
-  <!-- /*这个功能用了整整两个下午才完成，全靠自己一点点摸索，对于json格式的设置有了更深一步的理解，json设置得好，前端人员可以很轻松地进行vfor，而设置得不好，前端人员甚至无法完成需求，只能通过纯手动来完成*/ -->
+  <!--
+  /*这个功能用了整整两个下午才完成，全靠自己一点点摸索，对于json格式的设置有了更深一步的理解。
+  json设置得好，前端人员可以很轻松地进行v-for，而设置得不好，前端人员甚至无法完成需求，只能通过纯手动来完成*/
+   -->
   <div class="tool-bars" v-if="ifLogged()" v-for="(pwr,index) in powerTools" :key="index">
    <div class="bar" @click="routerGo(p.link)" v-for="(p,index) in pwr" :key="index">
     <div class="bar-left"><i class="iconfont icon-direction-down"></i></div>
@@ -165,7 +168,7 @@ export default {
 
     .arrow-right{
       float:right;
-      width:120px;
+      width:50px;
       height:60px;
 
       & > p{
