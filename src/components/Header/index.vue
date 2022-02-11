@@ -1,7 +1,9 @@
 <template>
  <!-- 首页头部 -->
  <header>
-  <span class="header-left" v-if="left"><i class="iconfont icon-direction-down"></i></span>
+  <div class="header-left" v-if="left">
+   <i class="iconfont icon-direction-down back-to-home" @click="$router.replace('home')"></i>
+  </div>
   <span class="title-container">
    <span class="title-content">{{title}}</span>
   </span>
@@ -32,9 +34,9 @@ header{
   background-color:#684E94;
   position:fixed;
   z-index:100;
-  left:0;
   top:0;
-  width:100%;
+  left:0;
+  right:0;
   height:45px;
 
   //顶部中间的文字
@@ -53,7 +55,7 @@ header{
     }
   }
 
-  //左上角图标字体
+  //左上角返回主页按钮
   .header-left{
     position:absolute;
     left:15px;
@@ -62,7 +64,8 @@ header{
     width:10%;
     height:50%;
 
-    .iconfont{
+   & .back-to-home{
+      display:block;
       font-size:25px;
       color:#FFFFFF;
     }

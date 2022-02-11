@@ -144,7 +144,11 @@ export default {
 
 <style scoped lang="less">
 .cart{
-  position:relative;
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:0;
+
   .brief{
     position:absolute;
     left:0;

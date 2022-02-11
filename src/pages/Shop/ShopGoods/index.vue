@@ -108,6 +108,7 @@ export default {
         probeType:2,
         click:true,
       })
+      console.log(this)
       //监听右侧食物的滑动情况
       this.foodsScroll.on('scrollEnd',({y})=>{
         this.scrollY=Math.abs(y)
@@ -168,7 +169,7 @@ export default {
     background:#FFFFFF;
     position:absolute;
     top:220px;
-    bottom:50px;
+    bottom:52px;
     left:0;
     overflow:hidden;
 
@@ -218,8 +219,6 @@ export default {
     }
 
     .foods-wrapper{
-      //flex:1;
-
       .food-header-name{
         font-size:12px;
         padding-left:1em;
@@ -267,6 +266,10 @@ export default {
         .food-img{
           flex:0 0 60px;
           margin-right:10px;
+
+          & > img{
+            border-radius:5px;
+          }
         }
 
         .brief{

@@ -1,6 +1,6 @@
 <template>
  <div>
-  <Header :title=school.name left=true :right=!ifLogged()></Header>
+  <Header :title=school.name  :right=!ifLogged()></Header>
   <Navigation></Navigation>
   <ShopList></ShopList>
  </div>

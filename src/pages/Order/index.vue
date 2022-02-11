@@ -6,9 +6,8 @@
 
   <!-- 未登录 -->
   <div class="not-logged" v-if="!ifLogged()">
-   <img src="./images/not-logged.png">
-   <h3>请先&nbsp;<button @click="$router.push('login')">登录</button>
-   </h3>
+   <p>请先&nbsp;<button @click="$router.push('login')">登录</button>
+   </p>
   </div>
  </div>
 </template>
@@ -43,8 +42,11 @@ export default {
       width:100%;
     }
 
-    & > h3{
+    & > p{
+      margin-top:100px;
       font-size:20px;
+      line-height:1em;
+      height:1em;
 
       & > button{
         background:#684E94;

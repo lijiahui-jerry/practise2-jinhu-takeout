@@ -22,7 +22,7 @@
       <span class="rating">好评{{food.rating}}%</span>
      </div>
      <div class="price">
-      <span class="old" v-show="food.oldPrice">￥{{food.oldPrice}}&nbsp;</span>
+      <span class="old" v-if="food.oldPrice">￥{{food.oldPrice}}&nbsp;</span>
       <span class="new">￥{{food.price}}</span>
      </div>
      <CartControl class="cart-control" :food="food"/>
@@ -60,7 +60,8 @@ export default {
 <style scoped lang="less">
 .food{
   width:100vw;
-  height:100%;
+  height:100vh;
+  overflow:hidden;
   position:absolute;
   top:0;
   left:0;
@@ -172,7 +173,7 @@ export default {
     top:0;
     right:0;
     width:100vw;
-    height:100%;
+    height:100vh;
     background:rgba(0, 0, 0, .7);
   }
 

@@ -10,7 +10,7 @@ export default {
   name:"Star",
   props:{
     rating:String | Number,
-    size:String,
+    size:String | Number,
   },
   computed:{
     //根据rating计算on、half、off的star类的相应数量，返回长度为5的数组

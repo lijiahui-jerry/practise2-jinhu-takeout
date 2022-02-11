@@ -254,6 +254,8 @@ export default {
     overflow:hidden;
 
     & ul{
+      padding-bottom:50px;
+
       .result-item{
         display:flex;
         padding:10px 10vw;
