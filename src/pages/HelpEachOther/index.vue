@@ -3,7 +3,6 @@
   <Header class="header" title="互帮互助" left=true></Header>
   <div class="content">
 
-   printService.jpg
   </div>
  </div>
 </template>
