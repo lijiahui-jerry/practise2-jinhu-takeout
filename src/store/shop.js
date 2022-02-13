@@ -1,4 +1,4 @@
-import {reqShopDetaial} from "@/api"
+import {reqShopDetail} from "@/api"
 import Vue from "vue"
 
 const state={
@@ -49,16 +49,16 @@ const mutations={
 
 const actions={
   async getShopDetail({commit}){
-    let result=await reqShopDetaial()
+    let result=await reqShopDetail()
     if(200==result.code) commit('GETSHOPDETAIL',result.data)
   },
   async getShopGoods({commit},callback){
-    let result=await reqShopDetaial()
+    let result=await reqShopDetail()
     if(200==result.code) commit('GETSHOPGOODS',result.data.goods)
     callback && callback()
   },
   async getShopRatings({commit},callback){
-    let result=await reqShopDetaial()
+    let result=await reqShopDetail()
     if(200==result.code) commit('GETSHOPRATINGS',result.data.ratings)
     callback && callback()
   },

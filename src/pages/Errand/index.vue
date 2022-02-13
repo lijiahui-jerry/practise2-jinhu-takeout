@@ -2,8 +2,7 @@
  <div class="errand">
   <Header class="header" title="跑腿" left=true></Header>
   <div class="content">
-
-   lost-and-found.jpg
+   <img src="./image/no-built.png" alt="not built already">
   </div>
  </div>
 </template>

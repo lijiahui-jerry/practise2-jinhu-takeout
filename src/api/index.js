@@ -8,4 +8,6 @@ export const reqShops=()=>mockRequests.get('/shops')
 //获取用户信息
 export const reqUserInfo=()=>mockRequests.get('/userInfo')
 //获取商家商品
-export const reqShopDetaial=()=>mockRequests.get('/shopDetail')
+export const reqShopDetail=()=>mockRequests.get('/shopDetail')
+//获取轮播图
+export const reqHelperList=()=>mockRequests.get('/helperList')

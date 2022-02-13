@@ -2,17 +2,17 @@
  <div class="breakfast-reserve">
   <Header class="header" title="早餐预订" left=true></Header>
   <div class="content">
-
-   lost-and-found.jpg
+   <img src="./image/no-built.png" alt="not built already">
   </div>
  </div>
 </template>
 
 <script>
 import Header from "@/components/Header"
+
 export default {
   name:"BreakfastReserve",
-  components:{Header}
+  components:{Header},
 }
 </script>
 

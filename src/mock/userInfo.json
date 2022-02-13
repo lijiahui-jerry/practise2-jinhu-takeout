@@ -29,12 +29,12 @@
             "link":"order"
           },
           {
-            "name":"我的餐车",
-            "link":"cart"
+            "name":"助人为乐",
+            "link":"helpEachOther"
           },
           {
-            "name":"薅狐毛",
-            "link":"shopping"
+            "name":"云打印",
+            "link":"printService"
           }
         ],
         [
@@ -82,12 +82,12 @@
             "link":"order"
           },
           {
-            "name":"我的餐车",
-            "link":"cart"
+            "name":"助人为乐",
+            "link":"helpEachOther"
           },
           {
-            "name":"薅狐毛",
-            "link":"shopping"
+            "name":"云打印",
+            "link":"printService"
           }
         ],
         [
