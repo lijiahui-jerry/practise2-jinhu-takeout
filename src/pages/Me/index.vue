@@ -5,18 +5,18 @@
   <!-- 个人信息栏 -->
   <div class="info" @click="routerGo('login')">
    <div class="info-image">
-    <i class="iconfont icon-direction-down"></i>
+    <i class="iconfont icon-touxiang"></i>
    </div>
    <div class="info-main">
     <p class="name">{{setUserName()}}</p>
     <p class="phone">
-     <span class="phone-icon"><i class="iconfont icon-direction-down"></i></span>
+     <span class="phone-icon"><i class="iconfont icon-shouji"></i></span>
      <span class="phone-number">{{userInfo.phone || '暂无绑定手机号'}}</span>
     </p>
    </div>
    <!-- 信息栏向右的箭头 -->
    <div class="arrow-right">
-    <p><i class="iconfont icon-direction-down"></i></p>
+    <p><i class="iconfont icon-xiangyou3"></i></p>
    </div>
   </div>
   <!-- 个人财务栏 -->
@@ -41,9 +41,9 @@
    -->
   <div class="tool-bars" v-if="ifLogged()" v-for="(pwr,index) in powerTools" :key="index">
    <div class="bar" @click="routerGo(p.link)" v-for="(p,index) in pwr" :key="index">
-    <div class="bar-left"><i class="iconfont icon-direction-down"></i></div>
+    <div class="bar-left"><i class="iconfont" :class="p.iconfont"></i></div>
     <div class="bar-name">{{p.name}}</div>
-    <div class="bar-right"><i class="iconfont icon-direction-down"></i></div>
+    <div class="bar-right"><i class="iconfont icon-xiangyou1"></i></div>
    </div>
   </div>
  </div>
@@ -137,7 +137,8 @@ export default {
       border-radius:50%;
       overflow:hidden;
 
-      .icon-direction-down{
+      & .iconfont{
+        color:#684E94;
         background:#E4E4E4;
         font-size:62px;
       }
@@ -149,18 +150,18 @@ export default {
       margin-left:20px;
 
       p{
-        font-weight:1000;
-        font-size:18px;
         color:#FFFFFF;
+        font-size:18px;
+        font-weight:1000;
       }
 
       .phone{
         margin-top:10px;
 
         //手机号前的图标
-        .phone-icon > .iconfont{
-          font-size:14px;
+        & .iconfont{
           color:#FFFFFF;
+          font-size:18px;
         }
 
       }
@@ -175,7 +176,7 @@ export default {
         text-align:right;
         line-height:60px;
 
-        .iconfont{
+        & .iconfont{
           color:#FFFFFF;
           font-size:30px;
         }
@@ -329,8 +330,8 @@ export default {
         width:40px;
         height:100%;
 
-        .iconfont{
-          font-size:30px;
+       & .iconfont{
+          font-size:25px;
         }
       }
 
@@ -344,8 +345,8 @@ export default {
         position:absolute;
         right:30px;
 
-        .iconfont{
-          font-size:14px;
+       & .iconfont{
+          font-size:25px;
         }
       }
 

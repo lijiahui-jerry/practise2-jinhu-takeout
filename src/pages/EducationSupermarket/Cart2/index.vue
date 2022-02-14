@@ -3,18 +3,18 @@
   <div class="brief">
    <div class="brief-content">
     <div class="left" @click="toggleIfShowList()">
-     <div class="cart-logo" :class="{'cart-logo-active': totalCount}">
+     <div class="cart-logo" :class="{'cart-logo-active': totalCount2}">
       <!-- 购物车logo -->
       <i class="iconfont icon-gouwuche"
-         :class="{'cart-iconfont-active': totalCount}"></i>
+         :class="{'cart-iconfont-active': totalCount2}"></i>
       <!-- 计数红点 -->
-      <div class="goods-count" v-if="totalCount">
-       {{totalCount}}
+      <div class="goods-count" v-if="totalCount2">
+       {{totalCount2}}
       </div>
      </div>
      <div class="price">
       <div class="goods">
-       ￥{{totalPrice}}
+       ￥{{totalPrice2}}
       </div>
       <div class="delivery">
        {{deliveryFee(info.deliveryPrice)}}
@@ -37,14 +37,14 @@
      </div>
      <div class="list-content" ref="cartList">
       <ul>
-       <li class="goods" v-for="(food, index) in foodsInCart" :key="index">
+       <li class="goods" v-for="(good) in goodsInCart" :key="good.uuid">
         <div class="goods-name">
-         {{food.name}}
+         {{good.name}}
         </div>
         <div class="goods-price">
-         ￥{{food.price}}
+         ￥{{good.price}}
         </div>
-        <CartControl class="cart-control" :food="food"></CartControl>
+        <CartControl2 class="cart-control" :good="good"></CartControl2>
        </li>
       </ul>
      </div>
@@ -54,9 +54,7 @@
   <!-- 遮罩模糊动画 -->
   <transition name="fade">
    <!-- 购物车列表的遮罩 -->
-   <div class="list-cover" v-show="couldShowList"
-        @click="toggleIfShowList()">
-   </div>
+   <div class="list-cover" v-show="couldShowList" @click="toggleIfShowList()"></div>
   </transition>
  </div>
 </template>
@@ -64,13 +62,13 @@
 
 <script>
 import BScroll from "better-scroll"
-import CartControl from "@/components/CartControl"
+import CartControl2 from "../CartControl2"
 import {mapState,mapGetters} from "vuex"
 import {MessageBox} from "mint-ui"
 
 export default {
-  name:"Cart",
-  components:{CartControl},
+  name:"Cart2",
+  components:{CartControl2},
   data(){
     return {
       ifShowList:false,
@@ -79,27 +77,27 @@ export default {
   computed:{
     //根据当前购物车是否为空及是否需要显示列表，综合计算当前是否应该显示购物车列表
     couldShowList(){
-      if(0==this.totalCount){
+      if(0==this.totalCount2){
         this.ifShowList=false
         return false
       }
       //在购物车列表显示后实例化BScroll对象
       if(this.ifShowList){
         this.$nextTick(()=>{
-          if(!this.bscroll){
-            this.bscroll=new BScroll(this.$refs.cartList,{click:true})
+          if(!this.Cart2BScroll){
+            this.Cart2BScroll=new BScroll(this.$refs.cartList,{click:true})
           }else{
-            this.bscroll.refresh()
+            this.Cart2BScroll.refresh()
           }
         })
         return this.ifShowList
       }
     },
     ...mapState({
-      foodsInCart:state=>state.shop.foodsInCart || [],
-      info:state=>state.shop.info || {},
+      goodsInCart:state=>state.educationSupermarket.goodsInCart || [],
+      info:state=>state.educationSupermarket.info || {},
     }),
-    ...mapGetters(['totalCount','totalPrice']),
+    ...mapGetters(['totalCount2','totalPrice2']),
   },
   methods:{
     //配送费
@@ -113,28 +111,28 @@ export default {
     //清空购物车
     clearCart(){
       MessageBox.confirm('是否确定清空购物车?').then(()=>{
-        this.$store.dispatch('clearCart')
+        this.$store.dispatch('clearCart2')
       },()=>{})
     },
     //判断当前是否满足起送价要求，返回css类
     payOrNotCLASS(){
-      const {totalPrice}=this
+      const {totalPrice2}=this
       const {minPrice}=this.info
 
-      return totalPrice>=minPrice?'enough':'not-enough'
+      return totalPrice2>=minPrice?'enough':'not-enough'
     },
     //判断当前是否满足起送价要求，返回提示信息
     payOrNotTEXT(){
-      const {totalPrice}=this
+      const {totalPrice2}=this
       const {minPrice}=this.info
 
-      if(0==totalPrice) return `${minPrice}元起送`
-      else if(totalPrice<minPrice) return `还差${minPrice-totalPrice}元起送`
-      else return '立即干饭'
+      if(0==totalPrice2) return `${minPrice}元起送`
+      else if(totalPrice2<minPrice) return `还差${minPrice-totalPrice2}元起送`
+      else return '立即购买'
     },
     //切换购物车列表的显示状态
     toggleIfShowList(){
-      if(this.totalCount>0){
+      if(this.totalCount2>0){
         this.ifShowList= !this.ifShowList
       }
     },
@@ -143,7 +141,8 @@ export default {
 </script>
 
 <style scoped lang="less">
-
+//调试日记 2022-02-14
+// 1.父子的关系也对z-index有影响，因为子是在父的层面上创建的，所以子的z-index会受到父的z-index的继承影响。
 .cart{
   position:absolute;
   left:0;
@@ -364,7 +363,7 @@ export default {
     backdrop-filter:blur(5px);
     opacity:1;
     background:rgba(0, 0, 0, .7);
-z-index:100;
+    z-index:100;
 
     &.fade-enter-active, &.fade-leave-active{
       transition:all .3s;

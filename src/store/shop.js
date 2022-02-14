@@ -79,7 +79,12 @@ const getters={
     return state.foodsInCart.reduce((preTotal,food)=>preTotal+food.count,0)
   },
   totalPrice(state){
-    return state.foodsInCart.reduce((preTotal,food)=>preTotal+food.count*food.price,0)
+    //调试日记  2022-02-14
+    //  1.浮点运算可能出现小数点后面很多位的极小小数，需要根据需求保留数位。
+    let result=state.foodsInCart.reduce((pre,food)=>pre+food.count*food.price,0)
+
+    if(result%1==0) return result
+    else return parseFloat(result).toFixed(2)
   },
   thumbsUpCount(state){
     return state.ratings.reduce((preTotal,rating)=>preTotal+(rating.thumbsUp?1:0),0)

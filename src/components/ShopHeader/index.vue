@@ -1,7 +1,7 @@
 <template>
  <div class="shop-header">
   <div class="header-background" :style="{backgroundImage:`url(${info.bgImg})`}">
-   <div class="back" @click="$router.back()"><i class="iconfont icon-direction-down"></i></div>
+   <div class="back" @click="$router.back()"><i class="iconfont icon-fanhui"></i></div>
   </div>
   <div class="brief">
    <div class="avatar">

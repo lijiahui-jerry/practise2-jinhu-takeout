@@ -26,4 +26,28 @@ let router=new VueRouter({
   },
 })
 
+router.beforeEach((to,from,next)=>{
+  let token=localStorage.getItem('userId')
+  let toPath=to.path
+
+  if(!token && (['/login','/home','/me'].indexOf(toPath)=== -1)){
+    //未登录且不去允许的path，则跳转至登录
+    next('/login')
+  }else if(!token && (['/login','/home','/me'].indexOf(toPath)!== -1)){
+    //未登录且去允许的path，则放行
+    next()
+  }else if(token && (toPath==='/login')){
+    //已登录且去login，则
+    alert('如需重新登录，请先退出登录')
+  }else{
+    next()
+  }
+})
+
 export default router
+
+
+
+
+
+

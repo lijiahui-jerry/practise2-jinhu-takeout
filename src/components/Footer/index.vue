@@ -2,19 +2,19 @@
  <!-- 底部栏 -->
  <footer class="bottom-navbar">
   <div class="navbar_item" @click="routerGo('home')" :class="{active:pageFlag('home')}">
-   <i class="iconfont icon-direction-down"></i>
+   <i class="iconfont icon-shouye"></i>
    <span>首页</span>
   </div>
   <div class="navbar_item" @click="routerGo('search')" :class="{active:pageFlag('search')}">
-   <i class="iconfont icon-direction-down"></i>
+   <i class="iconfont icon-sousuo"></i>
    <span>搜索</span>
   </div>
   <div class="navbar_item" @click="routerGo('order')" :class="{active:pageFlag('order')}">
-   <i class="iconfont icon-direction-down"></i>
+   <i class="iconfont icon-dingdan"></i>
    <span>订单</span>
   </div>
   <div class="navbar_item" @click="routerGo('me')" :class="{active:pageFlag('me')}">
-   <i class="iconfont icon-direction-down"></i>
+   <i class="iconfont icon-sharpicons_Wolf"></i>
    <span>我</span>
   </div>
  </footer>

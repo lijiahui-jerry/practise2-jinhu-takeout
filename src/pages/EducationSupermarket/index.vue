@@ -3,177 +3,72 @@
   <Header class="header" left=true title="教育超市"/>
   <div class="content" ref="educationSupermarketContent">
    <ul>
-    <li class="goods-card" @click.stop="showGoodsDetail()">
-     <img src="./a.png" class="goods-img">
-     <p class="goods-name">后台还在建设，当前为静态</p>
+    <li class="goods-card" @click.stop="showGoodsDetail(good)" v-for="(good) in goods" :key="good.uuid">
+     <img :src="good.image" class="goods-img">
+     <p class="goods-name">{{good.name}}</p>
      <p class="goods-detail">
       <span>
-       <Star class="star" rating="3.2" size="24"/>
+       <Star class="star" :rating="good.ratingScore" size="24"/>
       </span>
-      <span class="sells-count">月售999+</span>
+      <span class="sells-count" v-if="good.sellCount>999">月售999+</span>
+      <span class="sells-count" v-else>月售{{good.sellCount}}</span>
      </p>
      <p class="goods-sells">
-      <span class="price">￥100</span>
+      <span class="price">￥{{good.price}}</span>
       <span class="cart-control-wrapper">
-       <CartControl :food="as"></CartControl>
-      </span>
-     </p>
-    </li>
-    <!--    -->
-    <li class="goods-card" @click.stop="showGoodsDetail()">
-     <img src="./a.png" class="goods-img">
-     <p class="goods-name">后台还</p>
-     <p class="goods-detail">
-      <span>
-       <Star class="star" rating="3.2" size="24"/>
-      </span>
-      <span class="sells-count">月售999+</span>
-     </p>
-     <p class="goods-sells">
-      <span class="price">￥100</span>
-      <span class="cart-control-wrapper">
-       <CartControl :food="as"></CartControl>
-      </span>
-     </p>
-    </li>
-    <li class="goods-card" @click.stop="showGoodsDetail()">
-     <img src="./a.png" class="goods-img">
-     <p class="goods-name">后台还</p>
-     <p class="goods-detail">
-      <span>
-       <Star class="star" rating="3.2" size="24"/>
-      </span>
-      <span class="sells-count">月售999+</span>
-     </p>
-     <p class="goods-sells">
-      <span class="price">￥100</span>
-      <span class="cart-control-wrapper">
-       <CartControl :food="as"></CartControl>
-      </span>
-     </p>
-    </li>
-    <li class="goods-card" @click.stop="showGoodsDetail()">
-     <img src="./a.png" class="goods-img">
-     <p class="goods-name">后台还</p>
-     <p class="goods-detail">
-      <span>
-       <Star class="star" rating="3.2" size="24"/>
-      </span>
-      <span class="sells-count">月售999+</span>
-     </p>
-     <p class="goods-sells">
-      <span class="price">￥100</span>
-      <span class="cart-control-wrapper">
-       <CartControl :food="as"></CartControl>
-      </span>
-     </p>
-    </li>
-    <li class="goods-card" @click.stop="showGoodsDetail()">
-     <img src="./a.png" class="goods-img">
-     <p class="goods-name">后台还</p>
-     <p class="goods-detail">
-      <span>
-       <Star class="star" rating="3.2" size="24"/>
-      </span>
-      <span class="sells-count">月售999+</span>
-     </p>
-     <p class="goods-sells">
-      <span class="price">￥100</span>
-      <span class="cart-control-wrapper">
-       <CartControl :food="as"></CartControl>
-      </span>
-     </p>
-    </li>
-    <li class="goods-card" @click.stop="showGoodsDetail()">
-     <img src="./a.png" class="goods-img">
-     <p class="goods-name">后台还</p>
-     <p class="goods-detail">
-      <span>
-       <Star class="star" rating="3.2" size="24"/>
-      </span>
-      <span class="sells-count">月售999+</span>
-     </p>
-     <p class="goods-sells">
-      <span class="price">￥100</span>
-      <span class="cart-control-wrapper">
-       <CartControl :food="as"></CartControl>
-      </span>
-     </p>
-    </li>
-    <li class="goods-card" @click.stop="showGoodsDetail()">
-     <img src="./a.png" class="goods-img">
-     <p class="goods-name">后台还</p>
-     <p class="goods-detail">
-      <span>
-       <Star class="star" rating="3.2" size="24"/>
-      </span>
-      <span class="sells-count">月售999+</span>
-     </p>
-     <p class="goods-sells">
-      <span class="price">￥100</span>
-      <span class="cart-control-wrapper">
-       <CartControl :food="as"></CartControl>
-      </span>
-     </p>
-    </li>
-    <li class="goods-card" @click.stop="showGoodsDetail()">
-     <img src="./a.png" class="goods-img">
-     <p class="goods-name">后台还</p>
-     <p class="goods-detail">
-      <span>
-       <Star class="star" rating="3.2" size="24"/>
-      </span>
-      <span class="sells-count">月售999+</span>
-     </p>
-     <p class="goods-sells">
-      <span class="price">￥100</span>
-      <span class="cart-control-wrapper">
-       <CartControl :food="as"></CartControl>
+       <CartControl2 :good="good"></CartControl2>
       </span>
      </p>
     </li>
    </ul>
   </div>
-  <div class="cart-component">
-   <Cart></Cart>
-  </div>
-  <Food :food="as" ref="food"/>
+  <Cart2></Cart2>
+  <FullScreenGoodsDetail :good="good" ref="FullScreenGoodsDetail"></FullScreenGoodsDetail>
  </div>
 </template>
 
 <script>
 import Header from "@/components/Header"
-import CartControl from "@/components/CartControl"
+import CartControl2 from "./CartControl2"
 import BScroll from "better-scroll"
-import Food from "@/components/Food"
+import FullScreenGoodsDetail from "@/pages/EducationSupermarket/FullScreenGoodsDetail"
 import Star from "@/components/Star"
-import Cart from "@/components/Cart"
-import aimgg from './a.png'
+import Cart2 from "./Cart2"
+import {mapState} from "vuex"
 
 export default {
   name:"EducationSupermarket",
   data(){
     return {
-      food:1,
-      as:{count:1,name:'a',price:1555,image:aimgg,info:'后台还在建设，当前为静态',sellCount:15,rating:55},
+      good:{},
     }
   },
   methods:{
-    showGoodsDetail(){
-      this.$refs.food.ifShow=true
+    //全屏展示商品详情
+    showGoodsDetail(good){
+      this.good=good
+      this.$refs.FullScreenGoodsDetail.ifShow=true
     },
   },
+  computed:{
+    ...mapState({
+      goods:state=>state.educationSupermarket.goods,
+      info:state=>state.educationSupermarket.info,
+    }),
+  },
   mounted(){
-    this.$nextTick(()=>{
-      if(!this.ESScroll){
-        this.ESScroll=new BScroll(this.$refs.educationSupermarketContent,{click:true})
-        console.log(this)
-      }else{
-        this.ESScroll.refresh()
-      }
+    this.$store.dispatch('getEducationSupermarketInfo')
+    this.$store.dispatch('getEducationSupermarketGoods',()=>{
+      this.$nextTick(()=>{
+        if(!this.GoodsScroll){
+          this.GoodsScroll=new BScroll(this.$refs.educationSupermarketContent,{click:true})
+        }else{
+          this.GoodsScroll.refresh()
+        }
+      })
     })
   },
-  components:{Food,Header,CartControl,Star,Cart},
+  components:{FullScreenGoodsDetail,Header,CartControl2,Star,Cart2},
 }
 </script>
 
@@ -214,6 +109,7 @@ export default {
 
         .goods-img{
           width:80%;
+          aspect-ratio:1/1;
           display:block;
           margin:5px auto 0;
           border-radius:10px;

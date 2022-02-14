@@ -9,5 +9,7 @@ export const reqShops=()=>mockRequests.get('/shops')
 export const reqUserInfo=()=>mockRequests.get('/userInfo')
 //获取商家商品
 export const reqShopDetail=()=>mockRequests.get('/shopDetail')
-//获取轮播图
+//获取互帮互助列表
 export const reqHelperList=()=>mockRequests.get('/helperList')
+//获取教育超市商品列表
+export const reqEducationSupermarketDetail=()=>mockRequests.get('/educationSupermarketDetail')

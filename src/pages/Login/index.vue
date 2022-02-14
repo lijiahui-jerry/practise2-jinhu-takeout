@@ -4,7 +4,7 @@
   <!-- 表单验证提示 -->
   <Tip :tips="tips" v-if="showTips" @closeTip="closeTip"></Tip>
   <!-- 左上角路由回退按钮 -->
-  <a class="back" @click="$router.back()"><i class="iconfont icon-direction-down"></i></a>
+  <a class="back" @click="$router.back()"><i class="iconfont icon-fanhui"></i></a>
   <!-- 页面顶部标题 -->
   <h2>金狐外卖</h2>
   <!-- 登录表单内容部分 -->

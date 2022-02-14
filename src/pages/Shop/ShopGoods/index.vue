@@ -108,8 +108,7 @@ export default {
         probeType:2,
         click:true,
       })
-      console.log(this)
-      //监听右侧食物的滑动情况
+      //监听右侧食 物的滑动情况
       this.foodsScroll.on('scrollEnd',({y})=>{
         this.scrollY=Math.abs(y)
       })

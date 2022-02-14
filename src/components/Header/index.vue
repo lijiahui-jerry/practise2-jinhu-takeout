@@ -2,7 +2,7 @@
  <!-- 首页头部 -->
  <header>
   <div class="header-left" v-if="left">
-   <i class="iconfont icon-direction-down back-to-home" @click="$router.replace('home')"></i>
+   <i class="iconfont icon-shouye back-to-home" @click="$router.replace('home')"></i>
   </div>
   <span class="title-container">
    <span class="title-content">{{title}}</span>

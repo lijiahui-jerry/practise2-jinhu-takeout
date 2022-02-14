@@ -2,7 +2,7 @@
  <div class="shop-list">
   <!-- 首页附近商家标题 -->
   <div class="nearby">
-   <i class="iconfont icon-direction-down"></i><span class="header-title">附近商家</span>
+   <i class="iconfont icon-fujin"></i><span class="header-title">附近商家</span>
   </div>
   <!-- 首页商家列表 -->
   <div class="items-container">

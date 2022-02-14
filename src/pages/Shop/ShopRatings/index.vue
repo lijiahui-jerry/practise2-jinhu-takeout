@@ -45,7 +45,7 @@
     <div class="toggle" :class="{active: ifShowRatingsWithContent}"
          @click="toggleIfShowRatingsWithContent()">
      <span>只看有内容的评价</span>
-     <i class="iconfont icon-direction-up"></i>
+     <i class="iconfont icon-dagou"></i>
     </div>
    </div>
    <div class="ratings-wrapper">
@@ -64,7 +64,7 @@
        <div class="recommend">
         <i class="iconfont"
            :class="rating.thumbsUp ?
-           'icon-direction-up' : 'icon-direction-down'"></i>
+           'icon-zan' : 'icon-cai'"></i>
         <span class="recommend-item" v-for="(item, index) in rating.recommend"
               :key="index">{{item}}</span>
        </div>
@@ -278,7 +278,7 @@ export default {
       & > .iconfont{
         display:inline-block;
         margin-left:4px;
-        font-size:24px;
+        font-size:18px;
       }
 
       & > span{
@@ -377,11 +377,11 @@ export default {
             font-size:12px;
           }
 
-          .icon-direction-up{
+          .icon-zan{
             color:#684E94;
           }
 
-          .icon-direction-down{
+          .icon-cai{
             color:#555555;
           }
 

@@ -26,21 +26,30 @@
         [
           {
             "name":"我的订单",
-            "link":"order"
+            "link":"order",
+            "iconfont":"icon-dingdan"
           },
           {
             "name":"助人为乐",
-            "link":"helpEachOther"
+            "link":"helpEachOther",
+            "iconfont":"icon-wancheng"
           },
           {
             "name":"云打印",
-            "link":"printService"
+            "link":"printService",
+            "iconfont":"icon-yundayin"
           }
         ],
         [
           {
+            "name":"客服",
+            "link":"",
+            "iconfont":"icon-kefu"
+          },
+          {
             "name":"退出登录",
-            "link":"logout"
+            "link":"logout",
+            "iconfont":"icon-dengchu"
           }
         ]
       ]
@@ -79,21 +88,25 @@
         [
           {
             "name":"我的订单",
-            "link":"order"
+            "link":"order",
+            "iconfont":"icon-dingdan"
           },
           {
             "name":"助人为乐",
-            "link":"helpEachOther"
+            "link":"helpEachOther",
+            "iconfont":"icon-wancheng"
           },
           {
             "name":"云打印",
-            "link":"printService"
+            "link":"printService",
+            "iconfont":"icon-yundayin"
           }
         ],
         [
           {
             "name":"退出登录",
-            "link":"logout"
+            "link":"logout",
+            "iconfont":"icon-dengchu"
           }
         ]
       ]

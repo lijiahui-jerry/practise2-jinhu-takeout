@@ -73,6 +73,7 @@ export default {
     top:45px;
     left:0;
     right:0;
+    background-color:#f2f2f2;
 
     .cards-wrapper{
       width:100%;
@@ -81,8 +82,8 @@ export default {
         width:90%;
         height:100%;
         margin:10px auto;
-        background-color:#D0D0D0;
         border-radius:10px;
+        background-color:#FFFFFF;
         padding:10px 5px;
         box-sizing:border-box;
         overflow:hidden;

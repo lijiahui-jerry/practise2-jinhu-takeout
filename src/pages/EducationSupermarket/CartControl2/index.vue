@@ -3,9 +3,9 @@
  <div class="cart-control">
   <transition name="roll">
    <!-- 餐品数量减一 -->
-   <div class="iconfont icon-jianshao" v-if="food.count" @click.stop="updateCount(false)"></div>
+   <div class="iconfont icon-jianshao" v-if="good.count" @click.stop="updateCount(false)"></div>
   </transition>
-  <div class="count" v-if="food.count">{{food.count}}</div>
+  <div class="count" v-if="good.count">{{good.count}}</div>
   <!-- 餐品数量加一 -->
   <div class="iconfont icon-jia" @click.stop="updateCount(true)"></div>
  </div>
@@ -13,14 +13,14 @@
 
 <script>
 export default {
-  name:"CartControl",
+  name:"CartControl2",
   props:{
-    food:Object,
+    good:Object,
   },
   methods:{
     //修改购物车中菜品的数量，true为加1，false为减1
     updateCount(flag){
-      this.$store.dispatch('updateCountOfFood',{flag,food:this.food})
+      this.$store.dispatch('updateCountOfGood',{flag,good:this.good})
     },
   },
 }
