@@ -27,7 +27,7 @@ let router=new VueRouter({
 })
 
 router.beforeEach((to,from,next)=>{
-  let token=localStorage.getItem('userId')
+  let token=localStorage.getItem('token')
   let toPath=to.path
 
   if(!token && (['/login','/home','/me'].indexOf(toPath)=== -1)){

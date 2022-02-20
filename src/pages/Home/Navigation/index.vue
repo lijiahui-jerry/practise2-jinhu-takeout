@@ -3,8 +3,8 @@
  <div class="nav">
   <div class="swiper-container" ref="mySwiper">
    <div class="swiper-wrapper">
-    <div class="swiper-slide" v-for="(navPages,index) in navigationArr" :key="index">
-     <div class="nav-link" v-for="(nav) in navPages" :key="nav.id" @click="$router.push(nav.link)">
+    <div class="swiper-slide" v-for="(navPages) in navigationArr" :key="navPages.uuid">
+     <div class="nav-link" v-for="(nav) in navPages" :key="nav.uuid" @click="$router.push(nav.link)">
       <div class="img-container">
        <img v-lazy="nav.image" :alt="nav.description">
       </div>

@@ -20,13 +20,13 @@
    </div>
   </div>
   <!-- 个人财务栏 -->
-  <div class="finance" v-if="ifLogged()">
+  <div class="finance" v-if="ifLogged">
    <div class="finance-item">
     <p class="first-line"><span class="item-data data1">{{userInfo.balance}}</span>元</p>
     <p class="second-line">余额</p>
    </div>
    <div class="finance-item">
-    <p class="first-line"><span class="item-data data2">{{redPacketCount}}</span>个</p>
+    <p class="first-line"><span class="item-data data2">{{userInfo.redpacket_count}}</span>个</p>
     <p class="second-line">红包</p>
    </div>
    <div class="finance-item">
@@ -36,13 +36,25 @@
   </div>
   <!-- 功能栏 -->
   <!--
-  /*这个功能用了整整两个下午才完成，全靠自己一点点摸索，对于json格式的设置有了更深一步的理解。
-  json设置得好，前端人员可以很轻松地进行v-for，而设置得不好，前端人员甚至无法完成需求，只能通过纯手动来完成*/
+  /*这个功能用了整整两个下午才完成，全靠自己一点点摸索，对于json格式的设计有了更深一步的理解。
+  json设计得好，前端人员可以很轻松地进行v-for，而设计得不好，前端人员甚至无法完成需求，只能通过纯手动来完成*/
    -->
-  <div class="tool-bars" v-if="ifLogged()" v-for="(pwr,index) in powerTools" :key="index">
-   <div class="bar" @click="routerGo(p.link)" v-for="(p,index) in pwr" :key="index">
-    <div class="bar-left"><i class="iconfont" :class="p.iconfont"></i></div>
-    <div class="bar-name">{{p.name}}</div>
+  <!--
+  /*后来又对后端技术有了些许了解与学习，发现返回的json文件是由数据库的查询结果组成的。
+  对于json的设计，应该说是对于数据库的设计。
+  */
+   -->
+  <!--  <div class="tool-bars" v-if="ifLogged()" v-for="(pwr,index) in powerTools" :key="index">-->
+  <!--   <div class="bar" @click="routerGo(p.link)" v-for="(p,index) in pwr" :key="index">-->
+  <!--    <div class="bar-left"><i class="iconfont" :class="p.iconfont"></i></div>-->
+  <!--    <div class="bar-name">{{p.name}}</div>-->
+  <!--    <div class="bar-right"><i class="iconfont icon-xiangyou1"></i></div>-->
+  <!--   </div>-->
+  <!--  </div>-->
+  <div class="tool-bars" v-if="ifLogged">
+   <div class="bar" @click="routerGo(powerLinks[index])" v-for="(p,index) in powerTools" :key="index">
+    <div class="bar-left"><i class="iconfont" :class="powerIconfonts[index]"></i></div>
+    <div class="bar-name">{{p}}</div>
     <div class="bar-right"><i class="iconfont icon-xiangyou1"></i></div>
    </div>
   </div>
@@ -55,37 +67,40 @@ import {mapState} from "vuex"
 export default {
   name:"Me",
   mounted(){
-    if(this.ifLogged()){
-      this.$store.dispatch('getUserInfo')
+    if(this.ifLogged){
+      let token=localStorage.getItem('token')
+      this.$store.dispatch('getUserInfo',{token})
+    }else{
+      this.$store.dispatch('clearUserInfo')
     }
   },
   computed:{
     ...mapState({
-      userInfo:(state)=>{
-        if('1'==localStorage.getItem('userId')){
-          return state.me.userInfo[0] || {}
-        }else if('8888'==localStorage.getItem('userId')){
-          return state.me.userInfo[1] || {}
-        }else{
-          return {}
-        }
-      },
+      userInfo:(state)=>state.me.userInfo || {},
     }),
-    //返回红包个数
-    redPacketCount(){
-      /*不能这么写，因为不能确定redPacket这个数组是否undefined，length函数对未定义数组使用时会报错*/
-      //return this.userInfo.redPacket.length || 0
-      if(this.userInfo.redPacket) return this.userInfo.redPacket.length
-      else return 0
+    //判断是否登录
+    ifLogged(){
+      return localStorage.getItem('token')
     },
     //返回包含权限信息的对象
     powerInfo(){
-      if(this.userInfo) return this.userInfo.power
-      else return {}
+      if(this.userInfo) return this.userInfo.powers
+      else return ''
     },
     //返回所拥有的权限组成的数组
     powerTools(){
-      if(this.powerInfo) return this.powerInfo.tools
+      if(this.powerInfo) return this.powerInfo.split(',')
+      else return []
+    },
+    //以下是因为对于数据库的操作不熟悉，难于返回数组，所以用以下方法
+    //返回所拥有的权限相应的链接所组成的数组
+    powerLinks(){
+      if(this.userInfo.links) return this.userInfo.links.split(',')
+      else return []
+    },
+    //返回所拥有的权限相应的图标字体所组成的数组
+    powerIconfonts(){
+      if(this.userInfo.iconfonts) return this.userInfo.iconfonts.split(',')
       else return []
     },
   },
@@ -98,13 +113,9 @@ export default {
         this.$router.replace('home')
       }
     },
-    //判断是否登录
-    ifLogged(){
-      return localStorage.getItem('userId')
-    },
     //动态设置用户名的显示内容
     setUserName(){
-      if(this.userInfo.name) return this.userInfo.name+'，欢迎您！'
+      if(this.userInfo.username) return this.userInfo.username+'，欢迎您！'
       else return '登录/注册'
     },
   },
@@ -330,7 +341,7 @@ export default {
         width:40px;
         height:100%;
 
-       & .iconfont{
+        & .iconfont{
           font-size:25px;
         }
       }
@@ -345,7 +356,7 @@ export default {
         position:absolute;
         right:30px;
 
-       & .iconfont{
+        & .iconfont{
           font-size:25px;
         }
       }

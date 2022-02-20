@@ -4,7 +4,7 @@
   <!-- 手机号输入框 -->
   <div class="phone-input">
    <input type="tel" maxlength="11" placeholder="手机号" v-model="phoneNumber">
-   <button :disabled="!ifPhoneCorrect||countDown!=0" class="captcha-get" @click="getCaptcha">{{captchaContent()}}</button>
+   <button :disabled="!ifPhoneCorrect||countDown!=0" class="captcha-get" @click="getCaptchaForLogin()">{{captchaContent()}}</button>
   </div>
   <!-- 验证码输入框 -->
   <div class="captcha-input">
@@ -20,7 +20,6 @@
 </template>
 
 <script>
-
 export default {
   name:"Message",
   data(){
@@ -37,7 +36,10 @@ export default {
       this.ifReadArgument= !this.ifReadArgument
     },
     //获取验证码
-    getCaptcha(){
+    getCaptchaForLogin(){
+      let phone=this.phoneNumber
+      this.$store.dispatch("getCaptcha",{phone})
+
       if(0==this.countDown){
         //倒计时的时间
         this.countDown=30
@@ -56,18 +58,18 @@ export default {
       return this.countDown>0?`已发送(${this.countDown}s)`:'获取验证码'
     },
     /*登录时对手机号和验证码进行判断（应该由后端人员编写api接口并处理），此时所有表单数据均已符合逻辑，但是否正确填写仍需进一步判断*/
-    messageLogin(p,c){
-      if('17601355494'==p && '123456'==c){
-        localStorage.setItem("userId","1")
-        return {code:200}
-      }else if('18888888888'==p && '888888'==c){
-        localStorage.setItem("userId","8888")
-        return {code:200}
-      }else{
-        this.$parent.tipBox('验证码输入有误，请核对后重试')
-        return {code:300}
-      }
-    },
+    //messageLogin(p,c){
+    //  if('17601355494'==p && '123456'==c){
+    //    localStorage.setItem("userId","1")
+    //    return {code:200}
+    //  }else if('18888888888'==p && '888888'==c){
+    //    localStorage.setItem("userId","8888")
+    //    return {code:200}
+    //  }else{
+    //    this.$parent.tipBox('验证码输入有误，请核对后重试')
+    //    return {code:300}
+    //  }
+    //},
   },
   computed:{
     //判断手机号是否合法

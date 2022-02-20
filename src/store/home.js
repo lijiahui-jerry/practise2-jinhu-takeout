@@ -8,7 +8,7 @@ const state={
 
 const mutations={
   GETLOCATION(state,school){
-    state.school=school
+    state.school=school[0]
   },
   GETNAVIGATION(state,navigation){
     state.navigation=navigation

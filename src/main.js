@@ -5,10 +5,12 @@ import router from "@/router"
 import loading from '@/assets/loading.gif'
 import store from "@/store"
 import '@/mock/mockServe'
+import * as API from '@/api'
 import 'swiper/dist/css/swiper.min.css'
 import Mint from 'mint-ui'
 import 'mint-ui/lib/style.min.css'
 import './filters'
+
 Vue.use(VueLazyload,{loading})
 Vue.use(Mint)
 
@@ -19,6 +21,7 @@ new Vue({
   render:h=>h(App),
   beforeCreate(){
     Vue.prototype.$bus=this
+    Vue.prototype.$API=API
   },
   router,
   store,

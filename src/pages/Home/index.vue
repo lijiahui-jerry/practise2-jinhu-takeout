@@ -28,7 +28,7 @@ export default {
   methods:{
     //判断是否已经登录，用于决定header的右侧“登录”要不要显示
     ifLogged(){
-      return localStorage.getItem('userId')
+      return localStorage.getItem('token')
     },
   },
 }

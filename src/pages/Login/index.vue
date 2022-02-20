@@ -56,21 +56,29 @@ export default {
       this.tips=t
     },
     //提交登录所需的信息
-    submitLoginInformation(){
+    async submitLoginInformation(){
+      let phone=this.$refs.childMessage.phoneNumber
+      let code=this.$refs.childMessage.captcha
+      let ifReadArgument=this.$refs.childMessage.ifReadArgument
       //表单合法性验证
       if(this.phoneLogin){
         //短信验证码登录
-        const {phoneNumber,captcha,ifReadArgument}=this.$refs.childMessage
-        if(phoneNumber.length<11){
+        if(phone.length<11){
           this.tipBox('请正确输入手机号')
-        }else if(0==captcha.length){
+        }else if(0==code.length){
           this.tipBox('请输入验证码')
-        }else if(6!=captcha.length){
+        }else if(6!=code.length){
           this.tipBox('请正确输入6位验证码')
         }else if(!ifReadArgument){
           this.tipBox('请勾选同意协议')
         }else{
-          if(200==this.$refs.childMessage.messageLogin(phoneNumber,captcha).code) this.$router.push('/me')
+          //异步登录：等待dispatch返回的promise，根据promise进行相应操作。
+          try{
+            await this.$store.dispatch('getLogin',{phone,code})
+            this.$router.push('/me')
+          }catch(e){
+            this.tipBox(e.message)
+          }
         }
       }else{
         //密码登录

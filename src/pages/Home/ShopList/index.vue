@@ -8,21 +8,21 @@
   <div class="items-container">
    <ul>
     <!-- 单个商家 -->
-    <li class="items" v-for="(shop,index) in shops" :key="shops.id" @click="$router.push('shop')">
+    <li class="items" v-for="(shop) in shops" :key="shops.uuid" @click="$router.push('shop')">
      <a>
       <!-- 商家图片 -->
-      <div class="item-img"><img v-lazy="shop.image"></div>
+      <div class="item-img"><img v-lazy="shop.avatar"></div>
       <!-- 商家详细信息第一行 -->
       <div class="line1-container">
        <!-- 是否推荐、商家名、提供的保障 -->
        <div class="line1">
         <!-- 推荐 -->
-        <h4 class="item-title-recommend" v-if="shop.isRecommend">{{shop.name}}</h4>
+        <h4 class="item-title-recommend" v-if="shop.if_recommend">{{shop.name}}</h4>
         <!-- 不推荐 -->
         <h4 class="item-title" v-else>{{shop.name}}</h4>
         <!-- 提供的保障 -->
         <ul class="supports-container">
-         <li class="supports" v-for="(support) in shop.supports" :key="support.id">{{support.iconName}}</li>
+         <li class="supports" v-for="(support,index) in getSupport(shop)" :key="index">{{support}}</li>
         </ul>
        </div>
        <!-- 商家详细信息第二行 -->
@@ -30,16 +30,16 @@
         <!-- 星数、评分、销量、人均 -->
         <div class="line2">
          <!-- 星数 -->
-         <Star :rating=shop.ratingScore size=24></Star>
+         <Star :rating=shop.rating size=24></Star>
          <!-- 评分 -->
-         <div class="rating">{{shop.ratingScore}}</div>
+         <div class="rating">{{shop.rating}}</div>
          <!-- 销量、人均 -->
-         <div class="recent-orders">月售&nbsp;{{shop.recentOrders}}&nbsp;单&nbsp;&nbsp;&nbsp;人均&nbsp;{{shop.averageConsumption}}&nbsp;元</div>
+         <div class="recent-orders">月售&nbsp;{{shop.sells_counts}}&nbsp;单&nbsp;&nbsp;&nbsp;人均&nbsp;{{shop.avg_consume}}&nbsp;元</div>
         </div>
         <!-- 商家详细信息第二行最右边 -->
         <div class="line2-right">
          <!-- 配送方式 -->
-         <span class="delivery" v-if="shop.delivery.type">{{shop.delivery.type}}</span>
+         <span class="delivery" v-if="shop.delivery_type">{{shop.delivery_type}}</span>
         </div>
        </div>
        <!-- 商家详细信息第三行 -->
@@ -47,10 +47,10 @@
         <!-- 起送价、配送费 -->
         <p class="line3">
          <!-- 起送价 -->
-         <span>¥{{shop.minimumConsumption}}起送</span>
+         <span>¥{{shop.delivery_threshold}}起送</span>
          <span class="segmentation">/</span>
          <!-- 配送费 -->
-         <span v-if="0!=shop.delivery.fee">配送费约¥{{shop.delivery.fee}}</span>
+         <span v-if="0!=shop.delivery_fee">配送费约¥{{shop.delivery_fee}}</span>
          <span v-else>免配送费</span>
         </p>
        </div>
@@ -66,13 +66,24 @@
 </template>
 
 <script>
+//调试日记 2022-02-19
+// 1.不要把图片放在数据库，因为会转成BASE64，进而使文件体积变大，并且读取不方便。要放在网站里，或是专门的图片服务器里。
 import {mapState} from "vuex"
 import Star from "@/components/Star"
 
 export default {
   name:"ShopList",
   components:{Star},
-
+  methods:{
+    //根据数据库查询到的supports字符串，得到相应的supports数组，用于v-for，没有任何support则返回空数组。
+    getSupport(shop){
+      if(shop){
+        if(shop.supports){
+          return shop.supports.split(',')
+        }else return []
+      }else return []
+    },
+  },
   computed:{
     ...mapState({
       shops:state=>state.home.shops || [],
